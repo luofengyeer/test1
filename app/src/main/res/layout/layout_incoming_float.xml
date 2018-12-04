@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/iv_bg"
+        android:layout_width="@dimen/incoming_bg_widgth"
+        android:layout_height="@dimen/incoming_bg_heigth"
+        android:src="@drawable/bg_incomming" />
+
+    <ImageView
+        android:id="@+id/iv_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/iv_bg"
+        android:layout_alignTop="@+id/iv_bg"
+        android:padding="12dp"
+        android:src="@drawable/sel_btn_incomming_close" />
+
+    <RelativeLayout
+        android:id="@+id/rl_bg_avatar"
+        android:layout_width="@dimen/incoming_avatar_heigth"
+        android:layout_height="@dimen/incoming_avatar_heigth"
+        android:layout_alignLeft="@+id/iv_bg"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="36dp"
+        android:layout_marginRight="18dp"
+        android:background="@drawable/bg_incomming_avatar">
+
+        <ImageView
+            android:id="@+id/iv_user_avatar"
+            android:layout_width="@dimen/incoming_avatar_img_heigth"
+            android:layout_height="@dimen/incoming_avatar_img_heigth"
+            android:layout_centerInParent="true" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/rl_bg_avatar">
+
+        <TextView
+            android:id="@+id/tv_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:textSize="18dp"/>
+
+        <TextView
+            android:id="@+id/tv_user_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_user_name"
+            android:layout_marginTop="6dp"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            tools:text="15512271303" />
+    </RelativeLayout>
+</RelativeLayout>

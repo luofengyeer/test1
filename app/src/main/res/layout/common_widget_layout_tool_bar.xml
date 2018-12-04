@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolbar_main"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.cmcc.internalcontact.utils.view.ToolbarButton
+        android:id="@+id/toolbar_left_first_btn"
+        style="@style/common_widget_toolbar_left_button"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <com.cmcc.internalcontact.utils.view.ToolbarButton
+        android:id="@+id/toolbar_left_second_btn"
+        style="@style/common_widget_toolbar_left_button"
+        app:layout_constraintStart_toEndOf="@+id/toolbar_left_first_btn" />
+
+    <com.cmcc.internalcontact.utils.view.ToolbarButton
+        android:id="@+id/toolbar_right_first_btn"
+        style="@style/common_widget_toolbar_right_button"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <com.cmcc.internalcontact.utils.view.ToolbarButton
+        android:id="@+id/toolbar_right_second_btn"
+        style="@style/common_widget_toolbar_right_button"
+        app:layout_constraintRight_toLeftOf="@id/toolbar_right_first_btn"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/toolbar_title"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:lines="1"
+        android:textColor="#333333"
+        android:textSize="16sp"
+        android:visibility="visible" />
+
+    <View
+        android:id="@+id/toolbar_divider"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#cccccc"
+        app:layout_constraintBottom_toBottomOf="parent" />
+</android.support.constraint.ConstraintLayout>

@@ -3,4 +3,6 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="common_widget_theme_color_C1_1">#3F51B5</color>
+    <color name="common_widget_toolbar_button_color_C3_2">#333333</color>
 </resources>

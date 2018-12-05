@@ -65,7 +65,7 @@ public class ToolbarButton extends LinearLayout {
     private TextView buildText(Context context, TypedArray typedArray) {
         String text = typedArray.getString(R.styleable.ToolbarButton_buttonText);
         int textRes = typedArray.getResourceId(R.styleable.ToolbarButton_buttonText, -1);
-        int textColor = typedArray.getResourceId(R.styleable.ToolbarButton_buttonTextColor, R.color.common_widget_theme_color_C1_1);
+        int textColor = typedArray.getResourceId(R.styleable.ToolbarButton_buttonTextColor, R.color.common_theme_color);
         int textSize = typedArray.getResourceId(R.styleable.ToolbarButton_buttonTextSize, R.dimen.common_widget_toolbar_title_button_text_size);
 
         TextView textButton = new TextView(context);

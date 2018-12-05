@@ -1,17 +1,19 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">#333333</item>
     </style>
+
     <style name="common_widget_common_button_b3_1">
         <item name="android:layout_height">40dp</item>
         <item name="android:textSize">16dp</item>
         <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/common_widget_theme_color_C1_1</item>
+        <item name="android:textColor">@color/common_theme_color</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:background">@drawable/common_widget_btn_bg_b3_1</item>
     </style>
@@ -23,7 +25,7 @@
         </item>
         <item name="android:layout_marginLeft">@dimen/common_widget_toolbar_button_left_padding
         </item>
-        <item name="buttonTextColor">@color/common_widget_toolbar_button_color_C3_2</item>
+        <item name="buttonTextColor">@color/common_toolbar_button_color_C3_2</item>
         <item name="buttonTextSize">@dimen/common_widget_toolbar_title_button_text_size</item>
     </style>
 
@@ -32,9 +34,20 @@
         <item name="android:layout_height">48dp</item>
         <item name="buttonPadding">@dimen/common_widget_toolbar_title_text_icon_button_padding
         </item>
-        <item name="buttonTextColor">@color/common_widget_toolbar_button_color_C3_2</item>
+        <item name="buttonTextColor">@color/common_toolbar_button_color_C3_2</item>
         <item name="buttonTextSize">@dimen/common_widget_toolbar_title_button_text_size</item>
         <item name="android:layout_marginRight">@dimen/common_widget_toolbar_button_left_padding
         </item>
+    </style>
+
+    <style name="common_toolbar_normal">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/common_widget_toolbar_height</item>
+        <item name="android:minHeight">@dimen/common_widget_toolbar_height</item>
+        <item name="titleCenter">true</item>
+        <item name="leftFirstIcon">@drawable/ic_common_widget_toolbar_back</item>
+        <item name="titleColor">@color/common_toolbar_textColor</item>
+        <item name="android:background">#6575CC</item>
+        <item name="dividerIsShown">false</item>
     </style>
 </resources>

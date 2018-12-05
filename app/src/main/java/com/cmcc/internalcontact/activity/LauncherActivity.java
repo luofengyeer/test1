@@ -1,15 +1,26 @@
 package com.cmcc.internalcontact.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.os.Handler;
 
 import com.cmcc.internalcontact.R;
+import com.cmcc.internalcontact.base.BaseActivity;
 
-public class LauncherActivity extends AppCompatActivity {
+public class LauncherActivity extends BaseActivity {
+
+    private Handler handler = null;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startActivity(new Intent(LauncherActivity.this, LoginActivity.class));
+            }
+        }, 1500);
     }
 }

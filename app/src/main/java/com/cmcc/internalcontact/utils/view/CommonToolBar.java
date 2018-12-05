@@ -53,12 +53,12 @@ public class CommonToolBar extends RelativeLayout implements View.OnClickListene
             //设置Title
             int titleTextId = typedArray.getResourceId(R.styleable.CommonToolBar_titleText, 0);
             isTitleCenter = typedArray.getBoolean(R.styleable.CommonToolBar_titleCenter, false);
-            titleColorId = typedArray.getResourceId(R.styleable.CommonToolBar_titleColor, 0);
+            titleColorId = typedArray.getResourceId(R.styleable.CommonToolBar_titleColor, -1);
             float titleSize = typedArray.getDimensionPixelSize(R.styleable.CommonToolBar_titleSize, getResources().getDimensionPixelSize(R.dimen.common_widget_toolbar_title_text_size));
             float btnTextSize = typedArray.getDimensionPixelSize(R.styleable.CommonToolBar_btnTextSize, getResources().getDimensionPixelSize(R.dimen.common_widget_toolbar_title_button_text_size));
             setTitle(titleTextId, isTitleCenter);
             setTitleSize(titleSize);
-            setTitleColor(titleColorId);
+            setTitleColor(context.getColor(titleColorId));
             setTitleBold(typedArray.getBoolean(R.styleable.CommonToolBar_titleBold, false));
             //设置背景
 //            toolbarLayout.setBackground(getBackground());
@@ -125,11 +125,11 @@ public class CommonToolBar extends RelativeLayout implements View.OnClickListene
             boolean isDividerShown = typedArray.getBoolean(R.styleable.CommonToolBar_dividerIsShown, true);
             setDividerShown(isDividerShown);
 
-            leftButtonColorId = typedArray.getResourceId(R.styleable.CommonToolBar_leftButtonColor, 0);
+            leftButtonColorId = typedArray.getResourceId(R.styleable.CommonToolBar_leftButtonColor, R.color.common_toolbar_button_color_C3_2);
             leftFirstBtn.setColor(context.getColor(leftButtonColorId));
             leftSecondBtn.setColor(context.getColor(leftButtonColorId));
 
-            rightButtonColorId = typedArray.getResourceId(R.styleable.CommonToolBar_rightButtonColor, 0);
+            rightButtonColorId = typedArray.getResourceId(R.styleable.CommonToolBar_rightButtonColor, R.color.common_toolbar_button_color_C3_2);
             rightFirstBtn.setColor(context.getColor(rightButtonColorId));
             rightSecondBtn.setColor(context.getColor(rightButtonColorId));
 

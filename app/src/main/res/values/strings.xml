@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">内部通讯录</string>
     <string name="text_login">登录</string>
+    <string name="text_phone_quick_login">手机号快捷登录</string>
 </resources>

@@ -14,7 +14,7 @@ public class LauncherActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_launcher);
         handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override

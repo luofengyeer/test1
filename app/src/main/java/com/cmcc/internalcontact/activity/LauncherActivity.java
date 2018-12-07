@@ -20,6 +20,7 @@ public class LauncherActivity extends BaseActivity {
             @Override
             public void run() {
                 startActivity(new Intent(LauncherActivity.this, LoginActivity.class));
+                finish();
             }
         }, 1500);
     }

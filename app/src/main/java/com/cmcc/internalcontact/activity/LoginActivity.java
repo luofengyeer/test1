@@ -8,19 +8,27 @@ import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.cmcc.internalcontact.R;
 import com.cmcc.internalcontact.base.BaseActivity;
+import com.cmcc.internalcontact.model.http.LoginResponseBean;
+import com.cmcc.internalcontact.usecase.LoginUsecase;
 import com.cmcc.internalcontact.utils.view.CommonButton;
 import com.cmcc.internalcontact.utils.view.StatusBarUtil;
+import com.cmcc.internalcontact.utils.view.SwitchButton;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.cmcc.internalcontact.activity.ResetPasswordActivity.TAG_LOGIN_CODE;
 
@@ -31,7 +39,7 @@ public class LoginActivity extends BaseActivity {
     @BindView(R.id.ed_login_pwd)
     EditText edPassword;
     @BindView(R.id.sw_auto_login)
-    Switch swAutoLogin;
+    SwitchButton swAutoLogin;
     @BindView(R.id.lay_auto_login)
     View autoLoginLay;
     @BindView(R.id.btn_login)
@@ -40,8 +48,7 @@ public class LoginActivity extends BaseActivity {
     @BindView(R.id.lay_login_title)
     View commonToolBar;
     @BindView(R.id.iv_pwd_eye_icon)
-    ImageView ivPwdEyeIcon;
-    private boolean isShowPwd = true;
+    ToggleButton ivPwdEyeIcon;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,6 +58,14 @@ public class LoginActivity extends BaseActivity {
         StatusBarUtil.immersive(this);
         StatusBarUtil.setPaddingSmart(this, commonToolBar);
         loginBtn.setEnabled(false);
+        swAutoLogin.setOpen(preferencesUtils.getBoolean(TAG_AUTO_LOGIN));
+        swAutoLogin.setOnStateChangeListener(new SwitchButton.OnStateChangeListener() {
+            @Override
+            public void onChange(View v, boolean isOpen) {
+                preferencesUtils.setBoolean(TAG_AUTO_LOGIN, isOpen);
+                swAutoLogin.setOpen(isOpen);
+            }
+        });
         edAccount.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -107,16 +122,15 @@ public class LoginActivity extends BaseActivity {
         startActivity(intent);
     }
 
-    @OnClick(R.id.iv_pwd_eye_icon)
-    public void onShowPassword() {
-        if (isShowPwd) {
+    @OnCheckedChanged(R.id.iv_pwd_eye_icon)
+    public void onShowPassword(CompoundButton compoundButton, boolean b) {
+        if (b) {
             edPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
             edPassword.setSelection(edPassword.getText().length());
         } else {
             edPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
             edPassword.setSelection(edPassword.getText().length());
         }
-        isShowPwd = !isShowPwd;
     }
 
     @OnClick(R.id.btn_login)
@@ -129,12 +143,28 @@ public class LoginActivity extends BaseActivity {
             Toast.makeText(this, "请输入密码", Toast.LENGTH_SHORT).show();
             return;
         }
-        startActivity(new Intent(this, MainActivity.class));
+        new LoginUsecase().login(this, edAccount.getText().toString(), edPassword.getText().toString())
+                .subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<LoginResponseBean>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(LoginResponseBean loginResponseBean) {
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
     }
 
-    @OnClick(R.id.lay_auto_login)
-    public void openAutoLogin() {
-        swAutoLogin.setChecked(!swAutoLogin.isChecked());
-        preferencesUtils.setBoolean(TAG_AUTO_LOGIN, swAutoLogin.isChecked());
-    }
 }

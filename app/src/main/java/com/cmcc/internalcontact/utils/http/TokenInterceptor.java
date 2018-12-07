@@ -24,9 +24,11 @@ public class TokenInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
         Headers headers = request.headers();
+
         SharePreferencesUtils sharePreferencesUtils = new SharePreferencesUtils(context);
-        String token = sharePreferencesUtils.getString(Constant.TAG_HTTP_TOKEN, null);
+        String token = sharePreferencesUtils.getString(Constant.TAG_HTTP_TOKEN, "");
         headers.newBuilder().add("token", token).build();
-        return chain.proceed(request);
+        Response response = chain.proceed(request);
+        return response;
     }
 }

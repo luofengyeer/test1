@@ -20,11 +20,12 @@ public class HttpManager {
         if (ourInstance != null) {
             return ourInstance;
         }
-        ourInstance = new HttpManager();
+        ourInstance = new HttpManager(context);
         return ourInstance;
     }
 
-    private HttpManager() {
+    private HttpManager(Context context) {
+        this.context = context;
         initOkHttpClient();
     }
 
@@ -49,7 +50,7 @@ public class HttpManager {
                 //设置数据解析器
                 .addConverterFactory(FastJsonConverterFactory.create())
                 //设置网络请求的Url地址
-                .baseUrl(Constant.BASR_URL)
+                .baseUrl(Constant.BASE_URL)
                 .build();
 // 创建网络请求接口的实例
         return retrofit.create(Api.class);

@@ -78,4 +78,17 @@ public class PersonDiskStore {
         }
         return SQLite.select().from(PersonModel.class).where(PersonModel_Table.mobile.eq(phone)).or(PersonModel_Table.mobile2.eq(phone)).querySingle();
     }
+
+    /**
+     * 检索联系人
+     *
+     * @param search 检索内容
+     * @return 匹配检索内容的联系人信息集合
+     */
+    public List<PersonModel> searchPersonList(String search) {
+        return SQLite.select().from(PersonModel.class)
+                .where(PersonModel_Table.username.like(search))
+                .or(PersonModel_Table.namePinyin.like(search))
+                .queryList();
+    }
 }

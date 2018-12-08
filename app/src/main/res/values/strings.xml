@@ -18,4 +18,8 @@
     <string name="common_permission_pos">取消</string>
     <string name="common_permission_nega">立即授权</string>
     <string name="text_yellow">黄页</string>
+    <string name="mechanism">机构</string>
+    <string name="company">单位</string>
+    <string name="contacts">联系人</string>
+    <string name="search">搜索</string>
 </resources>

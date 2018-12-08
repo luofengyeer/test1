@@ -11,4 +11,11 @@
     <color name="common_divider_color">#E6E6E6</color>
     <color name="common_widget_activity_default_bg_color_C2_1">#FFF5F5F5</color>
     <color name="color_ffffff">#FFFFFF</color>
+    <color name="color_ffededed">#ffededed</color>
+    <color name="color_ff4c96f7">#ff4c96f7</color>
+    <color name="color_ffeeeeee">#ffeeeeee</color>
+    <color name="color_333333">#333333</color>
+    <color name="color_ff333333">#ff333333</color>
+    <color name="color_ff747474">#ff747474</color>
+    <color name="color_ff0000">#FF0000</color>
 </resources>

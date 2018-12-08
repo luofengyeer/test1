@@ -1,73 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/ll_bar"
+    <com.cmcc.internalcontact.utils.view.CommonToolBar
+        android:id="@+id/toolbar_search"
+        style="@style/common_toolbar_normal"
+        app:leftFirstIconIsShown="true"
+        app:titleText="@string/app_name" />
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="#FFFFFF"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="6dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="6dp"
-            android:layout_weight="1"
-            android:background="@drawable/shape_contact_search_input_bg"
-            android:gravity="center_vertical">
-
-            <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="4dp"
-                android:src="@drawable/ic_contact_root_search" />
-
-            <EditText
-                android:id="@+id/et_search"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@null"
-                android:hint="请输入搜索内容"
-                android:imeOptions="actionSearch"
-                android:inputType="text"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:textColor="@color/common_textColor"
-                android:textColorHint="@color/common_greyColor"
-                android:textSize="14dp" />
-
-            <RelativeLayout
-                android:id="@+id/rl_cancel_search"
-                tools:visibility="visible"
-                android:layout_width="32dp"
-                android:layout_height="match_parent"
-                android:visibility="gone">
-
-                <ImageView
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
-                    android:layout_centerInParent="true"
-                    android:src="@drawable/ic_root_search_delete" />
-            </RelativeLayout>
-        </LinearLayout>
+        android:layout_height="@dimen/dp_48"
+        android:background="@color/color_ffffff">
 
         <TextView
             android:id="@+id/tv_cancel_search"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:gravity="center_vertical"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:text="取消"
-            android:textColor="@color/common_textColor"
-            android:textSize="14dp" />
+            android:paddingLeft="@dimen/dp_16"
+            android:paddingRight="@dimen/dp_17"
+            android:text="@string/cancel"
+            android:textColor="@drawable/bg_search_tab"
+            android:textSize="@dimen/sp_14" />
 
+        <EditText
+            android:id="@+id/et_search"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_35"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="@dimen/dp_14"
+            android:layout_toLeftOf="@id/tv_cancel_search"
+            android:background="@drawable/shape_contact_search_input_bg"
+            android:hint="@string/search_hint"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:maxLines="1"
+            android:paddingLeft="@dimen/dp_40"
+            android:singleLine="true"
+            android:textColor="@color/common_textColor"
+            android:textColorHint="@color/common_greyColor"
+            android:textSize="@dimen/sp_14" />
+
+        <ImageView
+            android:layout_width="@dimen/dp_19"
+            android:layout_height="@dimen/dp_19"
+            android:layout_alignLeft="@id/et_search"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_9"
+            android:layout_marginRight="4dp"
+            android:src="@drawable/ic_contact_root_search" />
+
+        <ImageView
+            android:id="@+id/iv_clear_et"
+            android:layout_width="@dimen/dp_12"
+            android:layout_height="@dimen/dp_12"
+            android:layout_alignRight="@id/et_search"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="@dimen/dp_14"
+            android:src="@drawable/ic_root_search_delete"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <RadioGroup
+        android:id="@+id/rg_tab"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_52"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rb_mechanism"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:checked="true"
+            android:gravity="center"
+            android:text="@string/mechanism"
+            android:textColor="@drawable/bg_search_tab"
+            android:textSize="@dimen/sp_17" />
+
+        <RadioButton
+            android:id="@+id/rb_company"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/company"
+            android:textColor="@drawable/bg_search_tab"
+            android:textSize="@dimen/sp_17" />
+
+        <RadioButton
+            android:id="@+id/rb_contacts"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/contacts"
+            android:textColor="@drawable/bg_search_tab"
+            android:textSize="@dimen/sp_17" />
+    </RadioGroup>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_1"
+        android:background="@color/color_ffeeeeee"
+        android:orientation="horizontal">
+
+        <View
+            android:id="@+id/v_mechanism_line"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/color_ff4c96f7"
+            android:visibility="visible" />
+
+        <View
+            android:id="@+id/v_company_line"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/color_ff4c96f7"
+            android:visibility="invisible" />
+
+        <View
+            android:id="@+id/v_contacts_line"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/color_ff4c96f7"
+            android:visibility="invisible" />
     </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_search"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none" />
 </LinearLayout>

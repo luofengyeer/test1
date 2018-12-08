@@ -19,4 +19,13 @@ public class Constant {
             .placeholder(R.drawable.ic_avatar).transform(new GlideCircleTransform())
             .error(R.drawable.ic_avatar)
             .priority(Priority.HIGH);
+
+    /**
+     * 类型-机构
+     */
+    public static final int TYPE_MECHANISM = 0;
+    /**
+     * 类型-部门
+     */
+    public static final int TYPE_COMPANY = 1;
 }

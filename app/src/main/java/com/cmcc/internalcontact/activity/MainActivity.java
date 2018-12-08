@@ -115,18 +115,18 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
 
     @OnClick(R.id.view_main_search_lay)
     public void jump2Search() {
-
+        startActivity(new Intent(MainActivity.this, SearchActivity.class));
     }
 
     private void loadContactCount() {
         new LoadContactList().getPersonsCount().subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new MyObserver<Long>(this) {
-            @Override
-            public void onNext(Long aLong) {
-                tvCount.setText(getString(R.string.person_count, aLong));
-            }
-        });
+                    @Override
+                    public void onNext(Long aLong) {
+                        tvCount.setText(getString(R.string.person_count, aLong));
+                    }
+                });
     }
 
     private void loadContact(DepartModel departModel) {
@@ -140,11 +140,11 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new MyObserver<List<MainInfoBean>>(this) {
 
-            @Override
-            public void onNext(List<MainInfoBean> mainInfoBeans) {
-                adapter.setDataList(mainInfoBeans);
-            }
-        });
+                    @Override
+                    public void onNext(List<MainInfoBean> mainInfoBeans) {
+                        adapter.setDataList(mainInfoBeans);
+                    }
+                });
     }
 
     private void setDepartTels(DepartModel departTels) {
@@ -172,7 +172,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
 
     private void initTab() {
         tabMain.addTab(buildTab("通讯录", R.drawable.common_widget_home_menu_contact_selecter), false);
-        tabMain.addTab(buildTab("搜索", R.drawable.ic_search), false);
+        tabMain.addTab(buildTab(getString(R.string.search), R.drawable.ic_search), false);
         tabMain.addTab(buildTab("我的", R.drawable.common_widget_home_menu_mine_selecter), false);
         tabMain.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -180,12 +180,17 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
 //                new LoadContactList().saveDepartments(null);
                 setMenuRes(tab, true);
                 loadDepartment(null);
+                if (tab == tabMain.getTabAt(1)) {
+                    jump2Search();
+                }
+                if (tab == tabMain.getTabAt(2)) {
+                    startActivity(new Intent(MainActivity.this, MineActivity.class));
+                }
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
                 setMenuRes(tab, false);
-
             }
 
             @Override

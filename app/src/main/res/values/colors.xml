@@ -10,4 +10,5 @@
     <color name="common_greyColor">#999999</color>
     <color name="common_divider_color">#E6E6E6</color>
     <color name="common_widget_activity_default_bg_color_C2_1">#FFF5F5F5</color>
+    <color name="color_ffffff">#FFFFFF</color>
 </resources>

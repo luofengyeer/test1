@@ -14,4 +14,16 @@
     <dimen name="common_widget_toolbar_title_button_text_size">14sp</dimen>
     <dimen name="common_widget_divider_height">0.5dp</dimen>
     <dimen name="common_widget_home_widget_toolbar_title_text_size">20sp</dimen>
+
+    <dimen name="sp_14">14sp</dimen>
+
+    <dimen name="dp_14">14dp</dimen>
+    <dimen name="dp_16">16dp</dimen>
+    <dimen name="dp_17">17dp</dimen>
+    <dimen name="dp_48">48dp</dimen>
+    <dimen name="dp_35">35dp</dimen>
+    <dimen name="dp_19">19dp</dimen>
+    <dimen name="dp_9">9dp</dimen>
+
+
 </resources>

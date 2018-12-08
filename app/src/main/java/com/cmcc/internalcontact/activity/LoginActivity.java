@@ -59,7 +59,8 @@ public class LoginActivity extends BaseActivity {
         ButterKnife.bind(this);
         StatusBarUtil.immersive(this);
         StatusBarUtil.setPaddingSmart(this, commonToolBar);
-        loginBtn.setEnabled(false);
+        // TODO: 2018/12/8 0008   
+//        loginBtn.setEnabled(false);
         swAutoLogin.setOpen(preferencesUtils.getBoolean(TAG_AUTO_LOGIN));
         swAutoLogin.setOnStateChangeListener(new SwitchButton.OnStateChangeListener() {
             @Override

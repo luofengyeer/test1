@@ -10,7 +10,7 @@
         android:id="@+id/toolbar_main"
         style="@style/common_toolbar_normal"
         android:layout_alignParentTop="true"
-        app:leftFirstIconIsShown="false"
+        app:leftFirstIconIsShown="true"
         app:titleText="@string/app_name" />
 
     <LinearLayout

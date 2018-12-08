@@ -8,7 +8,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
-import com.cmcc.internalcontact.utils.Constant;
+import com.cmcc.internalcontact.model.db.PersonModel;
+import com.cmcc.internalcontact.store.PersonDiskStore;
 import com.cmcc.internalcontact.utils.SharePreferencesUtils;
 import com.cmcc.internalcontact.utils.callerfloat.FloatWindowManager;
 
@@ -73,9 +74,16 @@ public class CallerIdsMatchService extends Service {
      * 打开窗口
      */
     private void showCallerMatchWindow(final String callerIdsCode) {
-        //功能开关
-        if (preferencesEditor != null && !preferencesEditor.getBoolean(Constant.SWITCH_INCOME_STATUE)) {
+        try {
+
+        PersonDiskStore personDiskStore = new PersonDiskStore();
+        PersonModel personModel = personDiskStore.getPersonsByPhone(callerIdsCode);
+        if (personModel == null) {
             return;
+        }
+        FloatWindowManager.getInstance().showCallerFloatWindow(getApplicationContext(), callerIdsCode, personModel);
+        }catch (Exception e){
+            FloatWindowManager.getInstance().dismissFloatWindow();
         }
      /*   EoaApplication eoaApplication = (EoaApplication) mContext.getApplicationContext();
         //未登录，返回
@@ -89,7 +97,7 @@ public class CallerIdsMatchService extends Service {
                         if (null == personBean) {
                             return;
                         }
-                        FloatWindowManager.getInstance().showCallerFloatWindow(getApplicationContext(), callerIdsCode, personBean);
+
                     }
 
                     @Override

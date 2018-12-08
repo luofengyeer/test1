@@ -13,6 +13,10 @@ public class MyApplication extends Application {
         SharePreferencesUtils sharePreferencesUtils = SharePreferencesUtils.getInstance();
         sharePreferencesUtils.setContext(this);
         FlowManager.init(this);
+      /*  SImagePicker.init(new PickerConfig.Builder().setAppContext(this)
+                .setImageLoader(new FrescoImageLoader())
+                .setToolbaseColor(getColor(R.color.colorPrimary))
+                .build());*/
 /*
         FlowManager.init(FlowConfig.builder(this)
                 .addDatabaseConfig(DatabaseConfig.builder(AppDataBase.class)

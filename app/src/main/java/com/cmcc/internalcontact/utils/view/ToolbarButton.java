@@ -115,6 +115,7 @@ public class ToolbarButton extends LinearLayout {
     public void setButtonIcon(Drawable drawable) {
         ImageView imageView = getImageView();
         if (imageView != null) {
+            imageView.setVisibility(VISIBLE);
             imageView.setImageDrawable(drawable);
         }
     }

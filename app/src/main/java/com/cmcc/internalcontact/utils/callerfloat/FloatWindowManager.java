@@ -8,7 +8,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 
-import com.cmcc.internalcontact.model.PersonBean;
+import com.cmcc.internalcontact.model.db.PersonModel;
 import com.cmcc.internalcontact.utils.Constant;
 import com.cmcc.internalcontact.utils.SharePreferencesUtils;
 
@@ -41,7 +41,7 @@ public class FloatWindowManager implements View.OnClickListener {
         return isWindowDismiss;
     }
 
-    public void showCallerFloatWindow(Context context, String callerIds, PersonBean personBean) {
+    public void showCallerFloatWindow(Context context, String callerIds, PersonModel personBean) {
         if (!isWindowDismiss) {
             Log.e(TAG, "view is already added here");
             return;
@@ -75,8 +75,8 @@ public class FloatWindowManager implements View.OnClickListener {
         floatView.setParams(mParams);
         floatView.setIsShowing(true);
 
-        floatView.setCallerAvatar(personBean.getAvator(), personBean.getName(), personBean.getId());
-        floatView.setCallerName(personBean.getName());
+        floatView.setCallerAvatar(personBean.getHeadPic(), personBean.getUsername(), personBean.getUserId());
+        floatView.setCallerName(personBean.getUsername());
         floatView.setCallerPhone(callerIds);
         floatView.setOnCloseClickListener(this);
 

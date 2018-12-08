@@ -26,7 +26,7 @@
                     android:name="design_height_in_dp"
                     android:value="1920" />-->
 
-        <activity android:name=".activity.MainActivity">
+        <activity android:name=".activity.QuickLoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,7 +34,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.LauncherActivity"
+            android:name=".activity.YellowPageActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.LoginActivity"
@@ -49,9 +49,15 @@
             android:name=".activity.SearchActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.QuickLoginActivity"
+            android:name=".activity.LauncherActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MainActivity"
             android:screenOrientation="portrait" />
 
+        <service
+            android:name=".service.CallerIdsMatchService"
+            android:exported="false" />
         <receiver
             android:name=".receiver.InComingReceiver"
             android:configChanges="orientation|screenSize">

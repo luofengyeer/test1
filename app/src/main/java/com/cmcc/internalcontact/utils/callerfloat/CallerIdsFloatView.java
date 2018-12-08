@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.cmcc.internalcontact.R;
+import com.cmcc.internalcontact.utils.Constant;
 
 
 /**
@@ -80,7 +81,7 @@ public class CallerIdsFloatView extends FrameLayout {
 
     public void setCallerAvatar(String avatarUrl, String name, long id) {
         ImageView userAvatarIv = floatView.findViewById(R.id.iv_user_avatar);
-        Glide.with(mContext).load(avatarUrl).into(userAvatarIv);
+        Glide.with(mContext).load(avatarUrl).apply(Constant.AVATAR_OPTIONS).into(userAvatarIv);
     }
 
     public void setCallerPhone(String callerPhone) {

@@ -71,4 +71,11 @@ public class PersonDiskStore {
     public long getPersonsCount() {
         return SQLite.selectCountOf().from(PersonModel.class).count();
     }
+
+    public PersonModel getPersonsByPhone(String phone) {
+        if (phone == null) {
+            return null;
+        }
+        return SQLite.select().from(PersonModel.class).where(PersonModel_Table.mobile.eq(phone)).or(PersonModel_Table.mobile2.eq(phone)).querySingle();
+    }
 }

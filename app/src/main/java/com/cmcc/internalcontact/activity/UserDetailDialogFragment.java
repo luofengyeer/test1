@@ -21,9 +21,11 @@ import com.bumptech.glide.Glide;
 import com.cmcc.internalcontact.R;
 import com.cmcc.internalcontact.model.db.PersonModel;
 import com.cmcc.internalcontact.utils.Constant;
+import com.cmcc.internalcontact.utils.Utils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 public class UserDetailDialogFragment extends DialogFragment {
@@ -50,7 +52,7 @@ public class UserDetailDialogFragment extends DialogFragment {
     @BindView(R.id.iv_user_avatar)
     ImageView ivUserAvatar;
     Unbinder unbinder;
-
+    private PersonModel personModel;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -61,7 +63,7 @@ public class UserDetailDialogFragment extends DialogFragment {
             dismiss();
             return rootView;
         }
-        PersonModel personModel = arguments.getParcelable(TAG_DATA);
+        personModel = arguments.getParcelable(TAG_DATA);
         if (personModel != null) {
             tvUserName.setText(personModel.getUsername());
             tvUserEmail.setText(personModel.getEmail());
@@ -74,7 +76,28 @@ public class UserDetailDialogFragment extends DialogFragment {
         return rootView;
     }
 
+    @Nullable
+    @OnClick({R.id.tv_user_phone1, R.id.tv_user_phone2, R.id.tv_user_tel})
+    public void onPhoneClick(View view) {
+        TextView textView = (TextView) view;
+        Utils.call(getActivity(), textView.getText().toString());
+    }
 
+    @OnClick({R.id.iv_call_btn})
+    public void onCall(View v) {
+        if (personModel == null) {
+            return;
+        }
+        Utils.call(getActivity(), "10086");
+    }
+
+    @OnClick({R.id.iv_message_btn})
+    public void onMessage(View v) {
+        if (personModel == null) {
+            return;
+        }
+        Utils.sendSms(getActivity(),"10010");
+    }
 
     public static UserDetailDialogFragment show(FragmentActivity appCompatActivity, PersonModel personModel) {
         if (appCompatActivity == null) {

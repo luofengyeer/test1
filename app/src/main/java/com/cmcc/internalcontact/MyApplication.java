@@ -3,6 +3,7 @@ package com.cmcc.internalcontact;
 import android.app.Application;
 
 import com.cmcc.internalcontact.utils.SharePreferencesUtils;
+import com.cmcc.internalcontact.utils.Utils;
 import com.raizlabs.android.dbflow.config.FlowManager;
 
 
@@ -10,6 +11,7 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Utils.init(this);
         SharePreferencesUtils sharePreferencesUtils = SharePreferencesUtils.getInstance();
         sharePreferencesUtils.setContext(this);
         FlowManager.init(this);

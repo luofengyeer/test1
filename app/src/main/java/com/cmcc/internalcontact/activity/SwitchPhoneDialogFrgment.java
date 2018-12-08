@@ -1,8 +1,6 @@
 package com.cmcc.internalcontact.activity;
 
-import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -19,6 +17,7 @@ import android.widget.TextView;
 
 import com.cmcc.internalcontact.R;
 import com.cmcc.internalcontact.utils.ArraysUtils;
+import com.cmcc.internalcontact.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -101,12 +100,9 @@ public class SwitchPhoneDialogFrgment extends DialogFragment {
         unbinder.unbind();
     }
 
+    @Nullable
     @OnClick({R.id.lay_switch_phone1, R.id.lay_user_item_tel})
     public void onViewClicked(View view) {
-        TextView phone = (TextView) view;
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_DIAL);
-        intent.setData(Uri.parse(phone.getText().toString()));
-        startActivity(intent);
+        Utils.call(getActivity(), ((TextView) view).getText().toString());
     }
 }

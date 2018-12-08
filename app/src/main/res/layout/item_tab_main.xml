@@ -8,6 +8,7 @@
     <ImageView
         android:id="@+id/tv_main_tab_icon"
         android:layout_width="24dp"
+        android:layout_marginTop="4dp"
         android:layout_height="24dp" />
 
     <TextView

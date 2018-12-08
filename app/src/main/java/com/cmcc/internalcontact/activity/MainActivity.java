@@ -4,11 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
-import android.support.v4.util.LongSparseArray;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -22,10 +21,12 @@ import com.cmcc.internalcontact.model.db.PersonModel;
 import com.cmcc.internalcontact.usecase.LoadContactList;
 import com.cmcc.internalcontact.utils.ArraysUtils;
 import com.cmcc.internalcontact.utils.OnItemClickListener;
+import com.cmcc.internalcontact.utils.Utils;
 import com.cmcc.internalcontact.utils.view.CommonToolBar;
 import com.cmcc.internalcontact.utils.view.HorizontalDividerItemDecoration;
 import com.cmcc.internalcontact.utils.view.OnToolBarButtonClickListener;
 import com.cmcc.internalcontact.utils.view.ToolBarButtonType;
+import com.cmcc.internalcontact.utils.view.VerticalDividerItemDecoration;
 
 import java.util.List;
 
@@ -45,49 +46,53 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
     RecyclerView contactRecyclerView;
     @BindView(R.id.tv_duty_call)
     TextView tvDutyCall;
+    @BindView(R.id.duty_call_lay)
+    LinearLayout layDutyCall;
     @BindView(R.id.tv_fax)
     TextView tvFax;
     @BindView(R.id.tv_email)
     TextView tvEmail;
     private MainAdapter adapter;
-    private LongSparseArray<DepartModel> departPath;
     @BindView(R.id.iv_path_lay)
     ImageView pathIcon;
     @BindView(R.id.path_lay)
     LinearLayout pathLay;
+    @BindView(R.id.rc_path_lay)
+    RecyclerView pathRecyclerView;
     @BindView(R.id.tv_person_count)
     TextView tvCount;
+    private ContactLevelPathAdapter pathAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        departPath = new LongSparseArray<>();
         initView();
+        initPathAapter();
         initTab();
         toolbarMain.setBarButtonClickListener(new OnToolBarButtonClickListener() {
             @Override
             public void onClick(View v, ToolBarButtonType type) {
                 switch (type) {
                     case LEFT_FIRST_BUTTON:
-                        if (departPath == null || departPath.size() == 0) {
+                        if (!pathAdapter.back()) {
                             back2Root();
                             return;
                         }
-                        int index = departPath.size() - 1;
-                        if (index < 0 || index > departPath.size()) {
+                        int index = pathAdapter.getDatas().size() - 1;
+                        if (index < 0 || index > pathAdapter.getDatas().size()) {
                             back2Root();
                             return;
                         }
-                        DepartModel departModel = departPath.valueAt(index);
+                        DepartModel departModel = pathAdapter.getData(index);
                         loadDepartment(departModel);
-                        departPath.removeAt(index);
                         break;
                 }
             }
         });
     }
+
 
     private void back2Root() {
         toolbarMain.setButtonVisibility(ToolBarButtonType.LEFT_FIRST_BUTTON, View.GONE);
@@ -126,6 +131,9 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
         if (departModel == null) {
             return;
         }
+
+        layDutyCall.setVisibility(View.VISIBLE);
+        setDepartTels(departModel);
         new LoadContactList().loadPersons(departModel.getId()).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MyObserver<List<MainInfoBean>>() {
 
             @Override
@@ -135,8 +143,15 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
         });
     }
 
+    private void setDepartTels(DepartModel departTels) {
+        tvDutyCall.setMovementMethod(LinkMovementMethod
+                .getInstance());
+        tvDutyCall.setText(Utils.addClickablePart(this, "10010\n10086"), TextView.BufferType.SPANNABLE);
+    }
+
     private void loadDepartment(DepartModel parentModel) {
         pathIcon.setVisibility(View.VISIBLE);
+        layDutyCall.setVisibility(View.GONE);
         long departId = parentModel == null ? 0 : parentModel.getId();
         new LoadContactList().loadDepartData(departId).subscribe(new MyObserver<List<MainInfoBean>>() {
             @Override
@@ -214,9 +229,9 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
                     startActivity(new Intent(MainActivity.this, YellowPageActivity.class));
                     return;
                 }
-                departPath.append(data1.getId(), data1);
                 pathLay.setVisibility(View.VISIBLE);
-                pathLay.addView(buildPathLayout(data1.getDeptName()), new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                toolbarMain.setButtonVisibility(ToolBarButtonType.LEFT_FIRST_BUTTON, View.VISIBLE);
+                pathAdapter.addData(data1);
                 loadDepartment(data1);
                 break;
             case MainInfoBean.TYPE_PERSON:
@@ -225,10 +240,19 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
         }
     }
 
-    private View buildPathLayout(String name) {
+/*    private View buildPathLayout(String name) {
         View inflate = getLayoutInflater().inflate(R.layout.layout_contact_path_view, null);
         TextView viewById = inflate.findViewById(R.id.tv_path2);
         viewById.setText(name);
         return inflate;
+    }*/
+
+    private void initPathAapter() {
+        pathAdapter = new ContactLevelPathAdapter(this);
+        pathRecyclerView.setAdapter(pathAdapter);
+        pathRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        pathRecyclerView.addItemDecoration(new VerticalDividerItemDecoration.Builder(this)
+                .drawable(R.drawable.img_right_arrow)
+                .build());
     }
 }

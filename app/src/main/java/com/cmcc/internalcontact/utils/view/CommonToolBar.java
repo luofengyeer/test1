@@ -79,7 +79,7 @@ public class CommonToolBar extends RelativeLayout implements View.OnClickListene
             boolean leftFirstButtonIsShown = (leftFirstButtonText > 0 || leftFirstButtonIconId > 0);
             bindClick2Button(leftFirstButtonIsShown, leftFirstBtn);
             if (!leftFirstIconIsShown) {
-                leftFirstBtn.setIconVisibility(View.GONE);
+                leftFirstBtn.setVisibility(View.GONE);
             }
             //配置左侧第二个按钮样式
             ToolbarButton leftSecondBtn = toolbarLayout.findViewById(R.id.toolbar_left_second_btn);

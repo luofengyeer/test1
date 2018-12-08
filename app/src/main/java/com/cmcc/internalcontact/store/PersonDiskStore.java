@@ -67,4 +67,8 @@ public class PersonDiskStore {
     public PersonModel getPersonDetailById(long personId) {
         return SQLite.select().from(PersonModel.class).where(PersonModel_Table.userId.eq(personId)).querySingle();
     }
+
+    public long getPersonsCount() {
+        return SQLite.selectCountOf().from(PersonModel.class).count();
+    }
 }

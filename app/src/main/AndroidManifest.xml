@@ -26,7 +26,7 @@
                     android:name="design_height_in_dp"
                     android:value="1920" />-->
 
-        <activity android:name=".activity.LauncherActivity">
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,7 +34,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.MainActivity"
+            android:name=".activity.LauncherActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.LoginActivity"

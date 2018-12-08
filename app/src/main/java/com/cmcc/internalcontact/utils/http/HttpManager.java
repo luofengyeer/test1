@@ -8,6 +8,7 @@ import com.cmcc.internalcontact.utils.converter.FastJsonConverterFactory;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 
 public class HttpManager {
@@ -30,6 +31,8 @@ public class HttpManager {
     }
 
     private void initOkHttpClient() {
+        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
+        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         if (mOkHttpClient == null) {
             synchronized (HttpManager.class) {
                 if (mOkHttpClient == null) {
@@ -38,6 +41,7 @@ public class HttpManager {
                             .writeTimeout(TIME_OUT, TimeUnit.SECONDS)
                             .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
                             .retryOnConnectionFailure(true)
+                            .addNetworkInterceptor(httpLoggingInterceptor)
                             .addNetworkInterceptor(new TokenInterceptor(context))
                             .build();
                 }

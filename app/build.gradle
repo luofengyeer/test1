@@ -54,5 +54,7 @@ dependencies {
     implementation 'com.github.liuguangli:VerificationCodeInput:1.3'
     implementation project(':permissions')
     implementation 'com.android.support:design:28.0.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.12.0'
+
 //    implementation 'me.jessyan:autosize:1.1.0'
 }

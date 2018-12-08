@@ -7,18 +7,21 @@ import android.support.v4.util.LongSparseArray;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cmcc.internalcontact.R;
 import com.cmcc.internalcontact.base.BaseActivity;
+import com.cmcc.internalcontact.base.MyObserver;
 import com.cmcc.internalcontact.model.MainInfoBean;
 import com.cmcc.internalcontact.model.db.DepartModel;
+import com.cmcc.internalcontact.model.db.PersonModel;
 import com.cmcc.internalcontact.usecase.LoadContactList;
 import com.cmcc.internalcontact.utils.ArraysUtils;
 import com.cmcc.internalcontact.utils.OnItemClickListener;
 import com.cmcc.internalcontact.utils.view.CommonToolBar;
-import com.cmcc.internalcontact.utils.view.FlexibleDividerDecoration;
 import com.cmcc.internalcontact.utils.view.HorizontalDividerItemDecoration;
 import com.cmcc.internalcontact.utils.view.OnToolBarButtonClickListener;
 import com.cmcc.internalcontact.utils.view.ToolBarButtonType;
@@ -28,8 +31,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends BaseActivity implements OnItemClickListener<MainInfoBean> {
 
@@ -39,8 +42,20 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
     TabLayout tabMain;
     @BindView(R.id.main_list)
     RecyclerView contactRecyclerView;
+    @BindView(R.id.tv_duty_call)
+    TextView tvDutyCall;
+    @BindView(R.id.tv_fax)
+    TextView tvFax;
+    @BindView(R.id.tv_email)
+    TextView tvEmail;
     private MainAdapter adapter;
     private LongSparseArray<DepartModel> departPath;
+    @BindView(R.id.iv_path_lay)
+    ImageView pathIcon;
+    @BindView(R.id.path_lay)
+    LinearLayout pathLay;
+    @BindView(R.id.tv_person_count)
+    TextView tvCount;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,7 +65,6 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
         departPath = new LongSparseArray<>();
         initView();
         initTab();
-        loadDepartment(0);
         toolbarMain.setBarButtonClickListener(new OnToolBarButtonClickListener() {
             @Override
             public void onClick(View v, ToolBarButtonType type) {
@@ -66,7 +80,8 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
                             return;
                         }
                         DepartModel departModel = departPath.valueAt(index);
-                        loadDepartment(departModel.getId());
+                        loadDepartment(departModel);
+                        departPath.removeAt(index);
                         break;
                 }
             }
@@ -75,8 +90,11 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
 
     private void back2Root() {
         toolbarMain.setButtonVisibility(ToolBarButtonType.LEFT_FIRST_BUTTON, View.GONE);
-        loadDepartment(0);
+        pathIcon.setVisibility(View.GONE);
+        pathLay.setVisibility(View.GONE);
+        loadDepartment(null);
     }
+
     private void initView() {
         adapter = new MainAdapter(this);
         adapter.setOnItemClickListener(this);
@@ -84,18 +102,9 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
         contactRecyclerView.setAdapter(adapter);
         contactRecyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
                 .sizeResId(R.dimen.common_widget_divider_height).showLastDivider()
-                .sizeProvider(new FlexibleDividerDecoration.SizeProvider() {
-                    @Override
-                    public int dividerSize(int position, RecyclerView parent) {
-                        return getResources().getDimensionPixelOffset(R.dimen.common_widget_divider_height);
-                    }
-                }).colorProvider(new FlexibleDividerDecoration.ColorProvider() {
-                    @Override
-                    public int dividerColor(int position, RecyclerView parent) {
-                        return getColor(R.color.common_divider_color);
-                    }
-                })
+                .color(getColor(R.color.common_divider_color))
                 .build());
+        loadContactCount();
     }
 
     @OnClick(R.id.view_main_search_lay)
@@ -103,66 +112,54 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
 
     }
 
-    private void loadContact(long departId) {
-        new LoadContactList().loadPersons(departId).subscribe(new Observer<List<MainInfoBean>>() {
+    private void loadContactCount() {
+        new LoadContactList().getPersonsCount().subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MyObserver<Long>() {
             @Override
-            public void onSubscribe(Disposable d) {
-
+            public void onNext(Long aLong) {
+                tvCount.setText(getString(R.string.person_count, aLong));
             }
+        });
+    }
+
+    private void loadContact(DepartModel departModel) {
+        if (departModel == null) {
+            return;
+        }
+        new LoadContactList().loadPersons(departModel.getId()).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MyObserver<List<MainInfoBean>>() {
 
             @Override
             public void onNext(List<MainInfoBean> mainInfoBeans) {
                 adapter.setDataList(mainInfoBeans);
             }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
         });
     }
 
-    private void loadDepartment(long departId) {
-        new LoadContactList().loadDepartData(departId).subscribe(new Observer<List<MainInfoBean>>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-
-            }
-
+    private void loadDepartment(DepartModel parentModel) {
+        pathIcon.setVisibility(View.VISIBLE);
+        long departId = parentModel == null ? 0 : parentModel.getId();
+        new LoadContactList().loadDepartData(departId).subscribe(new MyObserver<List<MainInfoBean>>() {
             @Override
             public void onNext(List<MainInfoBean> mainInfoBeans) {
                 if (ArraysUtils.isListEmpty(mainInfoBeans)) {
-                    loadContact(departId);
+                    loadContact(parentModel);
                     return;
                 }
                 adapter.setDataList(mainInfoBeans);
             }
 
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
         });
     }
 
     private void initTab() {
-        tabMain.addTab(buildTab("通讯录", R.drawable.common_widget_home_menu_contact_selecter));
-        tabMain.addTab(buildTab("搜索", R.drawable.ic_search));
-        tabMain.addTab(buildTab("我的", R.drawable.common_widget_home_menu_mine_selecter));
+        tabMain.addTab(buildTab("通讯录", R.drawable.common_widget_home_menu_contact_selecter), false);
+        tabMain.addTab(buildTab("搜索", R.drawable.ic_search), false);
+        tabMain.addTab(buildTab("我的", R.drawable.common_widget_home_menu_mine_selecter), false);
         tabMain.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+//                new LoadContactList().saveDepartments(null);
                 setMenuRes(tab, true);
+                loadDepartment(null);
             }
 
             @Override
@@ -176,6 +173,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
 
             }
         });
+        tabMain.getTabAt(0).select();
     }
 
     @NonNull
@@ -212,9 +210,20 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
             case MainInfoBean.TYPE_DEPART:
                 DepartModel data1 = (DepartModel) data.getData();
                 departPath.append(data1.getId(), data1);
+                pathLay.setVisibility(View.VISIBLE);
+                pathLay.addView(buildPathLayout(data1.getDeptName()), new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                loadDepartment(data1);
                 break;
             case MainInfoBean.TYPE_PERSON:
+                UserDetailDialogFragment.show(MainActivity.this, (PersonModel) data.getData());
                 break;
         }
+    }
+
+    private View buildPathLayout(String name) {
+        View inflate = getLayoutInflater().inflate(R.layout.layout_contact_path_view, null);
+        TextView viewById = inflate.findViewById(R.id.tv_path2);
+        viewById.setText(name);
+        return inflate;
     }
 }

@@ -1,111 +1,127 @@
 package com.cmcc.internalcontact.utils;
 
-import android.util.Base64;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.KeyGenerator;
+import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 public class AesUtils {
 
     private static final String KEY_ALGORITHM = "AES";
-    private static final String DEFAULT_CIPHER_ALGORITHM = "AES/ECB/PKCS5Padding";//默认的加密算法
+    private static final String DEFAULT_CIPHER_ALGORITHM = "AES/CBC/PKCS5Padding";//默认的加密算法
+    public static final String VIPARA = "1269571569321021";
 
-    /**
-     * AES 加密操作
-     *
-     * @param content  待加密内容
-     * @param password 加密密码
-     * @return 返回Base64转码后的加密数据
+    /*
+     * 加密
+     * 1.构造密钥生成器
+     * 2.根据ecnodeRules规则初始化密钥生成器
+     * 3.产生密钥
+     * 4.创建和初始化密码器
+     * 5.内容加密
+     * 6.返回字符串
      */
-    public static String encrypt(String content, String password) {
+    public static String encrypt(String content, String encodeRules) {
         try {
-            Cipher cipher = Cipher.getInstance(DEFAULT_CIPHER_ALGORITHM);// 创建密码器
-
-            byte[] byteContent = content.getBytes("utf-8");
-
-            cipher.init(Cipher.ENCRYPT_MODE, getSecretKey(password));// 初始化为加密模式的密码器
-
-            byte[] result = cipher.doFinal(byteContent);// 加密
-
-            return Base64.encodeToString(result, Base64.DEFAULT);//通过Base64转码返回
-        } catch (Exception ex) {
-            Logger.getLogger(AesUtils.class.getName()).log(Level.SEVERE, null, ex);
+            //1.构造密钥生成器，指定为AES算法,不区分大小写
+            KeyGenerator keygen = KeyGenerator.getInstance("AES");
+            //2.根据ecnodeRules规则初始化密钥生成器
+            //生成一个128位的随机源,根据传入的字节数组
+            keygen.init(128, new SecureRandom(encodeRules.getBytes()));
+            //3.产生原始对称密钥
+            SecretKey original_key = keygen.generateKey();
+            //4.获得原始对称密钥的字节数组
+            byte[] raw = original_key.getEncoded();
+            //5.根据字节数组生成AES密钥
+            SecretKey key = new SecretKeySpec(raw, "AES");
+            //6.根据指定算法AES自成密码器
+            Cipher cipher = Cipher.getInstance("AES");
+            //7.初始化密码器，第一个参数为加密(Encrypt_mode)或者解密解密(Decrypt_mode)操作，第二个参数为使用的KEY
+            cipher.init(Cipher.ENCRYPT_MODE, key);
+            //8.获取加密内容的字节数组(这里要设置为utf-8)不然内容中如果有中文和英文混合中文就会解密为乱码
+            byte[] byte_encode = content.getBytes("utf-8");
+            //9.根据密码器的初始化方式--加密：将数据加密
+            byte[] byte_AES = cipher.doFinal(byte_encode);
+            //10.将加密后的数据转换为字符串
+            //这里用Base64Encoder中会找不到包
+            //解决办法：
+            //在项目的Build path中先移除JRE System Library，再添加库JRE System Library，重新编译后就一切正常了。
+            //11.将字符串返回
+            return Base64.encode(byte_AES);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e) {
+            e.printStackTrace();
+        } catch (BadPaddingException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
         }
 
+        //如果有错就返加nulll
         return null;
     }
 
-    /**
-     * AES 解密操作
-     *
-     * @param content
-     * @param password
-     * @return
+    /*
+     * 解密
+     * 解密过程：
+     * 1.同加密1-4步
+     * 2.将加密后的字符串反纺成byte[]数组
+     * 3.将加密内容解密
      */
-    public static String decrypt(String content, String password) {
-
+    public static String decrypt( String content,String encodeRules) {
         try {
-            //实例化
-            Cipher cipher = Cipher.getInstance(DEFAULT_CIPHER_ALGORITHM);
-
-            //使用密钥初始化，设置为解密模式
-            cipher.init(Cipher.DECRYPT_MODE, getSecretKey(password));
-
-            //执行操作
-            byte[] result = cipher.doFinal(Base64.decode(content, Base64.DEFAULT));
-
-            return new String(result, "utf-8");
-        } catch (Exception ex) {
-            Logger.getLogger(AesUtils.class.getName()).log(Level.SEVERE, null, ex);
+            //1.构造密钥生成器，指定为AES算法,不区分大小写
+            KeyGenerator keygen = KeyGenerator.getInstance("AES");
+            //2.根据ecnodeRules规则初始化密钥生成器
+            //生成一个128位的随机源,根据传入的字节数组
+            keygen.init(128, new SecureRandom(encodeRules.getBytes()));
+            //3.产生原始对称密钥
+            SecretKey original_key = keygen.generateKey();
+            //4.获得原始对称密钥的字节数组
+            byte[] raw = original_key.getEncoded();
+            //5.根据字节数组生成AES密钥
+            SecretKey key = new SecretKeySpec(raw, "AES");
+            //6.根据指定算法AES自成密码器
+            Cipher cipher = Cipher.getInstance("AES");
+            //7.初始化密码器，第一个参数为加密(Encrypt_mode)或者解密(Decrypt_mode)操作，第二个参数为使用的KEY
+            cipher.init(Cipher.DECRYPT_MODE, key);
+            //8.将加密并编码后的内容解码成字节数组
+            byte[] byte_content = Base64.decode(content);
+            /*
+             * 解密
+             */
+            byte[] byte_decode = cipher.doFinal(byte_content);
+            String AES_decode = new String(byte_decode, "utf-8");
+            return AES_decode;
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e) {
+            e.printStackTrace();
+        } catch (BadPaddingException e) {
+            e.printStackTrace();
         }
 
+        //如果有错就返加nulll
         return null;
-    }
-
-    /**
-     * 生成加密秘钥
-     *
-     * @return
-     */
-    private static SecretKeySpec getSecretKey(final String password) {
-        //返回生成指定算法密钥生成器的 KeyGenerator 对象
-        KeyGenerator kg = null;
-
-        try {
-            kg = KeyGenerator.getInstance(KEY_ALGORITHM);
-
-            //AES 要求密钥长度为 128
-            kg.init(128, new SecureRandom(password.getBytes()));
-
-            //生成一个密钥
-            SecretKey secretKey = kg.generateKey();
-
-            return new SecretKeySpec(secretKey.getEncoded(), KEY_ALGORITHM);// 转换为AES专用密钥
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(AesUtils.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return null;
-    }
-
-    public static void main(String[] args) {
-        String s = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNTQ0MTcyMDgwLCJleHAiOjE1NDQ3NzY4ODB9.Tdlwb1tEFT7mLbowQZKsF0tnPMWLXUcl40S9-WP8BaCVQEvXSlOa3EgaidTMxDRDGZY3X7ttxql9rVXXgd2dLw";
-        String password = "f4e2e52034348f86b67cde581c0f9eb4";
-        System.out.println("s:" + s);
-        //加密
-        String s1 = AesUtils.encrypt(s, password);
-        System.out.println("s1:" + s1);
-
-        System.out.println("s2:" + AesUtils.decrypt("b1n5EBbXodvKtG4rOrNhIg==", password));
-
-        String s3 = AesUtils.encrypt("sss.xlsx", password);
-        System.out.println("s3:" + s3);
     }
 }

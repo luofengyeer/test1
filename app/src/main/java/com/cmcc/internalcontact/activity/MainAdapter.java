@@ -10,6 +10,7 @@ import com.cmcc.internalcontact.R;
 import com.cmcc.internalcontact.base.RvCommonAdapter;
 import com.cmcc.internalcontact.base.RvViewHolder;
 import com.cmcc.internalcontact.model.MainInfoBean;
+import com.cmcc.internalcontact.utils.Constant;
 import com.cmcc.internalcontact.utils.OnItemClickListener;
 
 public class MainAdapter extends RvCommonAdapter<MainInfoBean> {
@@ -27,11 +28,11 @@ public class MainAdapter extends RvCommonAdapter<MainInfoBean> {
     public void onBindView(RvViewHolder viewHolder, MainInfoBean item, int position) {
         TextView name = viewHolder.itemView.findViewById(R.id.company_contact_name);
         ImageView icon = viewHolder.itemView.findViewById(R.id.company_contact_icon);
-        TextView departmentName = viewHolder.itemView.findViewById(R.id.company_contact_name);
+        TextView departmentName = viewHolder.itemView.findViewById(R.id.person_work);
         if (item.getType() == MainInfoBean.TYPE_PERSON) {
             icon.setImageResource(R.drawable.ic_depart_icon);
         } else {
-            Glide.with(getContext()).load(item.getAvatar()).into(icon);
+            Glide.with(getContext()).load(item.getAvatar()).apply(Constant.AVATAR_OPTIONS).into(icon);
         }
         name.setText(item.getName());
         departmentName.setText(item.getDepartmentName());

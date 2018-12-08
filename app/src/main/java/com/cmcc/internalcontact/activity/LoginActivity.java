@@ -17,6 +17,8 @@ import com.cmcc.internalcontact.R;
 import com.cmcc.internalcontact.base.BaseActivity;
 import com.cmcc.internalcontact.model.http.LoginResponseBean;
 import com.cmcc.internalcontact.usecase.LoginUsecase;
+import com.cmcc.internalcontact.utils.AesUtils;
+import com.cmcc.internalcontact.utils.Constant;
 import com.cmcc.internalcontact.utils.view.CommonButton;
 import com.cmcc.internalcontact.utils.view.StatusBarUtil;
 import com.cmcc.internalcontact.utils.view.SwitchButton;
@@ -135,6 +137,7 @@ public class LoginActivity extends BaseActivity {
 
     @OnClick(R.id.btn_login)
     public void toLogin() {
+        String decrypt = AesUtils.decrypt("o6GvpBnogWOt9HCl0thjWg==", Constant.HTTP_KEY);
         if (TextUtils.isEmpty(edAccount.getText().toString())) {
             Toast.makeText(this, "请输入手机号", Toast.LENGTH_SHORT).show();
             return;
@@ -144,7 +147,7 @@ public class LoginActivity extends BaseActivity {
             return;
         }
         LoginUsecase loginUsecase = new LoginUsecase();
-        loginUsecase.login(this, edAccount.getText().toString(), edPassword.getText().toString())
+        loginUsecase.login(this, edAccount.getText().toString().trim(), edPassword.getText().toString().trim())
                 .subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<LoginResponseBean>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -159,6 +162,7 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onError(Throwable e) {
+                Toast.makeText(getApplicationContext(), "登录失败，" + e.getMessage(), Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
 

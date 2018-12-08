@@ -55,6 +55,7 @@ public class UserDetailDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.layout_user_detail, container, false);
+        unbinder = ButterKnife.bind(this, rootView);
         Bundle arguments = getArguments();
         if (arguments == null) {
             dismiss();
@@ -70,9 +71,9 @@ public class UserDetailDialogFragment extends DialogFragment {
             tvUserPhone2.setText(personModel.getMobile2());
             Glide.with(rootView).load(personModel.getHeadPic()).apply(Constant.AVATAR_OPTIONS).into(ivUserAvatar);
         }
-        unbinder = ButterKnife.bind(this, rootView);
         return rootView;
     }
+
 
 
     public static UserDetailDialogFragment show(FragmentActivity appCompatActivity, PersonModel personModel) {

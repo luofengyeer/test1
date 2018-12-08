@@ -40,7 +40,7 @@ public class SwitchPhoneDialogFrgment extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.layout_switchPhone, container, false);
+        View rootView = inflater.inflate(R.layout.layout_switch_phone, container, false);
         ArrayList<String> phones = getArguments().getStringArrayList(TAG_SWITCH_PHONE);
         tvSwitchPhone1.setText(phones.get(0));
         tvSwitchPhone2.setText(phones.get(1));

@@ -22,4 +22,11 @@
     <string name="company">单位</string>
     <string name="contacts">联系人</string>
     <string name="search">搜索</string>
+    <string name="mine">我的</string>
+    <string name="username">姓名</string>
+    <string name="mobile_phone">电话</string>
+    <string name="tel">座机</string>
+    <string name="mail">邮箱</string>
+    <string name="job">职务</string>
+    <string name="general_max_per_image">图片过大，超过200k上限。</string>
 </resources>

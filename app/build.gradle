@@ -55,7 +55,8 @@ dependencies {
     implementation project(':permissions')
     implementation 'com.android.support:design:28.0.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.12.0'
-    implementation 'com.github.martin90s:ImagePicker:v1.3.2'
+    api project(':imagepicker')
+//    implementation 'com.github.martin90s:ImagePicker:v1.3.2'
 
 //    implementation 'me.jessyan:autosize:1.1.0'
 }

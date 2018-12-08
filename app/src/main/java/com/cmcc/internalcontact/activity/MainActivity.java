@@ -182,9 +182,11 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
                 loadDepartment(null);
                 if (tab == tabMain.getTabAt(1)) {
                     jump2Search();
+                    tabMain.getTabAt(0).select();
                 }
                 if (tab == tabMain.getTabAt(2)) {
                     startActivity(new Intent(MainActivity.this, MineActivity.class));
+                    tabMain.getTabAt(0).select();
                 }
             }
 

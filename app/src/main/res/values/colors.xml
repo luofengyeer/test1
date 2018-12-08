@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#FFFFFF</color>
     <color name="colorAccent">#FF599BF8</color>
     <color name="common_theme_color">#FF599BF8</color>
-    <color name="common_toolbar_button_color_C3_2">#FFF</color>
+    <color name="common_toolbar_button_color_C3_2">#333333</color>
     <color name="common_toolbar_textColor">#303030</color>
     <color name="common_textColor">#303030</color>
     <color name="common_greyColor">#999999</color>

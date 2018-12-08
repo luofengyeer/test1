@@ -79,7 +79,7 @@ public class CallerIdsFloatView extends FrameLayout {
         userNameTv.setText(callerName);
     }
 
-    public void setCallerAvatar(String avatarUrl, String name, long id) {
+    public void setCallerAvatar(String avatarUrl) {
         ImageView userAvatarIv = floatView.findViewById(R.id.iv_user_avatar);
         Glide.with(mContext).load(avatarUrl).apply(Constant.AVATAR_OPTIONS).into(userAvatarIv);
     }

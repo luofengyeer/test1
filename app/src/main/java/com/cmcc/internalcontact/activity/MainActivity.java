@@ -1,5 +1,6 @@
 package com.cmcc.internalcontact.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
@@ -209,6 +210,10 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
         switch (data.getType()) {
             case MainInfoBean.TYPE_DEPART:
                 DepartModel data1 = (DepartModel) data.getData();
+                if ("黄页".equals(data1.getDeptName())) {
+                    startActivity(new Intent(MainActivity.this, YellowPageActivity.class));
+                    return;
+                }
                 departPath.append(data1.getId(), data1);
                 pathLay.setVisibility(View.VISIBLE);
                 pathLay.addView(buildPathLayout(data1.getDeptName()), new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));

@@ -17,4 +17,5 @@
     <string name="common_permission_title">权限申请</string>
     <string name="common_permission_pos">取消</string>
     <string name="common_permission_nega">立即授权</string>
+    <string name="text_yellow">黄页</string>
 </resources>

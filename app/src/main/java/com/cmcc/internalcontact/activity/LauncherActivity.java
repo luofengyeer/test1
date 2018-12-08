@@ -9,11 +9,15 @@ import android.view.View;
 import com.cmcc.internalcontact.R;
 import com.cmcc.internalcontact.base.BaseActivity;
 import com.cmcc.internalcontact.usecase.LoginUsecase;
+import com.cmcc.internalcontact.usecase.UpdateContactUseCase;
 import com.cmcc.internalcontact.utils.PermissionsUtils;
 import com.cmcc.internalcontact.utils.permission.floatpermission.FloatPermissionManager;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class LauncherActivity extends BaseActivity {
 
@@ -97,6 +101,7 @@ public class LauncherActivity extends BaseActivity {
                 if (new LoginUsecase().isTokenValid()) {
                     startActivity(new Intent(LauncherActivity.this, MainActivity.class));
                 } else {
+                    new UpdateContactUseCase(LauncherActivity.this).updateContact().subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe();
                     startActivity(new Intent(LauncherActivity.this, LoginActivity.class));
                 }
                 finish();

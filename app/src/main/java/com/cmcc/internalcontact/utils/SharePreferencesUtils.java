@@ -82,7 +82,7 @@ public class SharePreferencesUtils {
         return preferences.getBoolean(key, false);
     }
 
-    public int setInt(String key) {
+    public int getInt(String key) {
         if (preferences == null) {
             return -1;
         }

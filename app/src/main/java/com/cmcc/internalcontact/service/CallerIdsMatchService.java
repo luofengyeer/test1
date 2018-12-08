@@ -44,7 +44,7 @@ public class CallerIdsMatchService extends Service {
     public void onCreate() {
         super.onCreate();
         mContext = getApplicationContext();
-        preferencesEditor = new SharePreferencesUtils(mContext);
+        preferencesEditor = SharePreferencesUtils.getInstance();
     }
 
     @Override

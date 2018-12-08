@@ -84,7 +84,7 @@ public class FloatWindowManager implements View.OnClickListener {
             windowManager.addView(floatView, mParams);
         } catch (WindowManager.BadTokenException badTokenException) {
             Log.e(TAG, "window add view exception: " + badTokenException.getMessage());
-            SharePreferencesUtils sharePreferencesUtils = new SharePreferencesUtils(context);
+            SharePreferencesUtils sharePreferencesUtils = SharePreferencesUtils.getInstance();
             sharePreferencesUtils.setBoolean(Constant.SWITCH_INCOME_STATUE, false);
             dismissFloatWindow();
         } catch (Exception exception) {

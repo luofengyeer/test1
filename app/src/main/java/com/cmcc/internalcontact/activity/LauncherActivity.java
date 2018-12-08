@@ -6,6 +6,7 @@ import android.os.Handler;
 
 import com.cmcc.internalcontact.R;
 import com.cmcc.internalcontact.base.BaseActivity;
+import com.cmcc.internalcontact.usecase.LoginUsecase;
 
 public class LauncherActivity extends BaseActivity {
 
@@ -19,9 +20,13 @@ public class LauncherActivity extends BaseActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(new Intent(LauncherActivity.this, LoginActivity.class));
+                if (new LoginUsecase().isTokenValid()) {
+                    startActivity(new Intent(LauncherActivity.this, MainActivity.class));
+                } else {
+                    startActivity(new Intent(LauncherActivity.this, LoginActivity.class));
+                }
                 finish();
             }
-        }, 1500);
+        }, 500);
     }
 }

@@ -12,6 +12,6 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        preferencesUtils = new SharePreferencesUtils(getApplicationContext());
+        preferencesUtils = SharePreferencesUtils.getInstance();
     }
 }

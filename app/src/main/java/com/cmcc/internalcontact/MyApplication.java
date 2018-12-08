@@ -19,7 +19,8 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        SharePreferencesUtils sharePreferencesUtils = new SharePreferencesUtils(this);
+        SharePreferencesUtils sharePreferencesUtils = SharePreferencesUtils.getInstance();
+        sharePreferencesUtils.setContext(this);
         FlowManager.init(FlowConfig.builder(this)
                 .addDatabaseConfig(DatabaseConfig.builder(AppDataBase.class)
                         .openHelper(new DatabaseConfig.OpenHelperCreator() {

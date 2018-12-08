@@ -41,7 +41,8 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:hint="请输入11位手机号码"
-            android:textSize="13sp" />
+            android:inputType="number"
+            android:textSize="16sp" />
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -53,16 +54,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:hint="请输入6-20位密码"
-                android:paddingEnd="11dp"
-                android:textSize="13sp" />
+                android:inputType="textPassword"
+                android:paddingEnd="40dp"
+                android:textSize="16sp" />
 
             <ToggleButton
                 android:id="@+id/iv_pwd_eye_icon"
-                android:layout_width="19dp"
-                android:layout_height="11dp"
+                android:layout_width="25dp"
+                android:layout_height="16dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:background="@drawable/bg_toggle_btn"
+                android:checked="false"
+                android:paddingEnd="5dp"
+                android:paddingStart="5dp"
                 android:textOff=""
                 android:textOn="" />
         </RelativeLayout>
@@ -89,7 +94,7 @@
             android:gravity="center_vertical"
             android:text="自动登录"
             android:textColor="@color/common_greyColor"
-            android:textSize="12sp" />
+            android:textSize="14sp" />
     </LinearLayout>
 
     <com.cmcc.internalcontact.utils.view.CommonButton
@@ -102,7 +107,8 @@
         android:background="@color/common_theme_color"
         android:gravity="center"
         android:text="@string/text_login"
-        android:textColor="#fff" />
+        android:textColor="#fff"
+        android:textSize="20sp" />
 
     <LinearLayout
         android:layout_width="match_parent"

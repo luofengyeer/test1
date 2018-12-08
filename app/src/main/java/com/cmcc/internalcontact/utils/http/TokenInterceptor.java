@@ -25,7 +25,7 @@ public class TokenInterceptor implements Interceptor {
         Request request = chain.request();
         Headers headers = request.headers();
 
-        SharePreferencesUtils sharePreferencesUtils = new SharePreferencesUtils(context);
+        SharePreferencesUtils sharePreferencesUtils = SharePreferencesUtils.getInstance();
         String token = sharePreferencesUtils.getString(Constant.TAG_HTTP_TOKEN, "");
         headers.newBuilder().add("token", token).build();
         Response response = chain.proceed(request);

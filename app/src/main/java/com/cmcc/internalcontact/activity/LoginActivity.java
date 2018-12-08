@@ -143,7 +143,8 @@ public class LoginActivity extends BaseActivity {
             Toast.makeText(this, "请输入密码", Toast.LENGTH_SHORT).show();
             return;
         }
-        new LoginUsecase().login(this, edAccount.getText().toString(), edPassword.getText().toString())
+        LoginUsecase loginUsecase = new LoginUsecase();
+        loginUsecase.login(this, edAccount.getText().toString(), edPassword.getText().toString())
                 .subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<LoginResponseBean>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -152,6 +153,7 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onNext(LoginResponseBean loginResponseBean) {
+                loginUsecase.saveUseInfo(loginResponseBean.getUserInfo());
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
             }
 

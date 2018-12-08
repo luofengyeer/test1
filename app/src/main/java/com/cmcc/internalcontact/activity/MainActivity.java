@@ -119,7 +119,9 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
     }
 
     private void loadContactCount() {
-        new LoadContactList().getPersonsCount().subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MyObserver<Long>() {
+        new LoadContactList().getPersonsCount().subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new MyObserver<Long>(this) {
             @Override
             public void onNext(Long aLong) {
                 tvCount.setText(getString(R.string.person_count, aLong));
@@ -134,7 +136,9 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
 
         layDutyCall.setVisibility(View.VISIBLE);
         setDepartTels(departModel);
-        new LoadContactList().loadPersons(departModel.getId()).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MyObserver<List<MainInfoBean>>() {
+        new LoadContactList().loadPersons(departModel.getId()).subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new MyObserver<List<MainInfoBean>>(this) {
 
             @Override
             public void onNext(List<MainInfoBean> mainInfoBeans) {
@@ -153,7 +157,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
         pathIcon.setVisibility(View.VISIBLE);
         layDutyCall.setVisibility(View.GONE);
         long departId = parentModel == null ? 0 : parentModel.getId();
-        new LoadContactList().loadDepartData(departId).subscribe(new MyObserver<List<MainInfoBean>>() {
+        new LoadContactList().loadDepartData(departId).subscribe(new MyObserver<List<MainInfoBean>>(this) {
             @Override
             public void onNext(List<MainInfoBean> mainInfoBeans) {
                 if (ArraysUtils.isListEmpty(mainInfoBeans)) {
@@ -254,5 +258,11 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
         pathRecyclerView.addItemDecoration(new VerticalDividerItemDecoration.Builder(this)
                 .drawable(R.drawable.img_right_arrow)
                 .build());
+    }
+
+    @Override
+    public void onTokenValid() {
+        startActivity(new Intent(this, LoginActivity.class));
+        finish();
     }
 }

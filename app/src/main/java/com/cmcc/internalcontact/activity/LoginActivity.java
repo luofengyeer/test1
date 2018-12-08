@@ -15,6 +15,7 @@ import android.widget.ToggleButton;
 
 import com.cmcc.internalcontact.R;
 import com.cmcc.internalcontact.base.BaseActivity;
+import com.cmcc.internalcontact.base.MyObserver;
 import com.cmcc.internalcontact.model.http.LoginResponseBean;
 import com.cmcc.internalcontact.usecase.LoginUsecase;
 import com.cmcc.internalcontact.utils.AesUtils;
@@ -27,9 +28,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.cmcc.internalcontact.activity.ResetPasswordActivity.TAG_LOGIN_CODE;
@@ -149,11 +148,7 @@ public class LoginActivity extends BaseActivity {
         }
         LoginUsecase loginUsecase = new LoginUsecase();
         loginUsecase.login(this, edAccount.getText().toString().trim(), edPassword.getText().toString().trim())
-                .subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<LoginResponseBean>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-
-            }
+                .subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MyObserver<LoginResponseBean>(this) {
 
             @Override
             public void onNext(LoginResponseBean loginResponseBean) {
@@ -166,12 +161,12 @@ public class LoginActivity extends BaseActivity {
                 Toast.makeText(getApplicationContext(), "登录失败，" + e.getMessage(), Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
-
-            @Override
-            public void onComplete() {
-
-            }
         });
+
     }
 
+    @Override
+    public void onTokenValid() {
+
+    }
 }

@@ -1,6 +1,7 @@
 package com.cmcc.internalcontact.utils.http;
 
 import com.cmcc.internalcontact.model.PersonBean;
+import com.cmcc.internalcontact.model.UpdateAppBean;
 import com.cmcc.internalcontact.model.http.LoginRequestBean;
 import com.cmcc.internalcontact.model.http.LoginResponseBean;
 import com.cmcc.internalcontact.model.http.UpdateContactResponse;
@@ -37,10 +38,10 @@ public interface Api {
     Call<Void> updateAppUser(PersonBean personBean);
 
     @POST("app/app/uploadPic")
-    Call<HashMap<String, String>> updateAvatar(String personBean);
+    Call<HashMap<String, String>> updateAvatar(@Body HashMap<String, String> v);
 
     @POST("app/updateApp")
-    Call<HashMap<String, Integer>> updateApp(@Path("version") String version, @Path("appType") int appType);
+    Call<UpdateAppBean> updateApp(@Path("version") String version, @Path("appType") int appType);
 
     @POST("app/getUserInfo")
     Call<LoginResponseBean.UserInfo> updateAppUser();

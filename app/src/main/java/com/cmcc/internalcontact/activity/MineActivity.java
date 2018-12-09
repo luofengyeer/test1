@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -16,6 +17,7 @@ import com.cmcc.internalcontact.R;
 import com.cmcc.internalcontact.base.BaseActivity;
 import com.cmcc.internalcontact.base.MyObserver;
 import com.cmcc.internalcontact.model.PersonBean;
+import com.cmcc.internalcontact.model.UpdateAppBean;
 import com.cmcc.internalcontact.model.db.DepartModel;
 import com.cmcc.internalcontact.usecase.MineInfo;
 import com.cmcc.internalcontact.utils.ActivityStackManager;
@@ -23,6 +25,7 @@ import com.cmcc.internalcontact.utils.Constant;
 import com.cmcc.internalcontact.utils.SharePreferencesUtils;
 import com.cmcc.internalcontact.utils.imagepicker.SingleFileLimitInterceptor;
 import com.cmcc.internalcontact.utils.view.CommonToolBar;
+import com.cmcc.internalcontact.utils.view.CustomDialog;
 import com.imnjh.imagepicker.SImagePicker;
 import com.imnjh.imagepicker.activity.PhotoPickerActivity;
 
@@ -125,7 +128,7 @@ public class MineActivity extends BaseActivity {
     }
 
     private void updateMineData() {
-        new MineInfo().updateMine(this).unsubscribeOn(Schedulers.newThread())
+        new MineInfo().updateMine(this).subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new MyObserver<Void>(this) {
                     @Override
@@ -136,14 +139,48 @@ public class MineActivity extends BaseActivity {
     }
 
     private void uploadHeadPic(String headPicPath) {
-        new MineInfo().uploadHeadPic(this, headPicPath).unsubscribeOn(Schedulers.newThread())
+        new MineInfo().uploadHeadPic(this, headPicPath).subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new MyObserver<String>(this) {
                     @Override
                     public void onNext(String path) {
-                        Glide.with(MineActivity.this).setDefaultRequestOptions(
-                                new RequestOptions().error(R.mipmap.ic_edit_info_headimg).circleCrop())
-                                .load(path).into(ivHeadPic);
+                        Log.e("path", "" + path);
+//                        Glide.with(MineActivity.this).setDefaultRequestOptions(
+//                                new RequestOptions().error(R.mipmap.ic_edit_info_headimg).circleCrop())
+//                                .load(path).into(ivHeadPic);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        Toast.makeText(MineActivity.this, "头像上传失败", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void checkUpdate() {
+        new MineInfo().checkUpdate(this, "").subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new MyObserver<UpdateAppBean>(this) {
+                    @Override
+                    public void onNext(UpdateAppBean updateAppBean) {
+                        CustomDialog customDialog = new CustomDialog(MineActivity.this);
+                        customDialog.setTitle("提示");
+                        customDialog.setMessage("检查到新版本,是否更新");
+                        customDialog.setOkButton("更新", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                customDialog.dismiss();
+                            }
+                        });
+                        customDialog.setCancelButton("取消", null);
+                        customDialog.show();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        Toast.makeText(MineActivity.this, "暂无更新", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -161,6 +198,7 @@ public class MineActivity extends BaseActivity {
                         .forResult(REQUEST_CODE_IMAGE);
                 break;
             case R.id.tv_version_update:
+                checkUpdate();
                 break;
             case R.id.iv_exit:
                 SharePreferencesUtils.getInstance().setString(Constant.TAG_HTTP_TOKEN, "");

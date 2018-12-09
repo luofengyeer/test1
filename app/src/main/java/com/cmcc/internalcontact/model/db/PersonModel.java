@@ -26,7 +26,7 @@ public class PersonModel extends BaseModel implements Parcelable {
     @Column
     private String email;
     @Column
-    private long orgId;
+    private String orgId;
     @Column
     private String headPic;
     @Column
@@ -94,11 +94,11 @@ public class PersonModel extends BaseModel implements Parcelable {
         this.email = email;
     }
 
-    public long getOrgId() {
+    public String getOrgId() {
         return orgId;
     }
 
-    public void setOrgId(long orgId) {
+    public void setOrgId(String orgId) {
         this.orgId = orgId;
     }
 
@@ -156,7 +156,7 @@ public class PersonModel extends BaseModel implements Parcelable {
         dest.writeString(this.mobile2);
         dest.writeString(this.tel);
         dest.writeString(this.email);
-        dest.writeLong(this.orgId);
+        dest.writeString(this.orgId);
         dest.writeString(this.headPic);
         dest.writeString(this.namePinyin);
         dest.writeLong(this.updateTime);
@@ -175,7 +175,7 @@ public class PersonModel extends BaseModel implements Parcelable {
         this.mobile2 = in.readString();
         this.tel = in.readString();
         this.email = in.readString();
-        this.orgId = in.readLong();
+        this.orgId = in.readString();
         this.headPic = in.readString();
         this.namePinyin = in.readString();
         this.updateTime = in.readLong();

@@ -8,9 +8,11 @@ import android.view.View;
 
 import com.cmcc.internalcontact.R;
 import com.cmcc.internalcontact.base.BaseActivity;
+import com.cmcc.internalcontact.base.MyObserver;
 import com.cmcc.internalcontact.usecase.LoginUsecase;
 import com.cmcc.internalcontact.usecase.UpdateContactUseCase;
 import com.cmcc.internalcontact.utils.PermissionsUtils;
+import com.cmcc.internalcontact.utils.SharePreferencesUtils;
 import com.cmcc.internalcontact.utils.permission.floatpermission.FloatPermissionManager;
 
 import java.util.ArrayList;
@@ -98,10 +100,16 @@ public class LauncherActivity extends BaseActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (new LoginUsecase().isTokenValid()) {
+                if (new LoginUsecase().isTokenValid() && SharePreferencesUtils.getInstance().getBoolean(LoginActivity.TAG_AUTO_LOGIN)) {
                     startActivity(new Intent(LauncherActivity.this, MainActivity.class));
+                    new UpdateContactUseCase(LauncherActivity.this).updateContact().subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new MyObserver(LauncherActivity.this) {
+                                @Override
+                                public void onNext(Object o) {
+
+                                }
+                            });
                 } else {
-                    new UpdateContactUseCase(LauncherActivity.this).updateContact().subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe();
                     startActivity(new Intent(LauncherActivity.this, LoginActivity.class));
                 }
                 finish();

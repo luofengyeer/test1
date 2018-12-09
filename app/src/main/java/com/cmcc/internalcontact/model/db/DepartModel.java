@@ -14,7 +14,7 @@ public class DepartModel extends BaseModel {
     @Column
     private String deptCode;//机构单位名称
     @Column
-    private long parentCode;//父级机构单位名称
+    private String parentCode;//父级机构单位名称
     @Column
     private String deptName;//名称
     @Column
@@ -70,11 +70,11 @@ public class DepartModel extends BaseModel {
         this.deptCode = deptCode;
     }
 
-    public long getParentCode() {
+    public String getParentCode() {
         return parentCode;
     }
 
-    public void setParentCode(long parentCode) {
+    public void setParentCode(String parentCode) {
         this.parentCode = parentCode;
     }
 

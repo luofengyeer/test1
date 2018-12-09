@@ -26,8 +26,8 @@ public class LoginUsecase {
             public LoginResponseBean apply(String s) throws Exception {
                 LoginRequestBean loginRequestBean = new LoginRequestBean();
                 loginRequestBean.setDeviceNo(Build.SERIAL);
-                loginRequestBean.setUsername(AesUtils.encrypt(account, Constant.HTTP_KEY));
-                loginRequestBean.setPassword(AesUtils.encrypt(password, Constant.HTTP_KEY));
+                loginRequestBean.setUsername(AesUtils.encrypt(account));
+                loginRequestBean.setPassword(AesUtils.encrypt(password));
                 Call<LoginResponseBean> responseBeanCall = HttpManager.getInstance(context).getApi()
                         .login(loginRequestBean);
                 Response<LoginResponseBean> response = responseBeanCall.execute();
@@ -36,8 +36,9 @@ public class LoginUsecase {
         });
     }
 
-    public void saveUseInfo(LoginResponseBean.UserInfo userInfo) {
-        SharePreferencesUtils.getInstance().setString(TAG_USE_INFO, JSON.toJSONString(userInfo));
+    public void saveUseInfo(LoginResponseBean userInfo) {
+        SharePreferencesUtils.getInstance().setString(TAG_USE_INFO, JSON.toJSONString(userInfo.getUserInfo()));
+        saveToken(userInfo.getToken(),Long.valueOf(userInfo.getExpire()));
     }
 
     public void saveToken(String token, long tokenExpire) {

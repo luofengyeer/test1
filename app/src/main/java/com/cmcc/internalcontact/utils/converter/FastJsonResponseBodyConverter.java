@@ -41,7 +41,7 @@ public class FastJsonResponseBodyConverter<T> implements Converter<ResponseBody,
         if (httpBaseBean.getCode() != 0) {
             throw new IOException("http错误："+httpBaseBean.getMsg() + ",code:" + httpBaseBean.getCode());
         }
-        return JsonManager.jsonToBean(AesUtils.decrypt(httpBaseBean.getData(), HTTP_KEY), type);
+        return JsonManager.jsonToBean(AesUtils.decrypt(httpBaseBean.getData()), type);
 
     }
 }

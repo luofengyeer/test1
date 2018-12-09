@@ -16,7 +16,7 @@ public class PersonDiskStore {
      * @param departId
      * @return
      */
-    public List<PersonModel> getPersonsByDepartId(long departId) {
+    public List<PersonModel> getPersonsByDepartId(String departId) {
         return SQLite.select().from(PersonModel.class).where(PersonModel_Table.orgId.eq(departId)).queryList();
     }
 
@@ -44,7 +44,7 @@ public class PersonDiskStore {
      * @param parentId
      * @return
      */
-    public List<DepartModel> getDepartListByParentId(long parentId) {
+    public List<DepartModel> getDepartListByParentId(String parentId) {
         return SQLite.select().from(DepartModel.class).where(DepartModel_Table.parentCode.eq(parentId)).queryList();
     }
 
@@ -54,7 +54,7 @@ public class PersonDiskStore {
      * @param parentId
      * @return
      */
-    public DepartModel getParentDepartByDepartId(long parentId) {
+    public DepartModel getParentDepartByDepartId(String parentId) {
         return SQLite.select().from(DepartModel.class).where(DepartModel_Table.parentCode.eq(parentId)).querySingle();
     }
 

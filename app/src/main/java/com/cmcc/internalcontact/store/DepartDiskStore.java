@@ -50,9 +50,9 @@ public class DepartDiskStore {
      * @param departId 部门id
      * @return 对应id的部门信息
      */
-    public DepartModel getDepartModeByDepartId(long departId) {
+    public DepartModel getDepartModeByDepartId(String departId) {
         return SQLite.select().from(DepartModel.class)
-                .where(DepartModel_Table.id.is(departId))
+                .where(DepartModel_Table.deptCode.is(departId))
                 .querySingle();
     }
 }

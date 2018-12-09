@@ -43,7 +43,7 @@ public class LoginActivity extends BaseActivity {
     View autoLoginLay;
     @BindView(R.id.btn_login)
     CommonButton loginBtn;
-    private static final String TAG_AUTO_LOGIN = "TAG_AUTO_LOGIN";
+    public static final String TAG_AUTO_LOGIN = "TAG_AUTO_LOGIN";
     @BindView(R.id.lay_login_title)
     View commonToolBar;
     @BindView(R.id.iv_pwd_eye_icon)
@@ -56,8 +56,7 @@ public class LoginActivity extends BaseActivity {
         ButterKnife.bind(this);
         StatusBarUtil.immersive(this);
         StatusBarUtil.setPaddingSmart(this, commonToolBar);
-        // TODO: 2018/12/8 0008   
-//        loginBtn.setEnabled(false);
+        loginBtn.setEnabled(false);
         swAutoLogin.setOpen(preferencesUtils.getBoolean(TAG_AUTO_LOGIN));
         swAutoLogin.setOnStateChangeListener(new SwitchButton.OnStateChangeListener() {
             @Override
@@ -149,8 +148,9 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onNext(LoginResponseBean loginResponseBean) {
-                loginUsecase.saveUseInfo(loginResponseBean.getUserInfo());
+                loginUsecase.saveUseInfo(loginResponseBean);
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                finish();
             }
 
             @Override
@@ -164,6 +164,7 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void onTokenValid() {
+        Toast.makeText(getApplicationContext(), "登录已过期，请重新登录。", Toast.LENGTH_SHORT).show();
 
     }
 }

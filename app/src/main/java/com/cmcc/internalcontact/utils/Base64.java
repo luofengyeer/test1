@@ -3,10 +3,8 @@ package com.cmcc.internalcontact.utils;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-
 public class Base64 {
-    private static final char[] legalChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
-            .toCharArray();
+    private static final char[] legalChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".toCharArray();
 
     public static String encode(byte[] data) {
         int start = 0;
@@ -18,8 +16,7 @@ public class Base64 {
         int n = 0;
 
         while (i <= end) {
-            int d = ((((int) data[i]) & 0x0ff) << 16) | ((((int) data[i + 1]) & 0x0ff) << 8)
-                    | (((int) data[i + 2]) & 0x0ff);
+            int d = ((((int) data[i]) & 0x0ff) << 16) | ((((int) data[i + 1]) & 0x0ff) << 8) | (((int) data[i + 2]) & 0x0ff);
 
             buf.append(legalChars[(d >> 18) & 63]);
             buf.append(legalChars[(d >> 12) & 63]);
@@ -73,8 +70,7 @@ public class Base64 {
     }
 
     /**
-     * Decodes the given Base64 encoded String to a new byte array. The byte
-     * array holding the decoded data is returned.
+     * Decodes the given Base64 encoded String to a new byte array. The byte array holding the decoded data is returned.
      */
 
     public static byte[] decode(String s) {
@@ -107,8 +103,7 @@ public class Base64 {
             if (i == len)
                 break;
 
-            int tri = (decode(s.charAt(i)) << 18) + (decode(s.charAt(i + 1)) << 12) + (decode(s.charAt(i + 2)) << 6)
-                    + (decode(s.charAt(i + 3)));
+            int tri = (decode(s.charAt(i)) << 18) + (decode(s.charAt(i + 1)) << 12) + (decode(s.charAt(i + 2)) << 6) + (decode(s.charAt(i + 3)));
 
             os.write((tri >> 16) & 255);
             if (s.charAt(i + 2) == '=')
@@ -121,5 +116,4 @@ public class Base64 {
             i += 4;
         }
     }
-
 }

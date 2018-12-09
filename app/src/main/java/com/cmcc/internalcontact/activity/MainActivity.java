@@ -136,7 +136,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
 
         layDutyCall.setVisibility(View.VISIBLE);
         setDepartTels(departModel);
-        new LoadContactList().loadPersons(departModel.getId()).subscribeOn(Schedulers.newThread())
+        new LoadContactList().loadPersons(departModel.getDeptCode()).subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new MyObserver<List<MainInfoBean>>(this) {
 
@@ -156,7 +156,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
     private void loadDepartment(DepartModel parentModel) {
         pathIcon.setVisibility(View.VISIBLE);
         layDutyCall.setVisibility(View.GONE);
-        long departId = parentModel == null ? 0 : parentModel.getId();
+        String departId = parentModel == null ? "" : parentModel.getDeptCode();
         new LoadContactList().loadDepartData(departId).subscribe(new MyObserver<List<MainInfoBean>>(this) {
             @Override
             public void onNext(List<MainInfoBean> mainInfoBeans) {

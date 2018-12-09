@@ -6,7 +6,6 @@ import com.cmcc.internalcontact.model.db.DepartModel;
 import com.cmcc.internalcontact.model.db.PersonModel;
 import com.cmcc.internalcontact.store.PersonDiskStore;
 import com.cmcc.internalcontact.utils.ArraysUtils;
-import com.cmcc.internalcontact.utils.Constant;
 import com.raizlabs.android.dbflow.config.DatabaseDefinition;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
@@ -14,7 +13,6 @@ import com.raizlabs.android.dbflow.structure.database.transaction.FastStoreModel
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.Callable;
 
 import io.reactivex.Observable;
@@ -22,7 +20,7 @@ import io.reactivex.functions.Function;
 
 public class LoadContactList {
     public void saveDepartments(List<DepartModel> departBeans) {
-        departBeans = new ArrayList<>();
+     /*   departBeans = new ArrayList<>();
         for (int i = 1; i < 3; i++) {
             DepartModel departModel1 = new DepartModel();
             departModel1.setDeptName("机构:" + i);
@@ -49,7 +47,7 @@ public class LoadContactList {
                 }
                 savePersons(personModels);
             }
-        }
+        }*/
         if (ArraysUtils.isListEmpty(departBeans)) {
             return;
         }
@@ -90,16 +88,16 @@ public class LoadContactList {
         if (ArraysUtils.isListEmpty(personModels)) {
             return;
         }
-//        SQLite.delete(PersonModel.class).query();
+        SQLite.delete(PersonModel.class).query();
 
         DatabaseDefinition database = FlowManager.getDatabase(AppDataBase.class);
         database.beginTransactionAsync(FastStoreModelTransaction.saveBuilder(FlowManager.getModelAdapter(PersonModel.class)).addAll(personModels).build()).execute();
     }
 
-    public Observable<List<MainInfoBean>> loadDepartData(long departId) {
-        return Observable.just(departId).map(new Function<Long, List<MainInfoBean>>() {
+    public Observable<List<MainInfoBean>> loadDepartData(String departId) {
+        return Observable.just(departId).map(new Function<String, List<MainInfoBean>>() {
             @Override
-            public List<MainInfoBean> apply(Long aLong) throws Exception {
+            public List<MainInfoBean> apply(String aLong) throws Exception {
                 PersonDiskStore personDiskStore = new PersonDiskStore();
                 List<DepartModel> departListByParentId = personDiskStore.getDepartListByParentId(departId);
                 List<MainInfoBean> resMainInfoBeans = new ArrayList<>();
@@ -127,10 +125,10 @@ public class LoadContactList {
         });
     }
 
-    public Observable<List<MainInfoBean>> loadPersons(long departId) {
-        return Observable.just(departId).map(new Function<Long, List<MainInfoBean>>() {
+    public Observable<List<MainInfoBean>> loadPersons(String departId) {
+        return Observable.just(departId).map(new Function<String, List<MainInfoBean>>() {
             @Override
-            public List<MainInfoBean> apply(Long aLong) throws Exception {
+            public List<MainInfoBean> apply(String aLong) throws Exception {
                 PersonDiskStore personDiskStore = new PersonDiskStore();
                 List<PersonModel> persons = personDiskStore.getPersonsByDepartId(aLong);
                 if (ArraysUtils.isListEmpty(persons)) {

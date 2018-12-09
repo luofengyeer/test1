@@ -28,7 +28,7 @@
                     android:value="1920" />
         -->
 
-        <activity android:name=".activity.MainActivity">
+        <activity android:name=".activity.LauncherActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -55,7 +55,7 @@
             android:name=".activity.QuickLoginActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.LauncherActivity"
+            android:name=".activity.MainActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.MineActivity"

@@ -13,6 +13,7 @@ import com.cmcc.internalcontact.utils.SharePreferencesUtils;
 import com.cmcc.internalcontact.utils.http.HttpManager;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -34,12 +35,22 @@ public class LoginUsecase {
                 Response<LoginResponseBean> response = responseBeanCall.execute();
                 return response.body();
             }
+        }).flatMap(new Function<LoginResponseBean, ObservableSource<LoginResponseBean>>() {
+            @Override
+            public ObservableSource<LoginResponseBean> apply(LoginResponseBean loginResponseBean) throws Exception {
+                return new UpdateContactUseCase(context).updateContact();
+            }
+        }).map(new Function<LoginResponseBean, LoginResponseBean>() {
+            @Override
+            public LoginResponseBean apply(LoginResponseBean loginResponseBean) throws Exception {
+                return loginResponseBean;
+            }
         });
     }
 
     public void saveUseInfo(LoginResponseBean userInfo) {
         SharePreferencesUtils.getInstance().setString(TAG_USE_INFO, JSON.toJSONString(userInfo.getUserInfo()));
-        saveToken(userInfo.getToken(), System.currentTimeMillis() + (userInfo.getExpire()*1000));
+        saveToken(userInfo.getToken(), System.currentTimeMillis() + (userInfo.getExpire() * 1000));
     }
 
     public void saveToken(String token, long tokenExpire) {

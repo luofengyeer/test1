@@ -50,7 +50,9 @@ public class MineInfo {
                 PersonBean personBean = new PersonBean();
                 personBean.setAvator(userInfo.getHeadPic());
                 personBean.setName(userInfo.getName());
-                personBean.setPhone(userInfo.getMobile() + "\n" + userInfo.getMobile2());
+                personBean.setPhone((TextUtils.isEmpty(userInfo.getMobile()) ? "" : userInfo.getMobile())
+                        + (TextUtils.isEmpty(userInfo.getMobile2()) ? "" :
+                        TextUtils.isEmpty(userInfo.getMobile()) ? userInfo.getMobile2() : "\n" + userInfo.getMobile2()));
                 personBean.setTel(userInfo.getTel());
                 personBean.setEmail(userInfo.getEmail());
                 personBean.setJob(userInfo.getJob());

@@ -1,6 +1,7 @@
 package com.cmcc.internalcontact.activity;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -24,6 +25,7 @@ import com.cmcc.internalcontact.usecase.MineInfo;
 import com.cmcc.internalcontact.utils.ActivityStackManager;
 import com.cmcc.internalcontact.utils.Constant;
 import com.cmcc.internalcontact.utils.SharePreferencesUtils;
+import com.cmcc.internalcontact.utils.Utils;
 import com.cmcc.internalcontact.utils.imagepicker.SingleFileLimitInterceptor;
 import com.cmcc.internalcontact.utils.view.CommonToolBar;
 import com.cmcc.internalcontact.utils.view.CustomDialog;
@@ -71,6 +73,7 @@ public class MineActivity extends BaseActivity {
     private Handler handler;
     private static final int MSG_WHAT_GET_MINE = 10001;
     private static final int MSG_WHAT_UPDATE_MINE = 10002;
+    private ProgressDialog dialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -102,6 +105,32 @@ public class MineActivity extends BaseActivity {
     private void initData() {
         loadMineData();
         handler.sendEmptyMessage(MSG_WHAT_UPDATE_MINE);
+    }
+
+    @OnClick({R.id.iv_head_pic, R.id.tv_version_update, R.id.iv_exit})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.iv_head_pic:
+                SImagePicker.from(MineActivity.this)
+                        .maxCount(1)
+                        .rowCount(3)
+                        .showCamera(false)
+                        .pickMode(SImagePicker.MODE_IMAGE)
+                        .fileInterceptor(new SingleFileLimitInterceptor())
+                        .forResult(REQUEST_CODE_IMAGE);
+                break;
+            case R.id.tv_version_update:
+//                checkUpdate();
+                showDownloadDialog();
+                download(getApplicationContext().getFilesDir() + "/apk/test.apk"
+                        , "https://dldir1.qq.com/weixin/android/weixin673android1360.apk");
+                break;
+            case R.id.iv_exit:
+                SharePreferencesUtils.getInstance().setString(Constant.TAG_HTTP_TOKEN, "");
+                SharePreferencesUtils.getInstance().setLong(Constant.TAG_HTTP_TOKEN_EXPIRE, 0);
+                ActivityStackManager.getInstance().finishAllActivity();
+                break;
+        }
     }
 
     private void loadMineData() {
@@ -189,8 +218,10 @@ public class MineActivity extends BaseActivity {
                             @Override
                             public void onClick(View v) {
                                 customDialog.dismiss();
-                                download(getApplicationContext().getFilesDir() + "/apk/test.apk"
-                                        , "https://dldir1.qq.com/weixin/android/weixin673android1360.apk");
+//                                download(getApplicationContext().getFilesDir() + "/apk/test.apk"
+//                                        , "https://dldir1.qq.com/weixin/android/weixin673android1360.apk");
+                                download(getApplicationContext().getFilesDir() + "/apk/internalcontact.apk"
+                                        , updateAppBean.getDownloadPath());
                             }
                         });
                         customDialog.setCancelButton("取消", null);
@@ -213,19 +244,28 @@ public class MineActivity extends BaseActivity {
                     @Override
                     protected void pending(BaseDownloadTask task, int soFarBytes, int totalBytes) {
                         Log.e("progress", "pending");
+                        setDownProgress(0);
                     }
 
                     @Override
                     protected void progress(BaseDownloadTask task, int soFarBytes, int totalBytes) {
-                        Log.e("progress", "soFarBytes: " + soFarBytes);
-                        Log.e("progress", "totalBytes: " + totalBytes);
+                        int progress = (int) (soFarBytes * 100L / totalBytes);
+                        Log.e("progress", "progress");
+                        setDownProgress(progress);
                     }
 
                     @Override
                     protected void completed(BaseDownloadTask task) {
-                        Log.e("progress", "completed");
+                        setDownProgress(100);
+                        dialog.dismiss();
                         String path = task.getPath();
                         Log.e("progress", "completed: " + path);
+                        try {
+                            Utils.openFile(MineActivity.this, path);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e("openFile", "open fail");
+                        }
                     }
 
                     @Override
@@ -237,6 +277,7 @@ public class MineActivity extends BaseActivity {
                     protected void error(BaseDownloadTask task, Throwable e) {
                         e.printStackTrace();
                         Log.e("progress", "error");
+                        Toast.makeText(MineActivity.this, "下载失败", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -247,31 +288,23 @@ public class MineActivity extends BaseActivity {
                 .start();
     }
 
-    @OnClick({R.id.iv_head_pic, R.id.tv_version_update, R.id.iv_exit})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.iv_head_pic:
-                SImagePicker.from(MineActivity.this)
-                        .maxCount(1)
-                        .rowCount(3)
-                        .showCamera(false)
-                        .pickMode(SImagePicker.MODE_IMAGE)
-                        .fileInterceptor(new SingleFileLimitInterceptor())
-                        .forResult(REQUEST_CODE_IMAGE);
-                break;
-            case R.id.tv_version_update:
-//                checkUpdate();
-                download(getApplicationContext().getFilesDir() + "/apk/test.apk"
-                        , "https://dldir1.qq.com/weixin/android/weixin673android1360.apk");
-                break;
-            case R.id.iv_exit:
-                SharePreferencesUtils.getInstance().setString(Constant.TAG_HTTP_TOKEN, "");
-                SharePreferencesUtils.getInstance().setLong(Constant.TAG_HTTP_TOKEN_EXPIRE, 0);
-                ActivityStackManager.getInstance().finishAllActivity();
-                break;
-        }
+    private void showDownloadDialog() {
+        dialog = new ProgressDialog(this);
+        dialog.setTitle("提示");
+        dialog.setMessage("正在下载");
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        dialog.setProgress(0);
+        dialog.show();
     }
 
+    private void setDownProgress(int progress) {
+        if (dialog == null || !dialog.isShowing()) {
+            return;
+        }
+        dialog.setProgress(progress);
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

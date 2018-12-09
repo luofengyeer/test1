@@ -25,7 +25,7 @@ public class LoadContactList {
             DepartModel departModel1 = new DepartModel();
             departModel1.setDeptName("机构:" + i);
             departModel1.setId(i);
-            departModel1.setType(Constant.TYPE_MECHANISM);
+            departModel1.setDeptType(Constant.TYPE_MECHANISM);
             departBeans.add(departModel1);
             for (int j = 1; j < 3; j++) {
                 DepartModel departModel2 = new DepartModel();
@@ -33,7 +33,7 @@ public class LoadContactList {
                 departModel2.setId(id);
                 departModel2.setDeptName("单位:" + i + "," + j);
                 departModel2.setParentCode(i);
-                departModel2.setType(Constant.TYPE_COMPANY);
+                departModel2.setDeptType(Constant.TYPE_COMPANY);
                 departBeans.add(departModel2);
                 List<PersonModel> personModels = new ArrayList<>();
                 for (int k = 1; k < 3; k++) {
@@ -57,7 +57,7 @@ public class LoadContactList {
         database.executeTransaction(FastStoreModelTransaction.saveBuilder(FlowManager.getModelAdapter(DepartModel.class)).addAll(departBeans).build());
 //        for (int i = 0; i < 5; i++) {
 //            DepartModel departModel = new DepartModel();
-//            departModel.setType(Constant.TYPE_MECHANISM);
+//            departModel.setDeptType(Constant.TYPE_MECHANISM);
 //            departModel.setCreateTime(1000 + i + "");
 //            departModel.setDeptName("测试机构" + i);
 //            departModel.setId(i);
@@ -65,7 +65,7 @@ public class LoadContactList {
 //        }
 //        for (int i = 0; i < 5; i++) {
 //            DepartModel departModel = new DepartModel();
-//            departModel.setType(Constant.TYPE_COMPANY);
+//            departModel.setDeptType(Constant.TYPE_COMPANY);
 //            departModel.setCreateTime(2000 + i + "");
 //            departModel.setDeptName("测试单位" + i);
 //            departModel.setId(2000 + i);

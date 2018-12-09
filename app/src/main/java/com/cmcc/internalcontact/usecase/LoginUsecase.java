@@ -39,6 +39,7 @@ public class LoginUsecase {
             @Override
             public ObservableSource<LoginResponseBean> apply(LoginResponseBean loginResponseBean) throws Exception {
                 return new UpdateContactUseCase(context).updateContact();
+//                return Observable.just(loginResponseBean);
             }
         }).map(new Function<LoginResponseBean, LoginResponseBean>() {
             @Override

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
+import com.cmcc.internalcontact.utils.ActivityStackManager;
 import com.cmcc.internalcontact.utils.SharePreferencesUtils;
 
 public class BaseActivity extends AppCompatActivity implements OnTokenValidListener {
@@ -13,10 +14,17 @@ public class BaseActivity extends AppCompatActivity implements OnTokenValidListe
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         preferencesUtils = SharePreferencesUtils.getInstance();
+        ActivityStackManager.getInstance().addActivity(this);
     }
 
     @Override
     public void onTokenValid() {
         finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        ActivityStackManager.getInstance().removeActivity(this);
+        super.onDestroy();
     }
 }

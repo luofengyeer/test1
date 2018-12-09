@@ -16,7 +16,9 @@ import com.cmcc.internalcontact.R;
 import com.cmcc.internalcontact.base.BaseActivity;
 import com.cmcc.internalcontact.base.MyObserver;
 import com.cmcc.internalcontact.model.PersonBean;
+import com.cmcc.internalcontact.model.db.DepartModel;
 import com.cmcc.internalcontact.usecase.MineInfo;
+import com.cmcc.internalcontact.utils.ActivityStackManager;
 import com.cmcc.internalcontact.utils.Constant;
 import com.cmcc.internalcontact.utils.SharePreferencesUtils;
 import com.cmcc.internalcontact.utils.imagepicker.SingleFileLimitInterceptor;
@@ -110,8 +112,14 @@ public class MineActivity extends BaseActivity {
                         tvTel.setText(personBean.getTel());
                         tvEmail.setText(personBean.getEmail());
                         tvJob.setText(personBean.getJob());
-                        tvMechanism.setText(personBean.getMechanism().getDeptName());
-                        tvCompany.setText(personBean.getDepart().getDeptName());
+                        DepartModel mechanism = personBean.getMechanism();
+                        if (mechanism != null) {
+                            tvMechanism.setText(mechanism.getDeptName());
+                        }
+                        DepartModel depart = personBean.getDepart();
+                        if (depart != null) {
+                            tvCompany.setText(depart.getDeptName());
+                        }
                     }
                 });
     }
@@ -157,7 +165,7 @@ public class MineActivity extends BaseActivity {
             case R.id.iv_exit:
                 SharePreferencesUtils.getInstance().setString(Constant.TAG_HTTP_TOKEN, "");
                 SharePreferencesUtils.getInstance().setLong(Constant.TAG_HTTP_TOKEN_EXPIRE, 0);
-                System.exit(0);
+                ActivityStackManager.getInstance().finishAllActivity();
                 break;
         }
     }

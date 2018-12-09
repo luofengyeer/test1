@@ -55,4 +55,16 @@ public class DepartDiskStore {
                 .where(DepartModel_Table.deptCode.is(departId))
                 .querySingle();
     }
+
+    /**
+     * 根据父部门id获取部门信息
+     *
+     * @param parentDepartId 父部门id
+     * @return 对应id的部门信息
+     */
+    public DepartModel getDepartModeByParentDepartId(String parentDepartId) {
+        return SQLite.select().from(DepartModel.class)
+                .where(DepartModel_Table.parentCode.is(parentDepartId))
+                .querySingle();
+    }
 }

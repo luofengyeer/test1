@@ -1,5 +1,6 @@
 package com.cmcc.internalcontact.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,6 +24,7 @@ import com.cmcc.internalcontact.model.SearchPersonBean;
 import com.cmcc.internalcontact.model.db.DepartModel;
 import com.cmcc.internalcontact.model.db.PersonModel;
 import com.cmcc.internalcontact.usecase.SearchList;
+import com.cmcc.internalcontact.utils.Constant;
 import com.cmcc.internalcontact.utils.view.CommonToolBar;
 import com.cmcc.internalcontact.utils.view.OnToolBarButtonClickListener;
 import com.cmcc.internalcontact.utils.view.ToolBarButtonType;
@@ -216,7 +218,10 @@ public class SearchActivity extends BaseActivity {
             if (departModel == null) {
                 return;
             }
-            //TODO 待添加机构点击事件
+            Intent intent = new Intent();
+            intent.putExtra(Constant.INTENT_DATA_DEPART, departModel);
+            setResult(RESULT_OK, intent);
+            finish();
         }
 
         @Override
@@ -224,7 +229,10 @@ public class SearchActivity extends BaseActivity {
             if (departModel == null) {
                 return;
             }
-            //TODO 待添加单位点击事件
+            Intent intent = new Intent();
+            intent.putExtra(Constant.INTENT_DATA_DEPART, departModel);
+            setResult(RESULT_OK, intent);
+            finish();
         }
 
         @Override

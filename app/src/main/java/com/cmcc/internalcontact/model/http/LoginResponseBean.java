@@ -28,8 +28,10 @@ public class LoginResponseBean {
     public void setUserInfo(UserInfo userInfo) {
         this.userInfo = userInfo;
     }
+
     public static class UserInfo {
         private String account;
+        private String name;
         private String mobile;
         private String mobile2;
         private String tel;
@@ -100,6 +102,14 @@ public class LoginResponseBean {
 
         public void setHeadPic(String headPic) {
             this.headPic = headPic;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
         }
     }
 }

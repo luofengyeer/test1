@@ -30,6 +30,7 @@ public class LauncherActivity extends BaseActivity {
 
     static {
         launcherPermission.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        launcherPermission.add(Manifest.permission.READ_EXTERNAL_STORAGE);
         launcherPermission.add(Manifest.permission.READ_PHONE_STATE);
         launcherPermission.add(Manifest.permission.READ_CALL_LOG);
     }
@@ -111,6 +112,7 @@ public class LauncherActivity extends BaseActivity {
                             });
                 } else {
                     startActivity(new Intent(LauncherActivity.this, LoginActivity.class));
+//                    startActivity(new Intent(LauncherActivity.this, MainActivity.class));
                 }
                 finish();
             }

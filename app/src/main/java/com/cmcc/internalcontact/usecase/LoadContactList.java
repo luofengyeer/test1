@@ -69,7 +69,7 @@ public class LoadContactList {
 //            departModel.setCreateTime(2000 + i + "");
 //            departModel.setDeptName("测试单位" + i);
 //            departModel.setId(2000 + i);
-//            departModel.setParentCode(i);
+//            departModel.setParentCode(i+"");
 //            departModel.save();
 //        }
 //        for (int i = 0; i < 5; i++) {
@@ -77,7 +77,7 @@ public class LoadContactList {
 //            personModel.setUserId(i);
 //            personModel.setAccount("测试联系人:" + i);
 //            personModel.setUsername("测试联系人:" + i);
-//            personModel.setOrgId(2000 + i);
+//            personModel.setOrgId(2000 + i+"");
 //            personModel.setJob("测试联系人工作:" + i);
 //            personModel.setHeadPic("https://gss1.bdstatic.com/9vo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=09cb6e95de2a283457ab3e593adca28f/c8177f3e6709c93d195d707f953df8dcd000548e.jpg");
 //            personModel.save();

@@ -3,6 +3,7 @@ package com.cmcc.internalcontact.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -36,6 +37,8 @@ import butterknife.OnClick;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.cmcc.internalcontact.utils.Constant.INTENT_DATA_DEPART;
+
 public class MainActivity extends BaseActivity implements OnItemClickListener<MainInfoBean> {
 
     @BindView(R.id.toolbar_main)
@@ -62,6 +65,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
     @BindView(R.id.tv_person_count)
     TextView tvCount;
     private ContactLevelPathAdapter pathAdapter;
+    private static final int SEARCH_REQUEST_CODE = 1001;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -115,7 +119,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
 
     @OnClick(R.id.view_main_search_lay)
     public void jump2Search() {
-        startActivity(new Intent(MainActivity.this, SearchActivity.class));
+        startActivityForResult(new Intent(MainActivity.this, SearchActivity.class), SEARCH_REQUEST_CODE);
     }
 
     private void loadContactCount() {
@@ -271,5 +275,16 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
     public void onTokenValid() {
         startActivity(new Intent(this, LoginActivity.class));
         finish();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == SEARCH_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+            DepartModel departModel = data.getParcelableExtra(INTENT_DATA_DEPART);
+            if (departModel != null) {
+                loadDepartment(departModel);
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

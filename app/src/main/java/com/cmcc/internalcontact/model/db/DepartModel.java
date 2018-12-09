@@ -1,5 +1,8 @@
 package com.cmcc.internalcontact.model.db;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.cmcc.internalcontact.db.AppDataBase;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
@@ -7,7 +10,7 @@ import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 @Table(database = AppDataBase.class, name = "t_dept")
-public class DepartModel extends BaseModel {
+public class DepartModel extends BaseModel implements Parcelable {
     @PrimaryKey
     @Column
     private long id;//主键
@@ -230,4 +233,102 @@ public class DepartModel extends BaseModel {
         this.deptType = deptType;
     }
 
+    @Override
+    public String toString() {
+        return "DepartModel{" +
+                "id=" + id +
+                ", deptCode='" + deptCode + '\'' +
+                ", parentCode=" + parentCode +
+                ", deptName='" + deptName + '\'' +
+                ", shortName='" + shortName + '\'' +
+                ", deptPinyin='" + deptPinyin + '\'' +
+                ", updateTime='" + updateTime + '\'' +
+                ", createTime='" + createTime + '\'' +
+                ", tel1='" + tel1 + '\'' +
+                ", tel2='" + tel2 + '\'' +
+                ", tel3='" + tel3 + '\'' +
+                ", tel4='" + tel4 + '\'' +
+                ", tel5='" + tel5 + '\'' +
+                ", fax1='" + fax1 + '\'' +
+                ", fax2='" + fax2 + '\'' +
+                ", fax3='" + fax3 + '\'' +
+                ", fax4='" + fax4 + '\'' +
+                ", fax5='" + fax5 + '\'' +
+                ", email1='" + email1 + '\'' +
+                ", email2='" + email2 + '\'' +
+                ", email3='" + email3 + '\'' +
+                ", deptType=" + deptType +
+                '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.id);
+        dest.writeString(this.deptCode);
+        dest.writeString(this.parentCode);
+        dest.writeString(this.deptName);
+        dest.writeString(this.shortName);
+        dest.writeString(this.deptPinyin);
+        dest.writeString(this.updateTime);
+        dest.writeString(this.createTime);
+        dest.writeString(this.tel1);
+        dest.writeString(this.tel2);
+        dest.writeString(this.tel3);
+        dest.writeString(this.tel4);
+        dest.writeString(this.tel5);
+        dest.writeString(this.fax1);
+        dest.writeString(this.fax2);
+        dest.writeString(this.fax3);
+        dest.writeString(this.fax4);
+        dest.writeString(this.fax5);
+        dest.writeString(this.email1);
+        dest.writeString(this.email2);
+        dest.writeString(this.email3);
+        dest.writeInt(this.deptType);
+    }
+
+    public DepartModel() {
+    }
+
+    protected DepartModel(Parcel in) {
+        this.id = in.readLong();
+        this.deptCode = in.readString();
+        this.parentCode = in.readString();
+        this.deptName = in.readString();
+        this.shortName = in.readString();
+        this.deptPinyin = in.readString();
+        this.updateTime = in.readString();
+        this.createTime = in.readString();
+        this.tel1 = in.readString();
+        this.tel2 = in.readString();
+        this.tel3 = in.readString();
+        this.tel4 = in.readString();
+        this.tel5 = in.readString();
+        this.fax1 = in.readString();
+        this.fax2 = in.readString();
+        this.fax3 = in.readString();
+        this.fax4 = in.readString();
+        this.fax5 = in.readString();
+        this.email1 = in.readString();
+        this.email2 = in.readString();
+        this.email3 = in.readString();
+        this.deptType = in.readInt();
+    }
+
+    public static final Parcelable.Creator<DepartModel> CREATOR = new Parcelable.Creator<DepartModel>() {
+        @Override
+        public DepartModel createFromParcel(Parcel source) {
+            return new DepartModel(source);
+        }
+
+        @Override
+        public DepartModel[] newArray(int size) {
+            return new DepartModel[size];
+        }
+    };
 }

@@ -28,4 +28,9 @@ public class Constant {
      * 类型-部门
      */
     public static final int TYPE_COMPANY = 1;
+
+    /**
+     * Intent传值-部门信息
+     */
+    public static final String INTENT_DATA_DEPART = "intent_data_depart";
 }

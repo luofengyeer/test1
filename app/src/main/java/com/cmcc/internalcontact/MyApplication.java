@@ -8,6 +8,7 @@ import com.cmcc.internalcontact.utils.Utils;
 import com.cmcc.internalcontact.utils.imagepicker.GlideImageLoader;
 import com.imnjh.imagepicker.PickerConfig;
 import com.imnjh.imagepicker.SImagePicker;
+import com.liulishuo.filedownloader.FileDownloader;
 import com.raizlabs.android.dbflow.config.FlowManager;
 
 
@@ -22,6 +23,7 @@ public class MyApplication extends Application {
         SharePreferencesUtils sharePreferencesUtils = SharePreferencesUtils.getInstance();
         sharePreferencesUtils.setContext(this);
         FlowManager.init(this);
+        FileDownloader.setup(this);
         SImagePicker.init(new PickerConfig.Builder().setAppContext(this)
                 .setImageLoader(new GlideImageLoader())
                 .setToolbaseColor(getColor(R.color.color_ff4c96f7))

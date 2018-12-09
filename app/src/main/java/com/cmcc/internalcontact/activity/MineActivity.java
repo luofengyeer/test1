@@ -11,14 +11,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.cmcc.internalcontact.R;
 import com.cmcc.internalcontact.base.BaseActivity;
 import com.cmcc.internalcontact.base.MyObserver;
 import com.cmcc.internalcontact.model.PersonBean;
 import com.cmcc.internalcontact.model.UpdateAppBean;
 import com.cmcc.internalcontact.model.db.DepartModel;
+import com.cmcc.internalcontact.model.http.LoginResponseBean;
 import com.cmcc.internalcontact.usecase.MineInfo;
 import com.cmcc.internalcontact.utils.ActivityStackManager;
 import com.cmcc.internalcontact.utils.Constant;
@@ -28,6 +29,9 @@ import com.cmcc.internalcontact.utils.view.CommonToolBar;
 import com.cmcc.internalcontact.utils.view.CustomDialog;
 import com.imnjh.imagepicker.SImagePicker;
 import com.imnjh.imagepicker.activity.PhotoPickerActivity;
+import com.liulishuo.filedownloader.BaseDownloadTask;
+import com.liulishuo.filedownloader.FileDownloadListener;
+import com.liulishuo.filedownloader.FileDownloader;
 
 import java.util.ArrayList;
 
@@ -36,6 +40,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+
+import static com.cmcc.internalcontact.usecase.LoginUsecase.TAG_USE_INFO;
 
 public class MineActivity extends BaseActivity {
     private static final String TAG = MineActivity.class.getSimpleName();
@@ -107,9 +113,10 @@ public class MineActivity extends BaseActivity {
                         if (personBean == null) {
                             return;
                         }
-                        Glide.with(MineActivity.this).setDefaultRequestOptions(
-                                new RequestOptions().error(R.mipmap.ic_edit_info_headimg).circleCrop())
-                                .load(personBean.getAvator()).into(ivHeadPic);
+                        Glide.with(MineActivity.this)
+                                .load(personBean.getAvator())
+                                .apply(Constant.AVATAR_OPTIONS)
+                                .into(ivHeadPic);
                         tvUsername.setText(personBean.getName());
                         tvMobilePhone.setText(personBean.getPhone());
                         tvTel.setText(personBean.getTel());
@@ -130,10 +137,19 @@ public class MineActivity extends BaseActivity {
     private void updateMineData() {
         new MineInfo().updateMine(this).subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new MyObserver<Void>(this) {
+                .subscribe(new MyObserver<LoginResponseBean.UserInfo>(this) {
                     @Override
-                    public void onNext(Void aVoid) {
+                    public void onNext(LoginResponseBean.UserInfo userInfo) {
+                        if (userInfo != null) {
+                            SharePreferencesUtils.getInstance().setString(TAG_USE_INFO, JSON.toJSONString(userInfo));
+                        }
                         handler.sendEmptyMessage(MSG_WHAT_GET_MINE);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        e.printStackTrace();
                     }
                 });
     }
@@ -145,9 +161,10 @@ public class MineActivity extends BaseActivity {
                     @Override
                     public void onNext(String path) {
                         Log.e("path", "" + path);
-//                        Glide.with(MineActivity.this).setDefaultRequestOptions(
-//                                new RequestOptions().error(R.mipmap.ic_edit_info_headimg).circleCrop())
-//                                .load(path).into(ivHeadPic);
+                        Glide.with(MineActivity.this)
+                                .load(path)
+                                .apply(Constant.AVATAR_OPTIONS)
+                                .into(ivHeadPic);
                     }
 
                     @Override
@@ -159,18 +176,21 @@ public class MineActivity extends BaseActivity {
     }
 
     private void checkUpdate() {
-        new MineInfo().checkUpdate(this, "").subscribeOn(Schedulers.newThread())
+        new MineInfo().checkUpdate(this, "1001").subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new MyObserver<UpdateAppBean>(this) {
                     @Override
                     public void onNext(UpdateAppBean updateAppBean) {
+                        Log.e("checkUpdate", updateAppBean.toString());
                         CustomDialog customDialog = new CustomDialog(MineActivity.this);
                         customDialog.setTitle("提示");
-                        customDialog.setMessage("检查到新版本,是否更新");
+                        customDialog.setMessage("检查到新版本,是否更新", true);
                         customDialog.setOkButton("更新", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 customDialog.dismiss();
+                                download(getApplicationContext().getFilesDir() + "/apk/test.apk"
+                                        , "https://dldir1.qq.com/weixin/android/weixin673android1360.apk");
                             }
                         });
                         customDialog.setCancelButton("取消", null);
@@ -183,6 +203,48 @@ public class MineActivity extends BaseActivity {
                         Toast.makeText(MineActivity.this, "暂无更新", Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    private void download(String name, String downloadUrl) {
+        FileDownloader.getImpl().create(downloadUrl)
+                .setPath(name)
+                .setForceReDownload(true)
+                .setListener(new FileDownloadListener() {
+                    @Override
+                    protected void pending(BaseDownloadTask task, int soFarBytes, int totalBytes) {
+                        Log.e("progress", "pending");
+                    }
+
+                    @Override
+                    protected void progress(BaseDownloadTask task, int soFarBytes, int totalBytes) {
+                        Log.e("progress", "soFarBytes: " + soFarBytes);
+                        Log.e("progress", "totalBytes: " + totalBytes);
+                    }
+
+                    @Override
+                    protected void completed(BaseDownloadTask task) {
+                        Log.e("progress", "completed");
+                        String path = task.getPath();
+                        Log.e("progress", "completed: " + path);
+                    }
+
+                    @Override
+                    protected void paused(BaseDownloadTask task, int soFarBytes, int totalBytes) {
+                        Log.e("progress", "paused");
+                    }
+
+                    @Override
+                    protected void error(BaseDownloadTask task, Throwable e) {
+                        e.printStackTrace();
+                        Log.e("progress", "error");
+                    }
+
+                    @Override
+                    protected void warn(BaseDownloadTask task) {
+                        Log.e("progress", "warn");
+                    }
+                })
+                .start();
     }
 
     @OnClick({R.id.iv_head_pic, R.id.tv_version_update, R.id.iv_exit})
@@ -198,7 +260,9 @@ public class MineActivity extends BaseActivity {
                         .forResult(REQUEST_CODE_IMAGE);
                 break;
             case R.id.tv_version_update:
-                checkUpdate();
+//                checkUpdate();
+                download(getApplicationContext().getFilesDir() + "/apk/test.apk"
+                        , "https://dldir1.qq.com/weixin/android/weixin673android1360.apk");
                 break;
             case R.id.iv_exit:
                 SharePreferencesUtils.getInstance().setString(Constant.TAG_HTTP_TOKEN, "");

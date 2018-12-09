@@ -1,6 +1,5 @@
 package com.cmcc.internalcontact.utils.http;
 
-import com.cmcc.internalcontact.model.PersonBean;
 import com.cmcc.internalcontact.model.UpdateAppBean;
 import com.cmcc.internalcontact.model.http.LoginRequestBean;
 import com.cmcc.internalcontact.model.http.LoginResponseBean;
@@ -13,7 +12,6 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
-import retrofit2.http.Path;
 
 public interface Api {
     @POST("app/appLogin")
@@ -37,11 +35,11 @@ public interface Api {
     @POST("app/updateAppUser")
     Call<Void> updateAppUser(LoginResponseBean.UserInfo personBean);
 
-    @POST("app/app/uploadPic")
+    @POST("app/uploadPic")
     Call<HashMap<String, String>> updateAvatar(@Body HashMap<String, String> v);
 
     @POST("app/updateApp")
-    Call<UpdateAppBean> updateApp(@Path("version") String version, @Path("appType") int appType);
+    Call<UpdateAppBean> updateApp(@Body HashMap<String, String> v);
 
     @POST("app/getUserInfo")
     Call<LoginResponseBean.UserInfo> updateAppUser();

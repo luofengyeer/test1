@@ -4,6 +4,7 @@ import com.cmcc.internalcontact.db.AppDataBase;
 import com.cmcc.internalcontact.model.MainInfoBean;
 import com.cmcc.internalcontact.model.db.DepartModel;
 import com.cmcc.internalcontact.model.db.PersonModel;
+import com.cmcc.internalcontact.store.DepartDiskStore;
 import com.cmcc.internalcontact.store.PersonDiskStore;
 import com.cmcc.internalcontact.utils.ArraysUtils;
 import com.raizlabs.android.dbflow.config.DatabaseDefinition;
@@ -123,6 +124,30 @@ public class LoadContactList {
                 return new PersonDiskStore().getPersonsCount();
             }
         });
+    }
+
+    public List<DepartModel> getDepartPath(long personId) {
+        List<DepartModel> departModels = new ArrayList<>();
+        PersonDiskStore personDiskStore = new PersonDiskStore();
+        DepartModel depart1 = personDiskStore.getDepartByPersonId(personId);
+        if (depart1 == null) {
+            return departModels;
+        }
+        departModels.add(depart1);
+        DepartDiskStore departDiskStore = new DepartDiskStore();
+        DepartModel parentModel = departDiskStore.getDepartModeByDepartId(depart1.getParentCode());
+        if (parentModel == null) {
+            return departModels;
+        }
+        departModels.add(parentModel);
+
+        while (parentModel != null) {
+            parentModel = departDiskStore.getDepartModeByDepartId(parentModel.getParentCode());
+            if (parentModel != null) {
+                departModels.add(parentModel);
+            }
+        }
+        return departModels;
     }
 
     public Observable<List<MainInfoBean>> loadPersons(String departId) {

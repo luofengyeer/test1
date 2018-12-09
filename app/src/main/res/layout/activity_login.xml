@@ -42,8 +42,8 @@
             android:layout_height="48dp"
             android:hint="请输入11位手机号码"
             android:inputType="number"
-            android:text="17603876866"
             android:textSize="16sp" />
+        <!--android:text="17603876866"-->
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -56,9 +56,9 @@
                 android:layout_height="48dp"
                 android:hint="请输入6-20位密码"
                 android:inputType="textPassword"
-                android:text="123456"
                 android:paddingEnd="40dp"
                 android:textSize="16sp" />
+            <!--android:text="123456"-->
 
             <ToggleButton
                 android:id="@+id/iv_pwd_eye_icon"

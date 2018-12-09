@@ -27,14 +27,14 @@ public class PersonDiskStore {
      * @return
      */
     public DepartModel getDepartByPersonId(long personId) {
-        NameAlias deptPersonModelNameAlias = new NameAlias.Builder("DP")
+        NameAlias deptPersonModelNameAlias = new NameAlias.Builder("P")
                 .shouldStripIdentifier(true)
                 .shouldAddIdentifierToName(true).build();
         NameAlias departModelNameAlias = new NameAlias.Builder("D")
                 .shouldStripIdentifier(true)
                 .shouldAddIdentifierToName(true).build();
         return SQLite.select().from(DepartModel.class).as("D").leftOuterJoin(PersonModel.class)
-                .as("P").on(PersonModel_Table.orgId.withTable(deptPersonModelNameAlias).eq(DepartModel_Table.id.withTable(departModelNameAlias)))
+                .as("P").on(PersonModel_Table.orgId.withTable(deptPersonModelNameAlias).eq(DepartModel_Table.deptCode.withTable(departModelNameAlias)))
                 .where(PersonModel_Table.userId.withTable(deptPersonModelNameAlias).eq(personId)).querySingle();
     }
 

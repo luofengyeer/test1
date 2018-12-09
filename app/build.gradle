@@ -61,6 +61,7 @@ dependencies {
     implementation project(':imagepicker')
     implementation 'top.zibin:Luban:1.1.8'
     implementation 'com.liulishuo.filedownloader:library:1.7.5'
+    implementation 'com.github.bumptech.glide:okhttp3-integration:4.8.0'
 //    implementation 'com.github.martin90s:ImagePicker:v1.3.2'
 
 //    implementation 'me.jessyan:autosize:1.1.0'

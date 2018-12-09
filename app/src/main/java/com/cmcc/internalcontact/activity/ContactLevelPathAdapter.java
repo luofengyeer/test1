@@ -89,9 +89,9 @@ public class ContactLevelPathAdapter extends RecyclerView.Adapter<RecyclerView.V
         rootViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isLastOne(position, departmentBean)) {
+                /*if (isLastOne(position, departmentBean)) {
                     return;
-                }
+                }*/
                 if (itemClickListener != null) {
                     itemClickListener.onItemClick(v, departmentBean, position);
                 }

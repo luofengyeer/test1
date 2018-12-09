@@ -14,15 +14,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSONObject;
 import com.cmcc.internalcontact.R;
 import com.cmcc.internalcontact.base.BaseActivity;
 import com.cmcc.internalcontact.base.MyObserver;
 import com.cmcc.internalcontact.model.MainInfoBean;
 import com.cmcc.internalcontact.model.db.DepartModel;
 import com.cmcc.internalcontact.model.db.PersonModel;
+import com.cmcc.internalcontact.model.http.LoginResponseBean;
 import com.cmcc.internalcontact.usecase.LoadContactList;
 import com.cmcc.internalcontact.utils.ArraysUtils;
 import com.cmcc.internalcontact.utils.OnItemClickListener;
+import com.cmcc.internalcontact.utils.SharePreferencesUtils;
 import com.cmcc.internalcontact.utils.Utils;
 import com.cmcc.internalcontact.utils.view.CommonToolBar;
 import com.cmcc.internalcontact.utils.view.HorizontalDividerItemDecoration;
@@ -39,6 +42,7 @@ import butterknife.OnClick;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.cmcc.internalcontact.usecase.LoginUsecase.TAG_USE_INFO;
 import static com.cmcc.internalcontact.utils.Constant.INTENT_DATA_DEPART;
 
 public class MainActivity extends BaseActivity implements OnItemClickListener<MainInfoBean> {
@@ -46,7 +50,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
     @BindView(R.id.toolbar_main)
     CommonToolBar toolbarMain;
     @BindView(R.id.tab_main)
-    TabLayout tabMain;
+    LinearLayout tabMain;
     @BindView(R.id.main_list)
     RecyclerView contactRecyclerView;
     @BindView(R.id.tv_duty_call)
@@ -66,6 +70,8 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
     RecyclerView pathRecyclerView;
     @BindView(R.id.tv_person_count)
     TextView tvCount;
+
+
     private ContactLevelPathAdapter pathAdapter;
     private static final int SEARCH_REQUEST_CODE = 1001;
 
@@ -77,6 +83,11 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
         initView();
         initPathAapter();
         initTab();
+        initToolbar();
+        initContactDefaultList();
+    }
+
+    private void initToolbar() {
         toolbarMain.setBarButtonClickListener(new OnToolBarButtonClickListener() {
             @Override
             public void onClick(View v, ToolBarButtonType type) {
@@ -99,11 +110,26 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
         });
     }
 
+    @OnClick({R.id.tab_contact, R.id.tab_search, R.id.tab_mine})
+    public void onTabClick(View v) {
+        switch (v.getId()) {
+            case R.id.tab_contact:
+                back2Root();
+                break;
+            case R.id.tab_search:
+                jump2Search();
+                break;
+            case R.id.tab_mine:
+                startActivity(new Intent(MainActivity.this, MineActivity.class));
+                break;
+        }
+    }
 
     private void back2Root() {
         toolbarMain.setButtonVisibility(ToolBarButtonType.LEFT_FIRST_BUTTON, View.GONE);
         pathIcon.setVisibility(View.GONE);
         pathLay.setVisibility(View.GONE);
+        pathAdapter.clear();
         loadDepartment(null);
     }
 
@@ -255,49 +281,51 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
         });
     }
 
+
+    /**
+     * 加载默认联系人路径和信息
+     */
+    private void initContactDefaultList() {
+        String personJson = SharePreferencesUtils.getInstance().getString(TAG_USE_INFO, null);
+        if (TextUtils.isEmpty(personJson)) {
+            loadDepartment(null);
+            return;
+        }
+        LoginResponseBean.UserInfo userInfo = JSONObject.parseObject(personJson, LoginResponseBean.UserInfo.class);
+        if (userInfo == null) {
+            loadDepartment(null);
+            return;
+        }
+        List<DepartModel> departPath = new LoadContactList().getDepartPath(userInfo.getUserId());
+        if (ArraysUtils.isListEmpty(departPath)) {
+            loadDepartment(null);
+            return;
+        }
+        DepartModel rootDepart = departPath.get(0);
+        loadContact(rootDepart);
+        pathAdapter.clear();
+        for (int i = departPath.size() - 1; i >= 0; i--) {
+            DepartModel departModel = departPath.get(i);
+            if (departModel == null) {
+                continue;
+            }
+            pathAdapter.addData(departModel);
+        }
+    }
+
     private void initTab() {
-        tabMain.addTab(buildTab("通讯录", R.drawable.common_widget_home_menu_contact_selecter), false);
-        tabMain.addTab(buildTab(getString(R.string.search), R.drawable.ic_search), false);
-        tabMain.addTab(buildTab("我的", R.drawable.common_widget_home_menu_mine_selecter), false);
-        tabMain.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-//                new LoadContactList().saveDepartments(null);
-                setMenuRes(tab, true);
-                loadDepartment(null);
-                if (tab == tabMain.getTabAt(1)) {
-                    jump2Search();
-                    tabMain.getTabAt(0).select();
-                }
-                if (tab == tabMain.getTabAt(2)) {
-                    startActivity(new Intent(MainActivity.this, MineActivity.class));
-                    tabMain.getTabAt(0).select();
-                }
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                setMenuRes(tab, false);
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-        tabMain.getTabAt(0).select();
+        buildTab(R.id.tab_contact,"通讯录", R.drawable.common_widget_home_menu_contact_selecter);
+        buildTab(R.id.tab_search,getString(R.string.search), R.drawable.common_widget_home_menu_search_selecter);
+        buildTab(R.id.tab_mine,"我的", R.drawable.common_widget_home_menu_mine_selecter);
     }
 
     @NonNull
-    private TabLayout.Tab buildTab(String name, int iconId) {
-        TabLayout.Tab tab = tabMain.newTab();
-        tab.setCustomView(R.layout.item_tab_main);
-        ImageView tabIcon = tab.getCustomView().findViewById(R.id.tv_main_tab_icon);
-        TextView tabName = tab.getCustomView().findViewById(R.id.tv_main_tab_name);
-        tabName.setText(name);
+    private void buildTab(int tabId,String name, int iconId) {
+        View contactTabView = findViewById(tabId);
+        TextView tabName = contactTabView.findViewById(R.id.tv_main_tab_name);
+        ImageView tabIcon = contactTabView.findViewById(R.id.tv_main_tab_icon);
         tabIcon.setImageResource(iconId);
-        tab.setTag(iconId);
-        return tab;
+        tabName.setText(name);
     }
 
     /***
@@ -348,6 +376,13 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
         pathRecyclerView.addItemDecoration(new VerticalDividerItemDecoration.Builder(this)
                 .drawable(R.drawable.img_right_arrow)
                 .build());
+        pathAdapter.setItemClickListener(new OnItemClickListener<DepartModel>() {
+            @Override
+            public void onItemClick(View view, DepartModel data, int position) {
+                loadDepartment(data);
+                pathAdapter.jump2Position(data);
+            }
+        });
     }
 
     @Override

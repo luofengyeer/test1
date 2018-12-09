@@ -2,7 +2,7 @@ package com.cmcc.internalcontact.model.http;
 
 public class LoginResponseBean {
     private String token;//token
-    private String expire;//过期时间
+    private long expire;//过期时间
     private UserInfo userInfo;//用户详细信息
 
     public String getToken() {
@@ -13,11 +13,11 @@ public class LoginResponseBean {
         this.token = token;
     }
 
-    public String getExpire() {
+    public long getExpire() {
         return expire;
     }
 
-    public void setExpire(String expire) {
+    public void setExpire(long expire) {
         this.expire = expire;
     }
 

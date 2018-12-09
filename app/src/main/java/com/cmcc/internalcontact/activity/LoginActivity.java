@@ -164,7 +164,6 @@ public class LoginActivity extends BaseActivity {
                                        public void onNext(Object o) {
                                            progressDialog.dismiss();
                                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                           progressDialog.dismiss();
                                            finish();
                                        }
 

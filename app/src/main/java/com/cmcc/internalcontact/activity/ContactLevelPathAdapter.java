@@ -121,6 +121,14 @@ public class ContactLevelPathAdapter extends RecyclerView.Adapter<RecyclerView.V
         return mList.get(position);
     }
 
+    public void clear() {
+        if(ArraysUtils.isListEmpty(mList)){
+            return;
+        }
+        mList.clear();
+        notifyDataSetChanged();
+    }
+
     private class DepartmentViewHolder extends RecyclerView.ViewHolder {
         private TextView departmentNameTv;
 

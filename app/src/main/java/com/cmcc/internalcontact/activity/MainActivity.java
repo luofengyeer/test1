@@ -361,6 +361,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
         if (requestCode == SEARCH_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
             DepartModel departModel = data.getParcelableExtra(INTENT_DATA_DEPART);
             if (departModel != null) {
+                pathAdapter.clear();
                 loadDepartment(departModel);
             }
         }

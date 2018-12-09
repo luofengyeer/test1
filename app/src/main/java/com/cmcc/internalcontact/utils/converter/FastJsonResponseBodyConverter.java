@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
+import com.cmcc.internalcontact.BuildConfig;
 import com.cmcc.internalcontact.model.http.HttpBaseBean;
 import com.cmcc.internalcontact.utils.AesUtils;
 
@@ -27,6 +28,7 @@ public class FastJsonResponseBodyConverter<T> implements Converter<ResponseBody,
     public FastJsonResponseBodyConverter(Type type) {
         this.type = type;
     }
+
     @Override
     public T convert(@NonNull ResponseBody value) throws IOException {
         BufferedSource bufferedSource = Okio.buffer(value.source());
@@ -37,10 +39,12 @@ public class FastJsonResponseBodyConverter<T> implements Converter<ResponseBody,
             throw new IOException(EXCEPTION_TOKEN_INVALID);
         }
         if (httpBaseBean.getCode() != 0) {
-            throw new IOException("http错误："+httpBaseBean.getMsg() + ",code:" + httpBaseBean.getCode());
+            throw new IOException("http错误：" + httpBaseBean.getMsg() + ",code:" + httpBaseBean.getCode());
         }
         String decrypt = AesUtils.decrypt(httpBaseBean.getData());
-        Log.d("ServerResponseData:", decrypt);
+        if (BuildConfig.DEBUG) {
+            Log.d("ServerResponseData:", decrypt);
+        }
         return JsonManager.jsonToBean(decrypt, type);
 
     }

@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.ImageView;
@@ -29,6 +30,7 @@ import com.cmcc.internalcontact.utils.view.OnToolBarButtonClickListener;
 import com.cmcc.internalcontact.utils.view.ToolBarButtonType;
 import com.cmcc.internalcontact.utils.view.VerticalDividerItemDecoration;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -155,9 +157,78 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
     }
 
     private void setDepartTels(DepartModel departTels) {
+        if (departTels == null) {
+            return;
+        }
+        List<String> tels = new ArrayList<>();
+        if (!TextUtils.isEmpty(departTels.getTel1())) {
+            tels.add(departTels.getTel1());
+        }
+        if (!TextUtils.isEmpty(departTels.getTel2())) {
+            tels.add(departTels.getTel2());
+
+        }
+        if (!TextUtils.isEmpty(departTels.getTel3())) {
+            tels.add(departTels.getTel3());
+        }
+        if (!TextUtils.isEmpty(departTels.getTel4())) {
+            tels.add(departTels.getTel4());
+        }
+        if (!TextUtils.isEmpty(departTels.getTel5())) {
+            tels.add(departTels.getTel5());
+        }
         tvDutyCall.setMovementMethod(LinkMovementMethod
                 .getInstance());
-        tvDutyCall.setText(Utils.addClickablePart(this, "10010\n10086"), TextView.BufferType.SPANNABLE);
+        String telsString = buildPhone(tels);
+        if (!TextUtils.isEmpty(telsString)) {
+            tvDutyCall.setText(Utils.addClickablePart(this, telsString), TextView.BufferType.SPANNABLE);
+        }
+        List<String> faxs = new ArrayList<>();
+        if (!TextUtils.isEmpty(departTels.getFax1())) {
+            faxs.add(departTels.getFax1());
+        }
+        if (!TextUtils.isEmpty(departTels.getFax2())) {
+            faxs.add(departTels.getFax2());
+        }
+        if (!TextUtils.isEmpty(departTels.getFax3())) {
+            faxs.add(departTels.getFax3());
+        }
+        if (!TextUtils.isEmpty(departTels.getFax4())) {
+            faxs.add(departTels.getFax4());
+        }
+        if (!TextUtils.isEmpty(departTels.getFax5())) {
+            faxs.add(departTels.getFax5());
+        }
+        String faxsString = buildPhone(tels);
+        if (!TextUtils.isEmpty(faxsString)) {
+            tvFax.setText(faxsString);
+        }
+        List<String> emails = new ArrayList<>();
+        if (!TextUtils.isEmpty(departTels.getEmail1())) {
+            emails.add(departTels.getEmail1());
+        }
+        if (!TextUtils.isEmpty(departTels.getEmail2())) {
+            emails.add(departTels.getEmail2());
+        }
+        if (!TextUtils.isEmpty(departTels.getEmail3())) {
+            emails.add(departTels.getEmail3());
+        }
+        String emailsString = buildPhone(emails);
+        if (!TextUtils.isEmpty(faxsString)) {
+            tvEmail.setText(emailsString);
+        }
+    }
+
+    private String buildPhone(List<String> strings) {
+        if (ArraysUtils.isListEmpty(strings)) {
+            return null;
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < strings.size(); i++) {
+            sb.append(strings.get(i));
+            sb.append("\n");
+        }
+        return sb.toString();
     }
 
     private void loadDepartment(DepartModel parentModel) {

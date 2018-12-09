@@ -254,7 +254,9 @@ public class MineActivity extends BaseActivity {
                     @Override
                     protected void completed(BaseDownloadTask task) {
                         setDownProgress(100);
-                        dialog.dismiss();
+                        if (dialog != null) {
+                            dialog.dismiss();
+                        }
                         String path = task.getPath();
                         Log.e("progress", "completed: " + path);
                         try {
@@ -273,6 +275,9 @@ public class MineActivity extends BaseActivity {
                     @Override
                     protected void error(BaseDownloadTask task, Throwable e) {
                         e.printStackTrace();
+                        if (dialog != null) {
+                            dialog.dismiss();
+                        }
                         Log.e("progress", "error");
                         Toast.makeText(MineActivity.this, "下载失败", Toast.LENGTH_SHORT).show();
                     }

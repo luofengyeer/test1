@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -120,10 +121,7 @@ public class MineActivity extends BaseActivity {
                         .forResult(REQUEST_CODE_IMAGE);
                 break;
             case R.id.tv_version_update:
-//                checkUpdate();
-                showDownloadDialog();
-                download(getApplicationContext().getFilesDir() + "/apk/test.apk"
-                        , "https://dldir1.qq.com/weixin/android/weixin673android1360.apk");
+                checkUpdate();
                 break;
             case R.id.iv_exit:
                 SharePreferencesUtils.getInstance().setString(Constant.TAG_HTTP_TOKEN, "");
@@ -218,9 +216,8 @@ public class MineActivity extends BaseActivity {
                             @Override
                             public void onClick(View v) {
                                 customDialog.dismiss();
-//                                download(getApplicationContext().getFilesDir() + "/apk/test.apk"
-//                                        , "https://dldir1.qq.com/weixin/android/weixin673android1360.apk");
-                                download(getApplicationContext().getFilesDir() + "/apk/internalcontact.apk"
+                                showDownloadDialog();
+                                download(Environment.getExternalStorageDirectory().getAbsolutePath() + "/internalcontact/apk/internalcontact.apk"
                                         , updateAppBean.getDownloadPath());
                             }
                         });

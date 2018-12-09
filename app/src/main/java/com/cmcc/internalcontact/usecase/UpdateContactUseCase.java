@@ -3,15 +3,14 @@ package com.cmcc.internalcontact.usecase;
 
 import android.content.Context;
 
-import com.cmcc.internalcontact.model.db.DepartModel;
-import com.cmcc.internalcontact.model.db.PersonModel;
+import com.cmcc.internalcontact.model.http.UpdateContactResponse;
+import com.cmcc.internalcontact.model.http.UpdateDeptResponse;
 import com.cmcc.internalcontact.utils.ArraysUtils;
 import com.cmcc.internalcontact.utils.SharePreferencesUtils;
 import com.cmcc.internalcontact.utils.http.Api;
 import com.cmcc.internalcontact.utils.http.HttpManager;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.concurrent.Callable;
 
 import io.reactivex.Observable;
@@ -30,32 +29,35 @@ public class UpdateContactUseCase {
             @Override
             public Object call() throws Exception {
                 long personVersion = SharePreferencesUtils.getInstance().getLong(KEY_CONTACT_VERSION, 0);
-                HashMap<String, Integer> body = api.isHasNewContacts(personVersion).execute().body();
+                HashMap<String, Long> requestData = new HashMap<>();
+                requestData.put("telsVersion", personVersion);
+                HashMap<String, Integer> body = api.isHasNewContacts(requestData).execute().body();
                 if (ArraysUtils.isMapEmpty(body)) {
                     return null;
                 }
                 //更新人员
                 Integer isHas = body.get("isHas");
                 if (isHas == 1) {
-                    List<PersonModel> personModels = api.updateContacts().execute().body();
-                    if (!ArraysUtils.isListEmpty(personModels)) {
-                        new LoadContactList().savePersons(personModels);
-                        SharePreferencesUtils.getInstance().setLong(KEY_CONTACT_VERSION, 0);
+                    UpdateContactResponse contactResponse = api.updateContacts().execute().body();
+                    if (contactResponse != null && !ArraysUtils.isListEmpty(contactResponse.getData())) {
+                        new LoadContactList().savePersons(contactResponse.getData());
+                        SharePreferencesUtils.getInstance().setLong(KEY_CONTACT_VERSION, contactResponse.getVersion());
                     }
                 }
-                long departVersion = SharePreferencesUtils.getInstance().getLong(KEY_CONTACT_VERSION, 0);
+                long departVersion = SharePreferencesUtils.getInstance().getLong(KEY_DEPART_VERSION, 0);
+                HashMap<String, Long> requestDeptData = new HashMap<>();
+                requestDeptData.put("deptsVersion", departVersion);
                 //更新部门
-                HashMap<String, Integer> departBody = api.isHasNewDept(departVersion).execute().body();
+                HashMap<String, Integer> departBody = api.isHasNewDept(requestDeptData).execute().body();
                 if (ArraysUtils.isMapEmpty(departBody)) {
                     return null;
                 }
                 isHas = departBody.get("isHas");
                 if (isHas == 1) {
-                    List<DepartModel> personModels = api.updateDepartments().execute().body();
-                    if (!ArraysUtils.isListEmpty(personModels)) {
-                        new LoadContactList().saveDepartments(personModels);
-                        //TODO 版本号缺失
-                        SharePreferencesUtils.getInstance().setLong(KEY_DEPART_VERSION, 0);
+                    UpdateDeptResponse updateDeptResponse = api.updateDepartments().execute().body();
+                    if (updateDeptResponse != null && !ArraysUtils.isListEmpty(updateDeptResponse.getData())) {
+                        new LoadContactList().saveDepartments(updateDeptResponse.getData());
+                        SharePreferencesUtils.getInstance().setLong(KEY_DEPART_VERSION, updateDeptResponse.getVersion());
                     }
                 }
                 return null;

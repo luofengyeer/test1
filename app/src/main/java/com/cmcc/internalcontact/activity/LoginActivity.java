@@ -1,5 +1,6 @@
 package com.cmcc.internalcontact.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -56,7 +57,7 @@ public class LoginActivity extends BaseActivity {
         ButterKnife.bind(this);
         StatusBarUtil.immersive(this);
         StatusBarUtil.setPaddingSmart(this, commonToolBar);
-        loginBtn.setEnabled(false);
+//        loginBtn.setEnabled(false);
         swAutoLogin.setOpen(preferencesUtils.getBoolean(TAG_AUTO_LOGIN));
         swAutoLogin.setOnStateChangeListener(new SwitchButton.OnStateChangeListener() {
             @Override
@@ -142,19 +143,29 @@ public class LoginActivity extends BaseActivity {
             Toast.makeText(this, "请输入密码", Toast.LENGTH_SHORT).show();
             return;
         }
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("正在登录请稍后...");
         LoginUsecase loginUsecase = new LoginUsecase();
+        progressDialog.show();
         loginUsecase.login(this, edAccount.getText().toString().trim(), edPassword.getText().toString().trim())
                 .subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MyObserver<LoginResponseBean>(this) {
 
             @Override
             public void onNext(LoginResponseBean loginResponseBean) {
+                progressDialog.dismiss();
                 loginUsecase.saveUseInfo(loginResponseBean);
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 finish();
             }
 
             @Override
+            public void onComplete() {
+                progressDialog.dismiss();
+            }
+
+            @Override
             public void onError(Throwable e) {
+                progressDialog.dismiss();
                 Toast.makeText(getApplicationContext(), "登录失败，" + e.getMessage(), Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }

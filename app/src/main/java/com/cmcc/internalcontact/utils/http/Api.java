@@ -1,13 +1,12 @@
 package com.cmcc.internalcontact.utils.http;
 
 import com.cmcc.internalcontact.model.PersonBean;
-import com.cmcc.internalcontact.model.db.DepartModel;
-import com.cmcc.internalcontact.model.db.PersonModel;
 import com.cmcc.internalcontact.model.http.LoginRequestBean;
 import com.cmcc.internalcontact.model.http.LoginResponseBean;
+import com.cmcc.internalcontact.model.http.UpdateContactResponse;
+import com.cmcc.internalcontact.model.http.UpdateDeptResponse;
 
 import java.util.HashMap;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -20,16 +19,16 @@ public interface Api {
     Call<LoginResponseBean> login(@Body LoginRequestBean loginRequestBean);
 
     @POST("app/isHasNewContacts")
-    Call<HashMap<String, Integer>> isHasNewContacts(@Path("telsVersion") long version);
+    Call<HashMap<String, Integer>> isHasNewContacts(@Body HashMap<String,Long>  version);
 
     @GET("app/updateContacts")
-    Call<List<PersonModel>> updateContacts();
+    Call<UpdateContactResponse> updateContacts();
 
     @POST("app/isHasNewDepts")
-    Call<HashMap<String, Integer>> isHasNewDept(@Path("deptsVersion") long version);
+    Call<HashMap<String, Integer>> isHasNewDept(@Body HashMap<String,Long> v);
 
     @GET("app/updateDepts")
-    Call<List<DepartModel>> updateDepartments();
+    Call<UpdateDeptResponse> updateDepartments();
 
     @POST("app/isTokenPass")
     Call<HashMap<String, Integer>> isTokenPass();

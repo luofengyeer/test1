@@ -2,7 +2,6 @@ package com.cmcc.internalcontact.utils.converter;
 
 import android.support.annotation.NonNull;
 
-
 import com.alibaba.fastjson.JSON;
 import com.cmcc.internalcontact.model.http.HttpBaseBean;
 import com.cmcc.internalcontact.utils.AesUtils;
@@ -16,7 +15,6 @@ import okio.Okio;
 import retrofit2.Converter;
 
 import static com.cmcc.internalcontact.utils.Constant.EXCEPTION_TOKEN_INVALID;
-import static com.cmcc.internalcontact.utils.Constant.HTTP_KEY;
 
 /**
  * ResponseBody转换器
@@ -28,7 +26,6 @@ public class FastJsonResponseBodyConverter<T> implements Converter<ResponseBody,
     public FastJsonResponseBodyConverter(Type type) {
         this.type = type;
     }
-
     @Override
     public T convert(@NonNull ResponseBody value) throws IOException {
         BufferedSource bufferedSource = Okio.buffer(value.source());

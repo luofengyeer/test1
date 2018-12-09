@@ -28,7 +28,6 @@ public class LoginResponseBean {
     public void setUserInfo(UserInfo userInfo) {
         this.userInfo = userInfo;
     }
-
     public static class UserInfo {
         private String account;
         private String mobile;

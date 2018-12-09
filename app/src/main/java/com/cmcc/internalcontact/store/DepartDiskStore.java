@@ -38,9 +38,9 @@ public class DepartDiskStore {
      */
     public List<DepartModel> searchDepartList(String search, int type) {
         OperatorGroup operators = OperatorGroup
-                .clause(OperatorGroup.clause().and(DepartModel_Table.deptName.like(search)).and(DepartModel_Table.type.is(type)))
-                .or(OperatorGroup.clause().and(DepartModel_Table.shortName.like(search)).and(DepartModel_Table.type.is(type)))
-                .or(OperatorGroup.clause().and(DepartModel_Table.deptPinyin.like(search)).and(DepartModel_Table.type.is(type)));
+                .clause(OperatorGroup.clause().and(DepartModel_Table.deptName.like(search)).and(DepartModel_Table.deptType.is(type)))
+                .or(OperatorGroup.clause().and(DepartModel_Table.shortName.like(search)).and(DepartModel_Table.deptType.is(type)))
+                .or(OperatorGroup.clause().and(DepartModel_Table.deptPinyin.like(search)).and(DepartModel_Table.deptType.is(type)));
         return SQLite.select().from(DepartModel.class).where(operators).queryList();
     }
 

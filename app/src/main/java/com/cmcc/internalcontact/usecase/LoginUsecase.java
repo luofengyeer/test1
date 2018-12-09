@@ -39,7 +39,7 @@ public class LoginUsecase {
 
     public void saveUseInfo(LoginResponseBean userInfo) {
         SharePreferencesUtils.getInstance().setString(TAG_USE_INFO, JSON.toJSONString(userInfo.getUserInfo()));
-        saveToken(userInfo.getToken(), Long.valueOf(System.currentTimeMillis() + userInfo.getExpire()));
+        saveToken(userInfo.getToken(), System.currentTimeMillis() + (userInfo.getExpire()*1000));
     }
 
     public void saveToken(String token, long tokenExpire) {

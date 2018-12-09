@@ -49,7 +49,7 @@ public class MineInfo {
                 }
                 PersonBean personBean = new PersonBean();
                 personBean.setAvator(userInfo.getHeadPic());
-                personBean.setName(userInfo.getName());
+                personBean.setName(userInfo.getUsername());
                 personBean.setPhone((TextUtils.isEmpty(userInfo.getMobile()) ? "" : userInfo.getMobile())
                         + (TextUtils.isEmpty(userInfo.getMobile2()) ? "" :
                         TextUtils.isEmpty(userInfo.getMobile()) ? userInfo.getMobile2() : "\n" + userInfo.getMobile2()));

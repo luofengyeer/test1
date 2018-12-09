@@ -31,7 +31,7 @@ public class LoginResponseBean {
 
     public static class UserInfo {
         private String account;
-        private String name;
+        private String username;
         private String mobile;
         private String mobile2;
         private String tel;
@@ -39,6 +39,11 @@ public class LoginResponseBean {
         private String orgId;
         private String job;
         private String headPic;
+        private int createBy;
+        private long createTime;
+        private String isDisable;
+        private String password;
+        private long userId;
 
         public String getAccount() {
             return account;
@@ -46,6 +51,14 @@ public class LoginResponseBean {
 
         public void setAccount(String account) {
             this.account = account;
+        }
+
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(String username) {
+            this.username = username;
         }
 
         public String getMobile() {
@@ -104,12 +117,64 @@ public class LoginResponseBean {
             this.headPic = headPic;
         }
 
-        public String getName() {
-            return name;
+        public int getCreateBy() {
+            return createBy;
         }
 
-        public void setName(String name) {
-            this.name = name;
+        public void setCreateBy(int createBy) {
+            this.createBy = createBy;
+        }
+
+        public long getCreateTime() {
+            return createTime;
+        }
+
+        public void setCreateTime(long createTime) {
+            this.createTime = createTime;
+        }
+
+        public String getIsDisable() {
+            return isDisable;
+        }
+
+        public void setIsDisable(String isDisable) {
+            this.isDisable = isDisable;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
+
+        public long getUserId() {
+            return userId;
+        }
+
+        public void setUserId(long userId) {
+            this.userId = userId;
+        }
+
+        @Override
+        public String toString() {
+            return "UserInfo{" +
+                    "account='" + account + '\'' +
+                    ", username='" + username + '\'' +
+                    ", mobile='" + mobile + '\'' +
+                    ", mobile2='" + mobile2 + '\'' +
+                    ", tel='" + tel + '\'' +
+                    ", email='" + email + '\'' +
+                    ", orgId='" + orgId + '\'' +
+                    ", job='" + job + '\'' +
+                    ", headPic='" + headPic + '\'' +
+                    ", createBy=" + createBy +
+                    ", createTime=" + createTime +
+                    ", isDisable='" + isDisable + '\'' +
+                    ", password='" + password + '\'' +
+                    ", userId=" + userId +
+                    '}';
         }
     }
 }

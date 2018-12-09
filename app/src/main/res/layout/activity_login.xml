@@ -42,6 +42,7 @@
             android:layout_height="48dp"
             android:hint="请输入11位手机号码"
             android:inputType="number"
+            android:text="17603876866"
             android:textSize="16sp" />
 
         <RelativeLayout
@@ -55,6 +56,7 @@
                 android:layout_height="48dp"
                 android:hint="请输入6-20位密码"
                 android:inputType="textPassword"
+                android:text="123456"
                 android:paddingEnd="40dp"
                 android:textSize="16sp" />
 

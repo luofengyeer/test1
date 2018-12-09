@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.cmcc.internalcontact.model.http.UpdateContactResponse;
 import com.cmcc.internalcontact.model.http.UpdateDeptResponse;
+import com.cmcc.internalcontact.utils.AesUtils;
 import com.cmcc.internalcontact.utils.ArraysUtils;
 import com.cmcc.internalcontact.utils.SharePreferencesUtils;
 import com.cmcc.internalcontact.utils.http.Api;
@@ -29,11 +30,11 @@ public class UpdateContactUseCase {
             @Override
             public Object call() throws Exception {
                 long personVersion = SharePreferencesUtils.getInstance().getLong(KEY_CONTACT_VERSION, 0);
-                HashMap<String, Long> requestData = new HashMap<>();
-                requestData.put("telsVersion", personVersion);
+                HashMap<String, String> requestData = new HashMap<>();
+                requestData.put("telsVersion", AesUtils.encrypt(String.valueOf(personVersion)));
                 HashMap<String, Integer> body = api.isHasNewContacts(requestData).execute().body();
                 if (ArraysUtils.isMapEmpty(body)) {
-                    return null;
+                    return body;
                 }
                 //更新人员
                 Integer isHas = body.get("isHas");
@@ -45,12 +46,12 @@ public class UpdateContactUseCase {
                     }
                 }
                 long departVersion = SharePreferencesUtils.getInstance().getLong(KEY_DEPART_VERSION, 0);
-                HashMap<String, Long> requestDeptData = new HashMap<>();
-                requestDeptData.put("deptsVersion", departVersion);
+                HashMap<String, String> requestDeptData = new HashMap<>();
+                requestDeptData.put("deptsVersion", AesUtils.encrypt(String.valueOf(departVersion)));
                 //更新部门
                 HashMap<String, Integer> departBody = api.isHasNewDept(requestDeptData).execute().body();
                 if (ArraysUtils.isMapEmpty(departBody)) {
-                    return null;
+                    return body;
                 }
                 isHas = departBody.get("isHas");
                 if (isHas == 1) {
@@ -60,7 +61,7 @@ public class UpdateContactUseCase {
                         SharePreferencesUtils.getInstance().setLong(KEY_DEPART_VERSION, updateDeptResponse.getVersion());
                     }
                 }
-                return null;
+                return body;
             }
         });
     }

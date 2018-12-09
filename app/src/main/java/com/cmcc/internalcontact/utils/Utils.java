@@ -7,8 +7,10 @@ import android.net.Uri;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.TextPaint;
+import android.text.TextUtils;
 import android.text.style.ClickableSpan;
 import android.view.View;
+import android.widget.Toast;
 
 public class Utils {
     private static Context context;
@@ -77,6 +79,10 @@ public class Utils {
      * @param phoneNumber 电话号码
      */
     public static void call(Activity activity, String phoneNumber) {
+        if(TextUtils.isEmpty(phoneNumber)){
+            Toast.makeText(activity,"该人员没有手机号码",Toast.LENGTH_SHORT).show();
+            return;
+        }
         Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNumber));
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         activity.startActivity(intent);
@@ -88,6 +94,10 @@ public class Utils {
      * @param phoneNumber 接收号码
      */
     public static void sendSms(Activity activity, String phoneNumber) {
+        if(TextUtils.isEmpty(phoneNumber)){
+            Toast.makeText(activity,"该人员没有手机号码",Toast.LENGTH_SHORT).show();
+            return;
+        }
         Intent sendIntent = new Intent(Intent.ACTION_SENDTO);
         sendIntent.setData(Uri.parse("smsto:" + phoneNumber));
         sendIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

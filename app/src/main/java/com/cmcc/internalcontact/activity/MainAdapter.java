@@ -29,7 +29,7 @@ public class MainAdapter extends RvCommonAdapter<MainInfoBean> {
         TextView name = viewHolder.itemView.findViewById(R.id.company_contact_name);
         ImageView icon = viewHolder.itemView.findViewById(R.id.company_contact_icon);
         TextView departmentName = viewHolder.itemView.findViewById(R.id.person_work);
-        if (item.getType() == MainInfoBean.TYPE_PERSON) {
+        if (item.getType() == MainInfoBean.TYPE_DEPART) {
             icon.setImageResource(R.drawable.ic_depart_icon);
         } else {
             Glide.with(getContext()).load(item.getAvatar()).apply(Constant.AVATAR_OPTIONS).into(icon);

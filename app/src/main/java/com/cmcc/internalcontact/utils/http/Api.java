@@ -20,13 +20,13 @@ public interface Api {
     Call<LoginResponseBean> login(@Body LoginRequestBean loginRequestBean);
 
     @POST("app/isHasNewContacts")
-    Call<HashMap<String, Integer>> isHasNewContacts(@Body HashMap<String, Long> version);
+    Call<HashMap<String, Integer>> isHasNewContacts(@Body HashMap<String,String>  version);
 
     @GET("app/updateContacts")
     Call<UpdateContactResponse> updateContacts();
 
     @POST("app/isHasNewDepts")
-    Call<HashMap<String, Integer>> isHasNewDept(@Body HashMap<String, Long> v);
+    Call<HashMap<String, Integer>> isHasNewDept(@Body HashMap<String,String> v);
 
     @GET("app/updateDepts")
     Call<UpdateDeptResponse> updateDepartments();
@@ -35,7 +35,7 @@ public interface Api {
     Call<HashMap<String, Integer>> isTokenPass();
 
     @POST("app/updateAppUser")
-    Call<Void> updateAppUser(PersonBean personBean);
+    Call<Void> updateAppUser(LoginResponseBean.UserInfo personBean);
 
     @POST("app/app/uploadPic")
     Call<HashMap<String, String>> updateAvatar(@Body HashMap<String, String> v);

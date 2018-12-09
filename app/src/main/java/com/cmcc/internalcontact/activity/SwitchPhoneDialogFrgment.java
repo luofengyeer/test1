@@ -19,8 +19,6 @@ import com.cmcc.internalcontact.R;
 import com.cmcc.internalcontact.utils.ArraysUtils;
 import com.cmcc.internalcontact.utils.Utils;
 
-import java.util.ArrayList;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -40,10 +38,10 @@ public class SwitchPhoneDialogFrgment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.layout_switch_phone, container, false);
-        ArrayList<String> phones = getArguments().getStringArrayList(TAG_SWITCH_PHONE);
-        tvSwitchPhone1.setText(phones.get(0));
-        tvSwitchPhone2.setText(phones.get(1));
+        String[] phones = getArguments().getStringArray(TAG_SWITCH_PHONE);
         unbinder = ButterKnife.bind(this, rootView);
+        tvSwitchPhone1.setText(phones[0]);
+        tvSwitchPhone2.setText(phones[1]);
         return rootView;
     }
 
@@ -101,7 +99,7 @@ public class SwitchPhoneDialogFrgment extends DialogFragment {
     }
 
     @Nullable
-    @OnClick({R.id.lay_switch_phone1, R.id.lay_user_item_tel})
+    @OnClick({R.id.tv_switch_phone1, R.id.tv_switch_phone2})
     public void onViewClicked(View view) {
         Utils.call(getActivity(), ((TextView) view).getText().toString());
     }

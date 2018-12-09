@@ -19,6 +19,7 @@ import com.cmcc.internalcontact.base.BaseActivity;
 import com.cmcc.internalcontact.base.MyObserver;
 import com.cmcc.internalcontact.model.http.LoginResponseBean;
 import com.cmcc.internalcontact.usecase.LoginUsecase;
+import com.cmcc.internalcontact.usecase.UpdateContactUseCase;
 import com.cmcc.internalcontact.utils.view.CommonButton;
 import com.cmcc.internalcontact.utils.view.StatusBarUtil;
 import com.cmcc.internalcontact.utils.view.SwitchButton;
@@ -145,6 +146,8 @@ public class LoginActivity extends BaseActivity {
         }
         ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("正在登录请稍后...");
+        progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
         LoginUsecase loginUsecase = new LoginUsecase();
         progressDialog.show();
         loginUsecase.login(this, edAccount.getText().toString().trim(), edPassword.getText().toString().trim())
@@ -152,10 +155,26 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onNext(LoginResponseBean loginResponseBean) {
-                progressDialog.dismiss();
-                loginUsecase.saveUseInfo(loginResponseBean);
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                finish();
+                progressDialog.setMessage("正在更新联系人请稍后");
+                new UpdateContactUseCase(LoginActivity.this).updateContact()
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new MyObserver(LoginActivity.this) {
+                                       @Override
+                                       public void onNext(Object o) {
+                                           progressDialog.dismiss();
+                                           startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                           progressDialog.dismiss();
+                                           finish();
+                                       }
+
+                                       @Override
+                                       public void onError(Throwable e) {
+                                           progressDialog.dismiss();
+                                           super.onError(e);
+                                       }
+                                   }
+                        );
             }
 
             @Override

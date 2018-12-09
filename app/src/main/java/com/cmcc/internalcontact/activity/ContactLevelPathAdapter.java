@@ -46,7 +46,9 @@ public class ContactLevelPathAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     public DepartModel jump2Position(DepartModel departmentBean) {
         if (ArraysUtils.isListEmpty(mList)) {
-            return null;
+            mList.add(departmentBean);
+            notifyDataSetChanged();
+            return departmentBean;
         }
         int position = mList.indexOf(departmentBean);
         if (position < 0) {
@@ -77,10 +79,10 @@ public class ContactLevelPathAdapter extends RecyclerView.Adapter<RecyclerView.V
             return;
         }
         final DepartModel departmentBean = mList.get(position);
-        boolean isLastOne = isLastOne(position, departmentBean);
 
         DepartmentViewHolder rootViewHolder = (DepartmentViewHolder) holder;
         if (departmentBean != null) {
+            boolean isLastOne = isLastOne(position, departmentBean);
             rootViewHolder.setName(departmentBean, isLastOne);
         }
 
@@ -99,6 +101,9 @@ public class ContactLevelPathAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     private boolean isLastOne(int position, DepartModel departmentBean) {
+        if (ArraysUtils.isListEmpty(mList)) {
+            return false;
+        }
         return position + 1 == mList.size() && departmentBean.getId() > 0;
     }
 
@@ -108,7 +113,7 @@ public class ContactLevelPathAdapter extends RecyclerView.Adapter<RecyclerView.V
         return mList.size();
     }
 
-    public List<DepartModel> getDatas(){
+    public List<DepartModel> getDatas() {
         return mList;
     }
 

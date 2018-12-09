@@ -267,6 +267,14 @@ public class DepartModel extends BaseModel implements Parcelable {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof DepartModel) {
+            return ((DepartModel) obj).getId() == getId();
+        }
+        return super.equals(obj);
+    }
+
+    @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(this.id);
         dest.writeString(this.deptCode);

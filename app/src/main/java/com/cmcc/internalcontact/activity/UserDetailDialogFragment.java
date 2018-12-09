@@ -53,6 +53,7 @@ public class UserDetailDialogFragment extends DialogFragment {
     ImageView ivUserAvatar;
     Unbinder unbinder;
     private PersonModel personModel;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -88,7 +89,14 @@ public class UserDetailDialogFragment extends DialogFragment {
         if (personModel == null) {
             return;
         }
-        Utils.call(getActivity(), "10086");
+        String mobile = personModel.getMobile();
+        String mobile2 = personModel.getMobile2();
+        if (!TextUtils.isEmpty(mobile) && !TextUtils.isEmpty(mobile2)) {
+            SwitchPhoneDialogFrgment.show(getActivity(), new String[]{mobile, mobile2});
+            dismiss();
+            return;
+        }
+        Utils.call(getActivity(), TextUtils.isEmpty(mobile) ? mobile2 : mobile);
     }
 
     @OnClick({R.id.iv_message_btn})
@@ -96,7 +104,7 @@ public class UserDetailDialogFragment extends DialogFragment {
         if (personModel == null) {
             return;
         }
-        Utils.sendSms(getActivity(),"10010");
+        Utils.sendSms(getActivity(), personModel.getMobile());
     }
 
     public static UserDetailDialogFragment show(FragmentActivity appCompatActivity, PersonModel personModel) {

@@ -131,10 +131,10 @@ public class LoadContactList {
             public List<MainInfoBean> apply(String aLong) throws Exception {
                 PersonDiskStore personDiskStore = new PersonDiskStore();
                 List<PersonModel> persons = personDiskStore.getPersonsByDepartId(aLong);
-                if (ArraysUtils.isListEmpty(persons)) {
-                    return null;
-                }
                 List<MainInfoBean> resMainInfoBeans = new ArrayList<>();
+                if (ArraysUtils.isListEmpty(persons)) {
+                    return resMainInfoBeans;
+                }
                 for (PersonModel personModel : persons) {
                     MainInfoBean<PersonModel> mainInfoBean = new MainInfoBean<>();
                     mainInfoBean.setType(MainInfoBean.TYPE_PERSON);

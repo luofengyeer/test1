@@ -137,7 +137,10 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
         if (departModel == null) {
             return;
         }
-
+        //父部门为空代表是第一次加载
+        pathLay.setVisibility(View.VISIBLE);
+        toolbarMain.setButtonVisibility(ToolBarButtonType.LEFT_FIRST_BUTTON, View.VISIBLE);
+        pathAdapter.jump2Position(departModel);
         layDutyCall.setVisibility(View.VISIBLE);
         setDepartTels(departModel);
         new LoadContactList().loadPersons(departModel.getDeptCode()).subscribeOn(Schedulers.newThread())
@@ -160,13 +163,20 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
     private void loadDepartment(DepartModel parentModel) {
         pathIcon.setVisibility(View.VISIBLE);
         layDutyCall.setVisibility(View.GONE);
-        String departId = parentModel == null ? "" : parentModel.getDeptCode();
+        String departId = parentModel == null ? "-1" : parentModel.getDeptCode();
         new LoadContactList().loadDepartData(departId).subscribe(new MyObserver<List<MainInfoBean>>(this) {
             @Override
             public void onNext(List<MainInfoBean> mainInfoBeans) {
+
                 if (ArraysUtils.isListEmpty(mainInfoBeans)) {
                     loadContact(parentModel);
                     return;
+                }
+                //父部门为空代表是第一次加载
+                if (parentModel != null) {
+                    pathLay.setVisibility(View.VISIBLE);
+                    toolbarMain.setButtonVisibility(ToolBarButtonType.LEFT_FIRST_BUTTON, View.VISIBLE);
+                    pathAdapter.jump2Position(parentModel);
                 }
                 adapter.setDataList(mainInfoBeans);
             }
@@ -244,9 +254,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
                     startActivity(new Intent(MainActivity.this, YellowPageActivity.class));
                     return;
                 }
-                pathLay.setVisibility(View.VISIBLE);
-                toolbarMain.setButtonVisibility(ToolBarButtonType.LEFT_FIRST_BUTTON, View.VISIBLE);
-                pathAdapter.addData(data1);
+
                 loadDepartment(data1);
                 break;
             case MainInfoBean.TYPE_PERSON:

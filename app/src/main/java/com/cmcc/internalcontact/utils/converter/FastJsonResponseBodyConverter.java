@@ -1,6 +1,7 @@
 package com.cmcc.internalcontact.utils.converter;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.cmcc.internalcontact.model.http.HttpBaseBean;
@@ -38,7 +39,9 @@ public class FastJsonResponseBodyConverter<T> implements Converter<ResponseBody,
         if (httpBaseBean.getCode() != 0) {
             throw new IOException("http错误："+httpBaseBean.getMsg() + ",code:" + httpBaseBean.getCode());
         }
-        return JsonManager.jsonToBean(AesUtils.decrypt(httpBaseBean.getData()), type);
+        String decrypt = AesUtils.decrypt(httpBaseBean.getData());
+        Log.d("ServerResponseData:", decrypt);
+        return JsonManager.jsonToBean(decrypt, type);
 
     }
 }

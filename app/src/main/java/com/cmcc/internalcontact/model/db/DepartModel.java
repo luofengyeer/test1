@@ -52,7 +52,7 @@ public class DepartModel extends BaseModel {
     @Column
     private String email3;//
     @Column
-    private int type;//部门类型
+    private int deptType;//部门类型
 
     public long getId() {
         return id;
@@ -222,12 +222,12 @@ public class DepartModel extends BaseModel {
         this.email3 = email3;
     }
 
-    public int getType() {
-        return type;
+    public int getDeptType() {
+        return deptType;
     }
 
-    public void setType(int type) {
-        this.type = type;
+    public void setDeptType(int deptType) {
+        this.deptType = deptType;
     }
 
 }

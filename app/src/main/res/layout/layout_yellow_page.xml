@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#fff"
     android:orientation="vertical">
+
     <com.cmcc.internalcontact.utils.view.CommonToolBar
         android:id="@+id/tb_quick_login"
         style="@style/common_toolbar_normal"
         app:titleText="@string/text_yellow" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -20,20 +22,20 @@
             android:orientation="vertical"
             android:paddingEnd="24dp"
             android:paddingStart="24dp">
+            <!--
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:text="周口黄页"
+                            android:textColor="@color/common_textColor"
+                            android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="周口黄页"
-                android:textColor="@color/common_textColor"
-                android:textStyle="bold" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/common_greyColor" />
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0.5dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@color/common_greyColor" />-->
 
             <TextView
                 android:layout_width="match_parent"
@@ -77,11 +79,11 @@
                     android:textColor="@color/common_textColor" />
 
                 <TextView
+                    android:id="@+id/tv_119"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:autoLink="phone"
                     android:text="119"
-                    android:id="@+id/tv_119"
 
                     android:textColor="@color/common_textColor" />
             </LinearLayout>
@@ -99,11 +101,11 @@
                     android:textColor="@color/common_textColor" />
 
                 <TextView
+                    android:id="@+id/tv_120"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:autoLink="phone"
                     android:text="120"
-                    android:id="@+id/tv_120"
 
                     android:textColor="@color/common_textColor" />
             </LinearLayout>
@@ -142,11 +144,11 @@
                     android:textColor="@color/common_textColor" />
 
                 <TextView
+                    android:id="@+id/tv_122"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:autoLink="phone"
                     android:text="122"
-                    android:id="@+id/tv_122"
 
                     android:textColor="@color/common_textColor" />
             </LinearLayout>
@@ -184,11 +186,11 @@
                     android:textColor="@color/common_textColor" />
 
                 <TextView
+                    android:id="@+id/tv_112"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:autoLink="phone"
                     android:text="112"
-                    android:id="@+id/tv_112"
 
                     android:textColor="@color/common_textColor" />
             </LinearLayout>
@@ -206,10 +208,10 @@
                     android:textColor="@color/common_textColor" />
 
                 <TextView
+                    android:id="@+id/tv_114"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:autoLink="phone"
-                    android:id="@+id/tv_114"
                     android:text="114"
                     android:textColor="@color/common_textColor" />
             </LinearLayout>
@@ -382,20 +384,26 @@
                     android:text="周口市中心医院: "
                     android:textColor="@color/common_textColor" />
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:autoLink="phone"
-                    android:text="0394-8269178"
-                    android:textColor="@color/common_textColor" />
+                    android:layout_marginStart="8dp"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:autoLink="phone"
-                    android:text="0394-8269120"
-                    android:textColor="@color/common_textColor" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:autoLink="phone"
+                        android:text="0394-8269178"
+                        android:textColor="@color/common_textColor" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:autoLink="phone"
+                        android:text="0394-8269120"
+                        android:textColor="@color/common_textColor" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -410,20 +418,26 @@
                     android:text="周口市中医院: "
                     android:textColor="@color/common_textColor" />
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:autoLink="phone"
-                    android:text="0394-8279727"
-                    android:textColor="@color/common_textColor" />
+                    android:layout_marginStart="8dp"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:autoLink="phone"
-                    android:text="0394-8222966"
-                    android:textColor="@color/common_textColor" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:autoLink="phone"
+                        android:text="0394-8279727"
+                        android:textColor="@color/common_textColor" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:autoLink="phone"
+                        android:text="0394-8222966"
+                        android:textColor="@color/common_textColor" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -438,20 +452,27 @@
                     android:text="周口市人民医院: "
                     android:textColor="@color/common_textColor" />
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:autoLink="phone"
-                    android:text="0394-8269178"
-                    android:textColor="@color/common_textColor" />
+                    android:layout_marginStart="8dp"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:autoLink="phone"
-                    android:text="0394-8269120"
-                    android:textColor="@color/common_textColor" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:autoLink="phone"
+                        android:text="0394-8269178"
+                        android:textColor="@color/common_textColor" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:autoLink="phone"
+                        android:text="0394-8269120"
+                        android:textColor="@color/common_textColor" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

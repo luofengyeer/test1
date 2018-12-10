@@ -47,11 +47,11 @@ public class PersonDiskStore {
         NameAlias departModelNameAlias = new NameAlias.Builder("D")
                 .shouldStripIdentifier(true)
                 .shouldAddIdentifierToName(true).build();
-        String query = SQLite.select().from(DepartModel.class).as("D").leftOuterJoin(DepartPersonModel_Table.class)
+        String query = SQLite.select().from(DepartModel.class).as("D").leftOuterJoin(DepartPersonModel.class)
                 .as("DP").on(DepartPersonModel_Table.udDeptCode.withTable(deptPersonModelNameAlias).eq(DepartModel_Table.deptCode.withTable(departModelNameAlias)))
                 .where(DepartPersonModel_Table.udAccount.withTable(deptPersonModelNameAlias).eq(account)).getQuery();
         Log.d("SQLHKB","getPersonsByDepartId,query="+query);
-        return SQLite.select().from(DepartModel.class).as("D").leftOuterJoin(DepartPersonModel_Table.class)
+        return SQLite.select().from(DepartModel.class).as("D").leftOuterJoin(DepartPersonModel.class)
                 .as("DP").on(DepartPersonModel_Table.udDeptCode.withTable(deptPersonModelNameAlias).eq(DepartModel_Table.deptCode.withTable(departModelNameAlias)))
                 .where(DepartPersonModel_Table.udAccount.withTable(deptPersonModelNameAlias).eq(account)).querySingle();
     }

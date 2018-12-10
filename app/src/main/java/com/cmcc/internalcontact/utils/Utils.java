@@ -43,6 +43,10 @@ public class Utils {
     }
 
     public static SpannableStringBuilder addClickablePart(Activity context, String str) {
+        return addClickablePart(context, str, false);
+    }
+
+    public static SpannableStringBuilder addClickablePart(Activity context, String str, boolean isUnderLine) {
         SpannableString spanStr = new SpannableString("");
         final SpannableStringBuilder mSpannableStringBuilder = new SpannableStringBuilder(spanStr);
         mSpannableStringBuilder.append(str);
@@ -67,8 +71,10 @@ public class Utils {
                     @Override
                     public void updateDrawState(TextPaint ds) {
                         super.updateDrawState(ds);
-                        //去除下划线
-                        ds.setUnderlineText(false);
+                        if (!isUnderLine) {
+                            //去除下划线
+                            ds.setUnderlineText(false);
+                        }
                     }
 
                 }, start, start + name.length(), 0);
@@ -135,6 +141,7 @@ public class Utils {
 
         context.startActivity(intent);
     }
+
     public static String getMimeType(String filePath) {
         MediaMetadataRetriever mmr = new MediaMetadataRetriever();
         String mime = "*/*";
@@ -152,6 +159,7 @@ public class Utils {
         }
         return mime;
     }
+
     /**
      * 根据文件后缀名获得对应的MIME类型。
      *

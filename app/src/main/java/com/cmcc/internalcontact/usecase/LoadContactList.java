@@ -7,6 +7,7 @@ import com.cmcc.internalcontact.model.db.PersonModel;
 import com.cmcc.internalcontact.store.DepartDiskStore;
 import com.cmcc.internalcontact.store.PersonDiskStore;
 import com.cmcc.internalcontact.utils.ArraysUtils;
+import com.cmcc.internalcontact.utils.Constant;
 import com.raizlabs.android.dbflow.config.DatabaseDefinition;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
@@ -164,6 +165,7 @@ public class LoadContactList {
                     MainInfoBean<PersonModel> mainInfoBean = new MainInfoBean<>();
                     mainInfoBean.setType(MainInfoBean.TYPE_PERSON);
                     mainInfoBean.setData(personModel);
+                    mainInfoBean.setAvatar(Constant.BASE_AVATRE_URL+personModel.getHeadPic());
                     mainInfoBean.setName(personModel.getUsername());
                     mainInfoBean.setDepartmentName(personModel.getJob());
                     resMainInfoBeans.add(mainInfoBean);

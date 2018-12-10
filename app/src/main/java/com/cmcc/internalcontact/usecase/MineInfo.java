@@ -2,7 +2,6 @@ package com.cmcc.internalcontact.usecase;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.cmcc.internalcontact.model.PersonBean;
@@ -31,7 +30,6 @@ import retrofit2.Response;
 import top.zibin.luban.Luban;
 
 import static com.cmcc.internalcontact.usecase.LoginUsecase.TAG_USE_INFO;
-import static com.cmcc.internalcontact.utils.Constant.BASE_URL;
 
 
 public class MineInfo {
@@ -103,11 +101,25 @@ public class MineInfo {
                         .updateAvatar(map);
                 Response<HashMap<String, String>> response = responseBeanCall.execute();
                 HashMap<String, String> result = response.body();
+                if (result == null) {
+                    return Observable.just("");
+                }
                 String item = result.values().toArray(new String[]{})[0];
-                String path = BASE_URL + item.replaceAll("\\\\", "/");
-                Log.v("upload", "path: " + path);
-                path = path.replace("..png", ".png");
-                return Observable.just(path);
+                String string = SharePreferencesUtils.getInstance().getString(TAG_USE_INFO, "");
+                if (TextUtils.isEmpty(string)) {
+                    return Observable.just(item);
+                }
+                /*LoginResponseBean.UserInfo userInfo = JSON.parseObject(string, LoginResponseBean.UserInfo.class);
+                if (userInfo == null) {
+                    return Observable.just(item);
+                }*/
+              /*  LoginResponseBean.UserInfo userInfo = new LoginResponseBean.UserInfo();
+                userInfo.setHeadPic(AesUtils.encrypt(item));*/
+                HashMap<String, String> data = new HashMap<>();
+                data.put("headPic", AesUtils.encrypt(item));
+                Call<Void> responseUpdate = HttpManager.getInstance(context).getApi().updateAppUser(data);
+                responseUpdate.execute();
+                return Observable.just(item);
             }
         });
     }

@@ -16,6 +16,8 @@ import android.widget.Toast;
 
 import java.io.File;
 
+import static com.cmcc.internalcontact.utils.Constant.BASE_AVATRE_URL;
+
 public class Utils {
     private static Context context;
 
@@ -216,5 +218,12 @@ public class Utils {
             {".aac", "audio/aac"}, {".jpe", "image/jpeg"},
             {".amr", "audio/amr"}, {".mid", "audio/mid"},
             {"", "*/*"}};
+
+    public static String buildHeadPic(String headPic) {
+        if (TextUtils.isEmpty(headPic)) {
+            return headPic;
+        }
+        return BASE_AVATRE_URL + headPic.replaceAll("\\\\", "/");
+    }
 
 }

@@ -10,6 +10,7 @@ import com.cmcc.internalcontact.model.http.LoginResponseBean;
 import com.cmcc.internalcontact.utils.AesUtils;
 import com.cmcc.internalcontact.utils.Constant;
 import com.cmcc.internalcontact.utils.SharePreferencesUtils;
+import com.cmcc.internalcontact.utils.Utils;
 import com.cmcc.internalcontact.utils.http.HttpManager;
 
 import io.reactivex.Observable;
@@ -39,6 +40,8 @@ public class LoginUsecase {
     }
 
     public void saveUseInfo(LoginResponseBean userInfo) {
+        LoginResponseBean.UserInfo loginUserInfo = userInfo.getUserInfo();
+        loginUserInfo.setHeadPic(Utils.buildHeadPic(loginUserInfo.getHeadPic()));
         SharePreferencesUtils.getInstance().setString(TAG_USE_INFO, JSON.toJSONString(userInfo.getUserInfo()));
         saveToken(userInfo.getToken(), System.currentTimeMillis() + (userInfo.getExpire() * 1000));
     }

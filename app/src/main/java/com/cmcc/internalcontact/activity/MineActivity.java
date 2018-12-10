@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -75,6 +76,7 @@ public class MineActivity extends BaseActivity {
     private static final int MSG_WHAT_GET_MINE = 10001;
     private static final int MSG_WHAT_UPDATE_MINE = 10002;
     private ProgressDialog dialog;
+    private LoginResponseBean.UserInfo personBean;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -137,26 +139,7 @@ public class MineActivity extends BaseActivity {
                 .subscribe(new MyObserver<PersonBean>(this) {
                     @Override
                     public void onNext(PersonBean personBean) {
-                        if (personBean == null) {
-                            return;
-                        }
-                        Glide.with(MineActivity.this)
-                                .load(personBean.getAvator())
-                                .apply(Constant.AVATAR_OPTIONS)
-                                .into(ivHeadPic);
-                        tvUsername.setText(personBean.getName());
-                        tvMobilePhone.setText(personBean.getPhone());
-                        tvTel.setText(personBean.getTel());
-                        tvEmail.setText(personBean.getEmail());
-                        tvJob.setText(personBean.getJob());
-                        DepartModel mechanism = personBean.getMechanism();
-                        if (mechanism != null) {
-                            tvMechanism.setText(mechanism.getDeptName());
-                        }
-                        DepartModel depart = personBean.getDepart();
-                        if (depart != null) {
-                            tvCompany.setText(depart.getDeptName());
-                        }
+                        show(personBean);
                     }
                 });
     }
@@ -168,6 +151,7 @@ public class MineActivity extends BaseActivity {
                     @Override
                     public void onNext(LoginResponseBean.UserInfo userInfo) {
                         if (userInfo != null) {
+                            userInfo.setHeadPic(Utils.buildHeadPic(userInfo.getHeadPic()));
                             SharePreferencesUtils.getInstance().setString(TAG_USE_INFO, JSON.toJSONString(userInfo));
                         }
                         handler.sendEmptyMessage(MSG_WHAT_GET_MINE);
@@ -187,11 +171,21 @@ public class MineActivity extends BaseActivity {
                 .subscribe(new MyObserver<String>(this) {
                     @Override
                     public void onNext(String path) {
-                        Log.e("path", "" + path);
-                        Glide.with(MineActivity.this)
-                                .load(path)
-                                .apply(Constant.AVATAR_OPTIONS)
-                                .into(ivHeadPic);
+                        if (TextUtils.isEmpty(path)) {
+                            return;
+                        }
+                        Log.e(TAG, "uploadHeadPic: " + path);
+                        String string = SharePreferencesUtils.getInstance().getString(TAG_USE_INFO, "");
+                        if (string == null) {
+                            return;
+                        }
+                        LoginResponseBean.UserInfo userInfo = JSON.parseObject(string, LoginResponseBean.UserInfo.class);
+                        if (userInfo == null) {
+                            return;
+                        }
+                        userInfo.setHeadPic(Utils.buildHeadPic(path));
+                        SharePreferencesUtils.getInstance().setString(TAG_USE_INFO, JSON.toJSONString(userInfo));
+                        handler.sendEmptyMessage(MSG_WHAT_GET_MINE);
                     }
 
                     @Override
@@ -306,6 +300,29 @@ public class MineActivity extends BaseActivity {
             return;
         }
         dialog.setProgress(progress);
+    }
+
+    private void show(PersonBean personBean) {
+        if (personBean == null) {
+            return;
+        }
+        Glide.with(MineActivity.this)
+                .load(personBean.getAvator())
+                .apply(Constant.AVATAR_OPTIONS)
+                .into(ivHeadPic);
+        tvUsername.setText(personBean.getName());
+        tvMobilePhone.setText(personBean.getPhone());
+        tvTel.setText(personBean.getTel());
+        tvEmail.setText(personBean.getEmail());
+        tvJob.setText(personBean.getJob());
+        DepartModel mechanism = personBean.getMechanism();
+        if (mechanism != null) {
+            tvMechanism.setText(mechanism.getDeptName());
+        }
+        DepartModel depart = personBean.getDepart();
+        if (depart != null) {
+            tvCompany.setText(depart.getDeptName());
+        }
     }
 
     @Override

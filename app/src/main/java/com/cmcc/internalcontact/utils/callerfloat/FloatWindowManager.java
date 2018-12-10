@@ -75,7 +75,7 @@ public class FloatWindowManager implements View.OnClickListener {
         floatView.setParams(mParams);
         floatView.setIsShowing(true);
 
-        floatView.setCallerAvatar(personBean.getHeadPic());
+        floatView.setCallerAvatar(Constant.BASE_AVATRE_URL + personBean.getHeadPic());
         floatView.setCallerName(personBean.getUsername());
         floatView.setCallerPhone(callerIds);
         floatView.setOnCloseClickListener(this);

@@ -2,19 +2,26 @@ package com.cmcc.internalcontact.activity;
 
 import android.Manifest;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.cmcc.internalcontact.R;
 import com.cmcc.internalcontact.base.BaseActivity;
 import com.cmcc.internalcontact.base.MyObserver;
+import com.cmcc.internalcontact.usecase.LauncherUseCase;
 import com.cmcc.internalcontact.usecase.LoginUsecase;
 import com.cmcc.internalcontact.usecase.UpdateContactUseCase;
+import com.cmcc.internalcontact.utils.Constant;
 import com.cmcc.internalcontact.utils.PermissionsUtils;
 import com.cmcc.internalcontact.utils.SharePreferencesUtils;
 import com.cmcc.internalcontact.utils.permission.floatpermission.FloatPermissionManager;
@@ -48,10 +55,36 @@ public class LauncherActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher);
         ButterKnife.bind(this);
-        Glide.with(this).load(R.drawable.ic_launcher_default).apply(new RequestOptions()
-                .centerCrop()
-                .error(R.drawable.ic_launcher_default)
-                .priority(Priority.HIGH)).into(ivBackground);
+        new LauncherUseCase().loadLauncherImg(this).subscribeOn(Schedulers.newThread()).observeOn(
+                AndroidSchedulers.mainThread()
+        ).subscribe(new MyObserver<String>(this) {
+            @Override
+            public void onNext(String s) {
+                try {
+                    Glide.with(LauncherActivity.this).load(Constant.BASE_AVATRE_URL + s).apply(new RequestOptions()
+                            .centerCrop()
+                            .error(R.drawable.ic_launcher_default)
+                            .priority(Priority.HIGH)).into(new SimpleTarget<Drawable>() {
+                        @Override
+                        public void onLoadFailed(@Nullable Drawable errorDrawable) {
+                            getWindow().getDecorView().setBackground(errorDrawable);
+                        }
+
+                        @Override
+                        public void onLoadStarted(@Nullable Drawable placeholder) {
+                            getWindow().getDecorView().setBackgroundResource(R.drawable.ic_launcher_default);
+                        }
+
+                        @Override
+                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                            getWindow().getDecorView().setBackground(resource);
+                        }
+                    });
+                } catch (Exception e) {
+                }
+
+            }
+        });
         if (PermissionsUtils.havePermission(this, launcherPermission)) {
             if (!FloatPermissionManager.checkPermission(this)) {
                 PermissionsUtils.showPermissionDialog(this,

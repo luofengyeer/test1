@@ -127,10 +127,10 @@ public class LoadContactList {
         });
     }
 
-    public List<DepartModel> getDepartPath(long personId) {
+    public List<DepartModel> getDepartPath(String account) {
         List<DepartModel> departModels = new ArrayList<>();
         PersonDiskStore personDiskStore = new PersonDiskStore();
-        DepartModel depart1 = personDiskStore.getDepartByPersonId(personId);
+        DepartModel depart1 = personDiskStore.getDepartByPersonId(account);
         if (depart1 == null) {
             return departModels;
         }

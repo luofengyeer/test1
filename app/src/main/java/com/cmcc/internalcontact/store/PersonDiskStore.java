@@ -1,7 +1,11 @@
 package com.cmcc.internalcontact.store;
 
+import android.util.Log;
+
 import com.cmcc.internalcontact.model.db.DepartModel;
 import com.cmcc.internalcontact.model.db.DepartModel_Table;
+import com.cmcc.internalcontact.model.db.DepartPersonModel;
+import com.cmcc.internalcontact.model.db.DepartPersonModel_Table;
 import com.cmcc.internalcontact.model.db.PersonModel;
 import com.cmcc.internalcontact.model.db.PersonModel_Table;
 import com.raizlabs.android.dbflow.sql.language.NameAlias;
@@ -17,25 +21,39 @@ public class PersonDiskStore {
      * @return
      */
     public List<PersonModel> getPersonsByDepartId(String departId) {
-        return SQLite.select().from(PersonModel.class).where(PersonModel_Table.orgId.eq(departId)).queryList();
+        NameAlias deptPersonModelNameAlias = new NameAlias.Builder("DP")
+                .shouldStripIdentifier(true)
+                .shouldAddIdentifierToName(true).build();
+        NameAlias personModelNameAlias = new NameAlias.Builder("P")
+                .shouldStripIdentifier(true)
+                .shouldAddIdentifierToName(true).build();
+        String query = SQLite.select().from(PersonModel.class).as("P").leftOuterJoin(DepartPersonModel.class).as("DP").on(PersonModel_Table.account.withTable(personModelNameAlias)
+                .eq(DepartPersonModel_Table.udAccount.withTable(deptPersonModelNameAlias))).where(DepartPersonModel_Table.udAccount.withTable(deptPersonModelNameAlias).eq(departId)).getQuery();
+        Log.d("SQLHKB","getPersonsByDepartId,query="+query);
+        return SQLite.select().from(PersonModel.class).as("P").leftOuterJoin(DepartPersonModel.class).as("DP").on(PersonModel_Table.account.withTable(personModelNameAlias)
+                .eq(DepartPersonModel_Table.udAccount.withTable(deptPersonModelNameAlias))).where(DepartPersonModel_Table.udAccount.withTable(deptPersonModelNameAlias).eq(departId)).queryList();
     }
 
     /**
      * 查询人员所属部门
      *
-     * @param personId
+     * @param account
      * @return
      */
-    public DepartModel getDepartByPersonId(long personId) {
-        NameAlias deptPersonModelNameAlias = new NameAlias.Builder("P")
+    public DepartModel getDepartByPersonId(String  account) {
+        NameAlias deptPersonModelNameAlias = new NameAlias.Builder("DP")
                 .shouldStripIdentifier(true)
                 .shouldAddIdentifierToName(true).build();
         NameAlias departModelNameAlias = new NameAlias.Builder("D")
                 .shouldStripIdentifier(true)
                 .shouldAddIdentifierToName(true).build();
-        return SQLite.select().from(DepartModel.class).as("D").leftOuterJoin(PersonModel.class)
-                .as("P").on(PersonModel_Table.orgId.withTable(deptPersonModelNameAlias).eq(DepartModel_Table.deptCode.withTable(departModelNameAlias)))
-                .where(PersonModel_Table.userId.withTable(deptPersonModelNameAlias).eq(personId)).querySingle();
+        String query = SQLite.select().from(DepartModel.class).as("D").leftOuterJoin(DepartPersonModel_Table.class)
+                .as("DP").on(DepartPersonModel_Table.udDeptCode.withTable(deptPersonModelNameAlias).eq(DepartModel_Table.deptCode.withTable(departModelNameAlias)))
+                .where(DepartPersonModel_Table.udAccount.withTable(deptPersonModelNameAlias).eq(account)).getQuery();
+        Log.d("SQLHKB","getPersonsByDepartId,query="+query);
+        return SQLite.select().from(DepartModel.class).as("D").leftOuterJoin(DepartPersonModel_Table.class)
+                .as("DP").on(DepartPersonModel_Table.udDeptCode.withTable(deptPersonModelNameAlias).eq(DepartModel_Table.deptCode.withTable(departModelNameAlias)))
+                .where(DepartPersonModel_Table.udAccount.withTable(deptPersonModelNameAlias).eq(account)).querySingle();
     }
 
     /**

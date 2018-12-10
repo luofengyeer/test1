@@ -296,7 +296,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
             loadDepartment(null);
             return;
         }
-        List<DepartModel> departPath = new LoadContactList().getDepartPath(userInfo.getUserId());
+        List<DepartModel> departPath = new LoadContactList().getDepartPath(userInfo.getAccount());
         if (ArraysUtils.isListEmpty(departPath)) {
             loadDepartment(null);
             return;

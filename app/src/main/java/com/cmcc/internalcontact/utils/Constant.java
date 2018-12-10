@@ -12,7 +12,7 @@ public class Constant {
     //        public static final String BASE_URL = "http://mulinliang.imwork.net/contactus/";
 //    public static final String BASE_URL = "http://39.106.139.151:9797/contactus/";
     public static final String BASE_URL = "http://39.106.139.151:9798/contactus/";
-    public static final String BASE_AVATRE_URL = "http://39.106.139.151:9798";
+    public static final String BASE_AVATRE_URL = "http://39.106.139.151:9798/";
     public static final String EXCEPTION_TOKEN_INVALID = "token invalid";
 
     public static final String HTTP_KEY = "f4e2e52034348f86b67cde581c0f9eb4";

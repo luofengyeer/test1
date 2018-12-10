@@ -28,7 +28,10 @@
                     android:value="1920" />
         -->
 
-        <activity android:name=".activity.LauncherActivity">
+        <activity
+            android:name=".activity.LauncherActivity"
+            android:theme="@style/AppTheme.Launcher">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

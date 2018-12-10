@@ -5,7 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.request.RequestOptions;
 import com.cmcc.internalcontact.R;
 import com.cmcc.internalcontact.base.BaseActivity;
 import com.cmcc.internalcontact.base.MyObserver;
@@ -18,11 +22,15 @@ import com.cmcc.internalcontact.utils.permission.floatpermission.FloatPermission
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 public class LauncherActivity extends BaseActivity {
 
+    @BindView(R.id.iv_background)
+    ImageView ivBackground;
     private Handler handler = null;
     private static final List<String> launcherPermission = new ArrayList<>();
     private int requsetCode = 200;
@@ -39,6 +47,11 @@ public class LauncherActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher);
+        ButterKnife.bind(this);
+        Glide.with(this).load(R.drawable.ic_launcher_default).apply(new RequestOptions()
+                .centerCrop()
+                .error(R.drawable.ic_launcher_default)
+                .priority(Priority.HIGH)).into(ivBackground);
         if (PermissionsUtils.havePermission(this, launcherPermission)) {
             if (!FloatPermissionManager.checkPermission(this)) {
                 PermissionsUtils.showPermissionDialog(this,

@@ -103,22 +103,22 @@ public class SearchActivity extends BaseActivity {
         }
     }
 
-   /* private void searchMechanism(String search) {
-        if (TextUtils.isEmpty(search)) {
-            adapter.setDepartData(null, SearchListAdapter.TYPE_MECHANISM);
-            return;
-        }
-        new SearchList().searchMechanism(search).subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new MyObserver<List<DepartModel>>(this) {
-                    @Override
-                    public void onNext(List<DepartModel> departModels) {
-                        adapter.setSearchText(search);
-                        adapter.setDepartData(departModels, SearchListAdapter.TYPE_MECHANISM);
-                    }
-                });
-    }
-*/
+    /* private void searchMechanism(String search) {
+         if (TextUtils.isEmpty(search)) {
+             adapter.setDepartData(null, SearchListAdapter.TYPE_MECHANISM);
+             return;
+         }
+         new SearchList().searchMechanism(search).subscribeOn(Schedulers.newThread())
+                 .observeOn(AndroidSchedulers.mainThread())
+                 .subscribe(new MyObserver<List<DepartModel>>(this) {
+                     @Override
+                     public void onNext(List<DepartModel> departModels) {
+                         adapter.setSearchText(search);
+                         adapter.setDepartData(departModels, SearchListAdapter.TYPE_MECHANISM);
+                     }
+                 });
+     }
+ */
     private void searchCompany(String search) {
         if (TextUtils.isEmpty(search)) {
             adapter.setDepartData(null, SearchListAdapter.TYPE_COMPANY);
@@ -167,6 +167,7 @@ public class SearchActivity extends BaseActivity {
                     searchContact(search);
                     break;
                 default://机构
+                    searchContact(search);
 //                    searchMechanism(search);
                     break;
             }

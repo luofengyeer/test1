@@ -95,6 +95,7 @@
             android:button="@null"
             android:gravity="center"
             android:text="@string/contacts"
+            android:checked="true"
             android:textColor="@drawable/bg_search_tab"
             android:textSize="@dimen/sp_17" />
 

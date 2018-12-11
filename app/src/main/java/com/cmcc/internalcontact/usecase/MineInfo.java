@@ -171,4 +171,13 @@ public class MineInfo {
         }
         return buffer;
     }
+
+    public Observable<String> downloadApk(String path) {
+        return Observable.just(path).flatMap(new Function<String, ObservableSource<String>>() {
+            @Override
+            public ObservableSource<String> apply(String s) throws Exception {
+                return null;
+            }
+        });
+    }
 }

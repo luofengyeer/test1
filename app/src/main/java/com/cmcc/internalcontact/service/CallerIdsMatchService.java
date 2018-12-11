@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
+import com.cmcc.internalcontact.model.db.DepartModel;
 import com.cmcc.internalcontact.model.db.PersonModel;
 import com.cmcc.internalcontact.store.PersonDiskStore;
 import com.cmcc.internalcontact.utils.SharePreferencesUtils;
@@ -76,13 +77,14 @@ public class CallerIdsMatchService extends Service {
     private void showCallerMatchWindow(final String callerIdsCode) {
         try {
 
-        PersonDiskStore personDiskStore = new PersonDiskStore();
-        PersonModel personModel = personDiskStore.getPersonsByPhone(callerIdsCode);
-        if (personModel == null) {
-            return;
-        }
-        FloatWindowManager.getInstance().showCallerFloatWindow(getApplicationContext(), callerIdsCode, personModel);
-        }catch (Exception e){
+            PersonDiskStore personDiskStore = new PersonDiskStore();
+            PersonModel personModel = personDiskStore.getPersonsByPhone(callerIdsCode);
+            if (personModel == null) {
+                return;
+            }
+            DepartModel depart = personDiskStore.getDepartByPersonId(personModel.getAccount(), null);
+            FloatWindowManager.getInstance().showCallerFloatWindow(getApplicationContext(), callerIdsCode, personModel, depart);
+        } catch (Exception e) {
             FloatWindowManager.getInstance().dismissFloatWindow();
         }
      /*   EoaApplication eoaApplication = (EoaApplication) mContext.getApplicationContext();

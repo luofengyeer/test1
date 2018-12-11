@@ -91,7 +91,7 @@ public class LoadContactList {
         if (ArraysUtils.isListEmpty(personModels)) {
             return;
         }
-        SQLite.delete(PersonModel.class).query();
+//        SQLite.delete(PersonModel.class).query();
 
         DatabaseDefinition database = FlowManager.getDatabase(AppDataBase.class);
         database.executeTransaction(FastStoreModelTransaction.saveBuilder(FlowManager.getModelAdapter(PersonModel.class)).addAll(personModels).build());
@@ -181,7 +181,7 @@ public class LoadContactList {
         if (ArraysUtils.isListEmpty(body1)) {
             return;
         }
-        SQLite.delete(DepartPersonModel.class).query();
+//        SQLite.delete(DepartPersonModel.class).query();
         DatabaseDefinition database = FlowManager.getDatabase(AppDataBase.class);
         database.executeTransaction(FastStoreModelTransaction.saveBuilder(FlowManager.getModelAdapter(DepartPersonModel.class)).addAll(body1).build());
 

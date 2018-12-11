@@ -78,6 +78,14 @@ public class CallerIdsFloatView extends FrameLayout {
         TextView userNameTv = floatView.findViewById(R.id.tv_user_name);
         userNameTv.setText(callerName);
     }
+    public void setCallerDepart(String callerName) {
+        TextView userNameTv = floatView.findViewById(R.id.tv_depart_name);
+        userNameTv.setText(callerName);
+    }
+    public void setCallerJob(String callerName) {
+        TextView userNameTv = floatView.findViewById(R.id.tv_job_name);
+        userNameTv.setText(callerName);
+    }
 
     public void setCallerAvatar(String avatarUrl) {
         ImageView userAvatarIv = floatView.findViewById(R.id.iv_user_avatar);

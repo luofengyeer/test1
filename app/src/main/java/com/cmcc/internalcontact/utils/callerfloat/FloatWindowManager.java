@@ -8,6 +8,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.cmcc.internalcontact.model.db.DepartModel;
 import com.cmcc.internalcontact.model.db.PersonModel;
 import com.cmcc.internalcontact.utils.Constant;
 import com.cmcc.internalcontact.utils.SharePreferencesUtils;
@@ -41,7 +42,7 @@ public class FloatWindowManager implements View.OnClickListener {
         return isWindowDismiss;
     }
 
-    public void showCallerFloatWindow(Context context, String callerIds, PersonModel personBean) {
+    public void showCallerFloatWindow(Context context, String callerIds, PersonModel personBean, DepartModel departModel) {
         if (!isWindowDismiss) {
             Log.e(TAG, "view is already added here");
             return;
@@ -77,9 +78,12 @@ public class FloatWindowManager implements View.OnClickListener {
 
         floatView.setCallerAvatar(Constant.BASE_AVATRE_URL + personBean.getHeadPic());
         floatView.setCallerName(personBean.getUsername());
+        floatView.setCallerJob(personBean.getJob());
         floatView.setCallerPhone(callerIds);
         floatView.setOnCloseClickListener(this);
-
+        if (departModel != null) {
+            floatView.setCallerDepart(departModel.getDeptName());
+        }
         try {
             windowManager.addView(floatView, mParams);
         } catch (WindowManager.BadTokenException badTokenException) {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="incoming_bg_heigth">86dp</dimen>
+    <dimen name="incoming_bg_heigth">160dp</dimen>
     <dimen name="incoming_bg_widgth">350dp</dimen>
     <dimen name="incoming_avatar_heigth">62dp</dimen>
     <dimen name="incoming_avatar_img_heigth">48dp</dimen>

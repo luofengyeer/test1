@@ -11,6 +11,7 @@ import com.cmcc.internalcontact.model.http.UpdateDeptResponse;
 import java.util.HashMap;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -50,6 +51,8 @@ public interface Api {
 
     @GET("app/getAppWaitImg")
     Call<List<GetWaitImgBean>> getAppWaitImg();
-    @POST("app/getUserDeptAll ")
+    @POST("app/getUserDeptAll")
     Call<List<DepartPersonModel>> getUserDeptAll();
+    @POST("app/downLoadApp")
+    Call<ResponseBody> downloadApp(String path);
 }

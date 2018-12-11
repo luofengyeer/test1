@@ -51,8 +51,10 @@ public interface Api {
 
     @GET("app/getAppWaitImg")
     Call<List<GetWaitImgBean>> getAppWaitImg();
+
     @POST("app/getUserDeptAll")
     Call<List<DepartPersonModel>> getUserDeptAll();
+
     @POST("app/downLoadApp")
-    Call<ResponseBody> downloadApp(String path);
+    Call<ResponseBody> downloadApp(@Body HashMap<String, String> v);
 }

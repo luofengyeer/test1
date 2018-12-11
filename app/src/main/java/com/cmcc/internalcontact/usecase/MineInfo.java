@@ -2,6 +2,7 @@ package com.cmcc.internalcontact.usecase;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.cmcc.internalcontact.activity.adapter.SearchListAdapter;
@@ -29,6 +30,7 @@ import java.util.concurrent.Callable;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
 import top.zibin.luban.Luban;
@@ -174,6 +176,26 @@ public class MineInfo {
         });
     }
 
+    public Observable<String> downloadApk(Context context, String downloadUrl, String savePath) {
+        return Observable.just(downloadUrl).flatMap(new Function<String, ObservableSource<String>>() {
+            @Override
+            public ObservableSource<String> apply(String downloadUrl) throws Exception {
+                HashMap<String, String> map = new HashMap<>();
+                map.put("downloadPath", AesUtils.encrypt(downloadUrl));
+                Call<ResponseBody> responseBodyCall = HttpManager.getInstance(context).getApi().downloadApp(map);
+                Response<ResponseBody> response = responseBodyCall.execute();
+                ResponseBody body = response.body();
+                if (body == null) {
+                    return Observable.just("");
+                }
+                long l = body.contentLength();
+                Log.i("download", "size: " + l);
+//                InputStream inputStream = body.byteStream();
+                return Observable.just("");
+            }
+        });
+    }
+
     /**
      * 获取文件格式名
      */
@@ -205,14 +227,5 @@ public class MineInfo {
             e.printStackTrace();
         }
         return buffer;
-    }
-
-    public Observable<String> downloadApk(String path) {
-        return Observable.just(path).flatMap(new Function<String, ObservableSource<String>>() {
-            @Override
-            public ObservableSource<String> apply(String s) throws Exception {
-                return null;
-            }
-        });
     }
 }

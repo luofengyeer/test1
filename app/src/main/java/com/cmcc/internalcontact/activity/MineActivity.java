@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
+import com.cmcc.internalcontact.BuildConfig;
 import com.cmcc.internalcontact.R;
 import com.cmcc.internalcontact.base.BaseActivity;
 import com.cmcc.internalcontact.base.MyObserver;
@@ -32,9 +33,6 @@ import com.cmcc.internalcontact.utils.view.CommonToolBar;
 import com.cmcc.internalcontact.utils.view.CustomDialog;
 import com.imnjh.imagepicker.SImagePicker;
 import com.imnjh.imagepicker.activity.PhotoPickerActivity;
-import com.liulishuo.filedownloader.BaseDownloadTask;
-import com.liulishuo.filedownloader.FileDownloadListener;
-import com.liulishuo.filedownloader.FileDownloader;
 
 import java.util.ArrayList;
 
@@ -196,7 +194,7 @@ public class MineActivity extends BaseActivity {
     }
 
     private void checkUpdate() {
-        new MineInfo().checkUpdate(this, "1001").subscribeOn(Schedulers.newThread())
+        new MineInfo().checkUpdate(this, String.valueOf(BuildConfig.VERSION_CODE)).subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new MyObserver<UpdateAppBean>(this) {
                     @Override
@@ -227,60 +225,77 @@ public class MineActivity extends BaseActivity {
     }
 
     private void download(String name, String downloadUrl) {
-        FileDownloader.getImpl().create(downloadUrl)
-                .setPath(name)
-                .setForceReDownload(true)
-                .setListener(new FileDownloadListener() {
+        new MineInfo().downloadApk(this, downloadUrl, name).subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new MyObserver<String>(this) {
                     @Override
-                    protected void pending(BaseDownloadTask task, int soFarBytes, int totalBytes) {
-                        Log.e("progress", "pending");
-                        setDownProgress(0);
+                    public void onNext(String s) {
+
                     }
 
                     @Override
-                    protected void progress(BaseDownloadTask task, int soFarBytes, int totalBytes) {
-                        int progress = (int) (soFarBytes * 100L / totalBytes);
-                        Log.e("progress", "progress");
-                        setDownProgress(progress);
-                    }
-
-                    @Override
-                    protected void completed(BaseDownloadTask task) {
-                        setDownProgress(100);
-                        if (dialog != null) {
-                            dialog.dismiss();
-                        }
-                        String path = task.getPath();
-                        Log.e("progress", "completed: " + path);
-                        try {
-                            Utils.openFile(MineActivity.this, path);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Log.e("openFile", "open fail");
-                        }
-                    }
-
-                    @Override
-                    protected void paused(BaseDownloadTask task, int soFarBytes, int totalBytes) {
-                        Log.e("progress", "paused");
-                    }
-
-                    @Override
-                    protected void error(BaseDownloadTask task, Throwable e) {
+                    public void onError(Throwable e) {
+                        super.onError(e);
                         e.printStackTrace();
                         if (dialog != null) {
                             dialog.dismiss();
                         }
-                        Log.e("progress", "error");
-                        Toast.makeText(MineActivity.this, "下载失败", Toast.LENGTH_SHORT).show();
                     }
-
-                    @Override
-                    protected void warn(BaseDownloadTask task) {
-                        Log.e("progress", "warn");
-                    }
-                })
-                .start();
+                });
+//        FileDownloader.getImpl().create(downloadUrl)
+//                .setPath(name)
+//                .setForceReDownload(true)
+//                .setListener(new FileDownloadListener() {
+//                    @Override
+//                    protected void pending(BaseDownloadTask task, int soFarBytes, int totalBytes) {
+//                        Log.e("progress", "pending");
+//                        setDownProgress(0);
+//                    }
+//
+//                    @Override
+//                    protected void progress(BaseDownloadTask task, int soFarBytes, int totalBytes) {
+//                        int progress = (int) (soFarBytes * 100L / totalBytes);
+//                        Log.e("progress", "progress");
+//                        setDownProgress(progress);
+//                    }
+//
+//                    @Override
+//                    protected void completed(BaseDownloadTask task) {
+//                        setDownProgress(100);
+//                        if (dialog != null) {
+//                            dialog.dismiss();
+//                        }
+//                        String path = task.getPath();
+//                        Log.e("progress", "completed: " + path);
+//                        try {
+//                            Utils.openFile(MineActivity.this, path);
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                            Log.e("openFile", "open fail");
+//                        }
+//                    }
+//
+//                    @Override
+//                    protected void paused(BaseDownloadTask task, int soFarBytes, int totalBytes) {
+//                        Log.e("progress", "paused");
+//                    }
+//
+//                    @Override
+//                    protected void error(BaseDownloadTask task, Throwable e) {
+//                        e.printStackTrace();
+//                        if (dialog != null) {
+//                            dialog.dismiss();
+//                        }
+//                        Log.e("progress", "error");
+//                        Toast.makeText(MineActivity.this, "下载失败", Toast.LENGTH_SHORT).show();
+//                    }
+//
+//                    @Override
+//                    protected void warn(BaseDownloadTask task) {
+//                        Log.e("progress", "warn");
+//                    }
+//                })
+//                .start();
     }
 
     private void showDownloadDialog() {

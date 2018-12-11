@@ -37,6 +37,16 @@ public class PersonModel extends BaseModel implements Parcelable {
     private String job;
     @Column
     private long createTime;
+    @Column
+    private int userSort;
+
+    public int getUserSort() {
+        return userSort;
+    }
+
+    public void setUserSort(int userSort) {
+        this.userSort = userSort;
+    }
 
     public long getUserId() {
         return userId;

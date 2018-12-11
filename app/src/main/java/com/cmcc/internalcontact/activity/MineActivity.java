@@ -212,7 +212,7 @@ public class MineActivity extends BaseActivity {
                                 customDialog.dismiss();
                                 showDownloadDialog();
                                 download(Environment.getExternalStorageDirectory().getAbsolutePath() + "/internalcontact/apk/internalcontact.apk"
-                                        , Constant.BASE_AVATRE_URL+updateAppBean.getDownloadPath());
+                                        , Constant.BASE_AVATRE_URL + updateAppBean.getDownloadPath());
                             }
                         });
                         customDialog.setCancelButton("取消", null);
@@ -354,5 +354,10 @@ public class MineActivity extends BaseActivity {
             Log.e(TAG, "original: " + original);
             uploadHeadPic(pathList.get(0));
         }
+    }
+
+    @OnClick(R.id.tv_modify_pwd)
+    public void modifyPwd() {
+        startActivity(new Intent(this, ModifyPassword.class));
     }
 }

@@ -52,6 +52,8 @@ public class UserDetailDialogFragment extends DialogFragment {
     TextView tvUserCompany;
     @BindView(R.id.tv_user_department)
     TextView tvUserDepartment;
+    @BindView(R.id.tv_user_job)
+    TextView tvUserJob;
     @BindView(R.id.iv_call_btn)
     ImageView ivCallBtn;
     @BindView(R.id.iv_message_btn)
@@ -97,7 +99,7 @@ public class UserDetailDialogFragment extends DialogFragment {
                 }
             }
             tvUserDepartment.setText(departStr);
-
+            tvUserJob.setText(TextUtils.isEmpty(personModel.getJob()) ? "" : personModel.getJob());
 
             List<DepartModel> mechanisms = new PersonDiskStore().getDepartByCodes(departIds);
             String company = "";

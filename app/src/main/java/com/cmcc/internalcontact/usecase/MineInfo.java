@@ -161,6 +161,18 @@ public class MineInfo {
         });
     }
 
+    public Observable<Object> updateUserInfo(Context context, String key, String values) {
+        return Observable.just("").map(new Function<String, Object>() {
+            @Override
+            public Object apply(String s) throws Exception {
+                HashMap<String, String> data = new HashMap<>();
+                data.put(key, AesUtils.encrypt(values));
+                HttpManager.getInstance(context).getApi().updateAppUser(data).execute().body();
+                return new Object();
+            }
+        });
+    }
+
     public Observable<UpdateAppBean> checkUpdate(Context context, String versionCode) {
         return Observable.just(versionCode).map(new Function<String, UpdateAppBean>() {
             @Override

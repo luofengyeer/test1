@@ -112,11 +112,36 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/lay_user_item_company"
+            android:id="@+id/lay_user_item_job"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@id/lay_user_item_email"
             android:layout_below="@id/lay_user_item_email"
+            android:layout_marginTop="13dp"
+
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="职务："
+                android:textColor="#747474"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_user_job"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#747474"
+                tools:text="工作" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lay_user_item_company"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/lay_user_item_job"
+            android:layout_below="@id/lay_user_item_job"
             android:layout_marginTop="13dp"
 
             android:orientation="horizontal">

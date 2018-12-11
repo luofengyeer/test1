@@ -63,6 +63,9 @@
         <activity
             android:name=".activity.MineActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ModifyPassword"
+            android:screenOrientation="portrait" />
 
         <service
             android:name=".service.CallerIdsMatchService"

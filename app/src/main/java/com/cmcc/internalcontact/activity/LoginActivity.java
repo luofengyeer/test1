@@ -183,7 +183,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onError(Throwable e) {
                 progressDialog.dismiss();
-                Toast.makeText(getApplicationContext(), "登录失败，" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "登录失败，用户名或密码错误", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
         });

@@ -21,8 +21,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_14"
-            android:layout_marginTop="@dimen/dp_13"
             android:layout_marginRight="@dimen/dp_14"
+            android:layout_marginTop="@dimen/dp_13"
             android:background="@drawable/bg_mine_head_pic"
             android:gravity="center_horizontal"
             android:orientation="vertical">
@@ -31,8 +31,8 @@
                 android:id="@+id/iv_head_pic"
                 android:layout_width="@dimen/dp_59"
                 android:layout_height="@dimen/dp_59"
-                android:layout_marginTop="@dimen/dp_13"
                 android:layout_marginBottom="@dimen/dp_10"
+                android:layout_marginTop="@dimen/dp_13"
                 android:src="@mipmap/ic_edit_info_headimg" />
 
             <TextView
@@ -50,10 +50,10 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp_19"
             android:layout_marginLeft="@dimen/dp_15"
-            android:layout_marginTop="@dimen/dp_13"
             android:layout_marginRight="@dimen/dp_15"
-            android:layout_marginBottom="@dimen/dp_19">
+            android:layout_marginTop="@dimen/dp_13">
 
             <TextView
                 android:id="@+id/tv_mp"
@@ -87,10 +87,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_15"
-            android:layout_marginTop="@dimen/dp_21"
-            android:layout_marginRight="@dimen/dp_15"
             android:layout_marginBottom="@dimen/dp_19"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:layout_marginRight="@dimen/dp_15"
+            android:layout_marginTop="@dimen/dp_21"
             android:orientation="horizontal">
 
             <TextView
@@ -121,10 +121,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_15"
-            android:layout_marginTop="@dimen/dp_21"
-            android:layout_marginRight="@dimen/dp_15"
             android:layout_marginBottom="@dimen/dp_19"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:layout_marginRight="@dimen/dp_15"
+            android:layout_marginTop="@dimen/dp_21"
             android:orientation="horizontal">
 
             <TextView
@@ -155,10 +155,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_15"
-            android:layout_marginTop="@dimen/dp_21"
-            android:layout_marginRight="@dimen/dp_15"
             android:layout_marginBottom="@dimen/dp_19"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:layout_marginRight="@dimen/dp_15"
+            android:layout_marginTop="@dimen/dp_21"
             android:orientation="horizontal">
 
             <TextView
@@ -189,10 +189,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_15"
-            android:layout_marginTop="@dimen/dp_21"
-            android:layout_marginRight="@dimen/dp_15"
             android:layout_marginBottom="@dimen/dp_19"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:layout_marginRight="@dimen/dp_15"
+            android:layout_marginTop="@dimen/dp_21"
             android:orientation="horizontal">
 
             <TextView
@@ -223,10 +223,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_15"
-            android:layout_marginTop="@dimen/dp_21"
-            android:layout_marginRight="@dimen/dp_15"
             android:layout_marginBottom="@dimen/dp_19"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:layout_marginRight="@dimen/dp_15"
+            android:layout_marginTop="@dimen/dp_21"
             android:orientation="horizontal">
 
             <TextView
@@ -260,6 +260,27 @@
             android:text="@string/version_check"
             android:textColor="@color/color_333333"
             android:textSize="@dimen/sp_14" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_1"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:layout_marginRight="@dimen/dp_15"
+            android:background="@color/color_ffeeeeee" />
+
+        <TextView
+            android:id="@+id/tv_modify_pwd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dp_15"
+            android:text="修改密码"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/sp_14" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_5"
+            android:background="@color/color_eeeeee" />
 
         <View
             android:layout_width="match_parent"

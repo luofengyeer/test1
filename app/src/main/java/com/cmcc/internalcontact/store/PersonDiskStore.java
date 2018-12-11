@@ -135,4 +135,8 @@ public class PersonDiskStore {
                 .or(PersonModel_Table.namePinyin.like(search))
                 .queryList();
     }
+
+    public List<DepartModel> getDepartByCodes(List<String> departIds) {
+        return SQLite.select().from(DepartModel.class).where(DepartModel_Table.deptCode.in(departIds)).queryList();
+    }
 }

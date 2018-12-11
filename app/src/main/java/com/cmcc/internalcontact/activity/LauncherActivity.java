@@ -161,6 +161,6 @@ public class LauncherActivity extends BaseActivity {
                 }
                 finish();
             }
-        }, 500);
+        }, 1000);
     }
 }

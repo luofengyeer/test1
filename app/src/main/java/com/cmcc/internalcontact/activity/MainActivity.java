@@ -280,7 +280,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
 
         });
     }
-
+    private DepartModel currentDepart;
 
     /**
      * 加载默认联系人路径和信息
@@ -296,7 +296,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
             loadDepartment(null);
             return;
         }
-        List<DepartModel> departPath = new LoadContactList().getDepartPath(userInfo.getAccount());
+        List<DepartModel> departPath = new LoadContactList().getDepartPath(userInfo.getAccount(),null);
         if (ArraysUtils.isListEmpty(departPath)) {
             loadDepartment(null);
             return;

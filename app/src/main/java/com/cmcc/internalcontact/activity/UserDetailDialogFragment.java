@@ -19,9 +19,15 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.cmcc.internalcontact.R;
+import com.cmcc.internalcontact.activity.adapter.SearchListAdapter;
+import com.cmcc.internalcontact.model.db.DepartModel;
 import com.cmcc.internalcontact.model.db.PersonModel;
+import com.cmcc.internalcontact.store.PersonDiskStore;
+import com.cmcc.internalcontact.utils.ArraysUtils;
 import com.cmcc.internalcontact.utils.Constant;
 import com.cmcc.internalcontact.utils.Utils;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -73,6 +79,30 @@ public class UserDetailDialogFragment extends DialogFragment {
             tvUserPhone2.setVisibility(TextUtils.isEmpty(personModel.getMobile2()) ? View.GONE : View.VISIBLE);
             tvUserPhone2.setText(personModel.getMobile2());
             Glide.with(rootView).load(personModel.getHeadPic()).apply(Constant.AVATAR_OPTIONS).into(ivUserAvatar);
+            List<DepartModel> mechanisms = new PersonDiskStore().getDepartByPersonId(personModel.getAccount(), SearchListAdapter.TYPE_MECHANISM);
+            String company = "";
+            if (!ArraysUtils.isListEmpty(mechanisms)) {
+                for (int i = 0; i < mechanisms.size(); i++) {
+                    DepartModel mechanism = mechanisms.get(i);
+                    company += mechanism.getDeptName();
+                    if (i != mechanisms.size() - 1) {
+                        company += ",";
+                    }
+                }
+            }
+            tvUserCompany.setText(company);
+            List<DepartModel> departs = new PersonDiskStore().getDepartByPersonId(personModel.getAccount(), SearchListAdapter.TYPE_COMPANY);
+            String departStr = "";
+            if (!ArraysUtils.isListEmpty(departs)) {
+                for (int i = 0; i < departs.size(); i++) {
+                    DepartModel departModel = departs.get(i);
+                    departStr += departModel.getDeptName();
+                    if (i != departs.size() - 1) {
+                        departStr += ",";
+                    }
+                }
+            }
+            tvUserCompany.setText(departStr);
         }
         return rootView;
     }

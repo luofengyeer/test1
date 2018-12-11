@@ -1,6 +1,7 @@
 package com.cmcc.internalcontact.utils.http;
 
 import com.cmcc.internalcontact.model.UpdateAppBean;
+import com.cmcc.internalcontact.model.db.DepartPersonModel;
 import com.cmcc.internalcontact.model.http.GetWaitImgBean;
 import com.cmcc.internalcontact.model.http.LoginRequestBean;
 import com.cmcc.internalcontact.model.http.LoginResponseBean;
@@ -49,4 +50,6 @@ public interface Api {
 
     @GET("app/getAppWaitImg")
     Call<List<GetWaitImgBean>> getAppWaitImg();
+    @POST("app/getUserDeptAll ")
+    Call<List<DepartPersonModel>> getUserDeptAll();
 }

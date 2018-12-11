@@ -43,10 +43,10 @@ public class SearchActivity extends BaseActivity {
     CommonToolBar toolbarSearch;
     @BindView(R.id.et_search)
     EditText etSearch;
-    @BindView(R.id.rb_mechanism)
-    RadioButton rbMechanism;
-    @BindView(R.id.v_mechanism_line)
-    View vMechanismLine;
+    /*@BindView(R.id.rb_mechanism)
+    RadioButton rbMechanism;*/
+/*    @BindView(R.id.v_mechanism_line)
+    View vMechanismLine;*/
     @BindView(R.id.rb_company)
     RadioButton rbCompany;
     @BindView(R.id.v_company_line)
@@ -103,7 +103,7 @@ public class SearchActivity extends BaseActivity {
         }
     }
 
-    private void searchMechanism(String search) {
+   /* private void searchMechanism(String search) {
         if (TextUtils.isEmpty(search)) {
             adapter.setDepartData(null, SearchListAdapter.TYPE_MECHANISM);
             return;
@@ -118,7 +118,7 @@ public class SearchActivity extends BaseActivity {
                     }
                 });
     }
-
+*/
     private void searchCompany(String search) {
         if (TextUtils.isEmpty(search)) {
             adapter.setDepartData(null, SearchListAdapter.TYPE_COMPANY);
@@ -157,7 +157,7 @@ public class SearchActivity extends BaseActivity {
         public void onCheckedChanged(RadioGroup group, int checkedId) {
             vCompanyLine.setVisibility(checkedId == R.id.rb_company ? View.VISIBLE : View.INVISIBLE);
             vContactsLine.setVisibility(checkedId == R.id.rb_contacts ? View.VISIBLE : View.INVISIBLE);
-            vMechanismLine.setVisibility(checkedId == R.id.rb_mechanism ? View.VISIBLE : View.INVISIBLE);
+//            vMechanismLine.setVisibility(checkedId == R.id.rb_mechanism ? View.VISIBLE : View.INVISIBLE);
             String search = etSearch.getText().toString();
             switch (checkedId) {
                 case R.id.rb_company://单位
@@ -167,7 +167,7 @@ public class SearchActivity extends BaseActivity {
                     searchContact(search);
                     break;
                 default://机构
-                    searchMechanism(search);
+//                    searchMechanism(search);
                     break;
             }
         }
@@ -192,7 +192,7 @@ public class SearchActivity extends BaseActivity {
                     searchContact(search);
                     break;
                 default:
-                    searchMechanism(search);
+//                    searchMechanism(search);
                     break;
             }
         }

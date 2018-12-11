@@ -3,6 +3,7 @@ package com.cmcc.internalcontact.usecase;
 
 import android.content.Context;
 
+import com.cmcc.internalcontact.model.db.DepartPersonModel;
 import com.cmcc.internalcontact.model.http.UpdateContactResponse;
 import com.cmcc.internalcontact.model.http.UpdateDeptResponse;
 import com.cmcc.internalcontact.utils.AesUtils;
@@ -12,9 +13,11 @@ import com.cmcc.internalcontact.utils.http.Api;
 import com.cmcc.internalcontact.utils.http.HttpManager;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.Callable;
 
 import io.reactivex.Observable;
+import retrofit2.Call;
 
 public class UpdateContactUseCase {
     public static final String KEY_CONTACT_VERSION = "key_contact_version";
@@ -60,6 +63,11 @@ public class UpdateContactUseCase {
                         new LoadContactList().saveDepartments(updateDeptResponse.getData());
                         SharePreferencesUtils.getInstance().setLong(KEY_DEPART_VERSION, updateDeptResponse.getVersion());
                     }
+                }
+                Call<List<DepartPersonModel>> userDeptAll = api.getUserDeptAll();
+                List<DepartPersonModel> body1 = userDeptAll.execute().body();
+                if(!ArraysUtils.isListEmpty(body1)){
+                    new LoadContactList().saveDepartPersons(body1);
                 }
                 return body;
             }

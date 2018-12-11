@@ -74,7 +74,7 @@
         android:layout_height="@dimen/dp_52"
         android:orientation="horizontal">
 
-        <RadioButton
+      <!--  <RadioButton
             android:id="@+id/rb_mechanism"
             android:layout_width="@dimen/dp_0"
             android:layout_height="match_parent"
@@ -83,6 +83,18 @@
             android:checked="true"
             android:gravity="center"
             android:text="@string/mechanism"
+            android:textColor="@drawable/bg_search_tab"
+            android:textSize="@dimen/sp_17"
+            android:visibility="gone" />-->
+
+        <RadioButton
+            android:id="@+id/rb_contacts"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/contacts"
             android:textColor="@drawable/bg_search_tab"
             android:textSize="@dimen/sp_17" />
 
@@ -97,16 +109,7 @@
             android:textColor="@drawable/bg_search_tab"
             android:textSize="@dimen/sp_17" />
 
-        <RadioButton
-            android:id="@+id/rb_contacts"
-            android:layout_width="@dimen/dp_0"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:button="@null"
-            android:gravity="center"
-            android:text="@string/contacts"
-            android:textColor="@drawable/bg_search_tab"
-            android:textSize="@dimen/sp_17" />
+
     </RadioGroup>
 
     <LinearLayout
@@ -115,8 +118,15 @@
         android:background="@color/color_ffeeeeee"
         android:orientation="horizontal">
 
-        <View
+<!--        <View
             android:id="@+id/v_mechanism_line"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/color_ff4c96f7"
+            android:visibility="gone" />-->
+        <View
+            android:id="@+id/v_contacts_line"
             android:layout_width="@dimen/dp_0"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -131,13 +141,6 @@
             android:background="@color/color_ff4c96f7"
             android:visibility="invisible" />
 
-        <View
-            android:id="@+id/v_contacts_line"
-            android:layout_width="@dimen/dp_0"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@color/color_ff4c96f7"
-            android:visibility="invisible" />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView

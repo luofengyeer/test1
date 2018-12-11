@@ -3,6 +3,7 @@ package com.cmcc.internalcontact.usecase;
 import com.cmcc.internalcontact.db.AppDataBase;
 import com.cmcc.internalcontact.model.MainInfoBean;
 import com.cmcc.internalcontact.model.db.DepartModel;
+import com.cmcc.internalcontact.model.db.DepartPersonModel;
 import com.cmcc.internalcontact.model.db.PersonModel;
 import com.cmcc.internalcontact.store.DepartDiskStore;
 import com.cmcc.internalcontact.store.PersonDiskStore;
@@ -93,8 +94,9 @@ public class LoadContactList {
         SQLite.delete(PersonModel.class).query();
 
         DatabaseDefinition database = FlowManager.getDatabase(AppDataBase.class);
-        database.beginTransactionAsync(FastStoreModelTransaction.saveBuilder(FlowManager.getModelAdapter(PersonModel.class)).addAll(personModels).build()).execute();
+        database.executeTransaction(FastStoreModelTransaction.saveBuilder(FlowManager.getModelAdapter(PersonModel.class)).addAll(personModels).build());
     }
+
 
     public Observable<List<MainInfoBean>> loadDepartData(String departId) {
         return Observable.just(departId).map(new Function<String, List<MainInfoBean>>() {
@@ -127,10 +129,10 @@ public class LoadContactList {
         });
     }
 
-    public List<DepartModel> getDepartPath(String account) {
+    public List<DepartModel> getDepartPath(String account,String departCode) {
         List<DepartModel> departModels = new ArrayList<>();
         PersonDiskStore personDiskStore = new PersonDiskStore();
-        DepartModel depart1 = personDiskStore.getDepartByPersonId(account);
+        DepartModel depart1 = personDiskStore.getDepartByPersonId(account,departCode);
         if (depart1 == null) {
             return departModels;
         }
@@ -165,7 +167,7 @@ public class LoadContactList {
                     MainInfoBean<PersonModel> mainInfoBean = new MainInfoBean<>();
                     mainInfoBean.setType(MainInfoBean.TYPE_PERSON);
                     mainInfoBean.setData(personModel);
-                    mainInfoBean.setAvatar(Constant.BASE_AVATRE_URL+personModel.getHeadPic());
+                    mainInfoBean.setAvatar(Constant.BASE_AVATRE_URL + personModel.getHeadPic());
                     mainInfoBean.setName(personModel.getUsername());
                     mainInfoBean.setDepartmentName(personModel.getJob());
                     resMainInfoBeans.add(mainInfoBean);
@@ -173,5 +175,15 @@ public class LoadContactList {
                 return resMainInfoBeans;
             }
         });
+    }
+
+    public void saveDepartPersons(List<DepartPersonModel> body1) {
+        if (ArraysUtils.isListEmpty(body1)) {
+            return;
+        }
+        SQLite.delete(DepartPersonModel.class).query();
+        DatabaseDefinition database = FlowManager.getDatabase(AppDataBase.class);
+        database.executeTransaction(FastStoreModelTransaction.saveBuilder(FlowManager.getModelAdapter(DepartPersonModel.class)).addAll(body1).build());
+
     }
 }

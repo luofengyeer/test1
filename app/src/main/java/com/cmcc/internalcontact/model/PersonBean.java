@@ -1,7 +1,5 @@
 package com.cmcc.internalcontact.model;
 
-import com.cmcc.internalcontact.model.db.DepartModel;
-
 public class PersonBean {
     private long id;
     private String name;
@@ -9,8 +7,8 @@ public class PersonBean {
     private String avator;
     private String tel;
     private String email;
-    private DepartModel mechanism;//机构
-    private DepartModel depart;//单位
+    private String mechanism;//机构
+    private String depart;//单位
     private String job;
 
     public long getId() {
@@ -61,19 +59,19 @@ public class PersonBean {
         this.email = email;
     }
 
-    public DepartModel getMechanism() {
+    public String getMechanism() {
         return mechanism;
     }
 
-    public void setMechanism(DepartModel mechanism) {
+    public void setMechanism(String mechanism) {
         this.mechanism = mechanism;
     }
 
-    public DepartModel getDepart() {
+    public String getDepart() {
         return depart;
     }
 
-    public void setDepart(DepartModel depart) {
+    public void setDepart(String depart) {
         this.depart = depart;
     }
 

@@ -21,7 +21,6 @@ import com.cmcc.internalcontact.base.BaseActivity;
 import com.cmcc.internalcontact.base.MyObserver;
 import com.cmcc.internalcontact.model.PersonBean;
 import com.cmcc.internalcontact.model.UpdateAppBean;
-import com.cmcc.internalcontact.model.db.DepartModel;
 import com.cmcc.internalcontact.model.http.LoginResponseBean;
 import com.cmcc.internalcontact.usecase.MineInfo;
 import com.cmcc.internalcontact.utils.ActivityStackManager;
@@ -315,13 +314,13 @@ public class MineActivity extends BaseActivity {
         tvTel.setText(personBean.getTel());
         tvEmail.setText(personBean.getEmail());
         tvJob.setText(personBean.getJob());
-        DepartModel mechanism = personBean.getMechanism();
+        String mechanism = personBean.getMechanism();
         if (mechanism != null) {
-            tvMechanism.setText(mechanism.getDeptName());
+            tvMechanism.setText(mechanism);
         }
-        DepartModel depart = personBean.getDepart();
+        String depart = personBean.getDepart();
         if (depart != null) {
-            tvCompany.setText(depart.getDeptName());
+            tvCompany.setText(depart);
         }
     }
 

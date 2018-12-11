@@ -4,12 +4,14 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
+import com.cmcc.internalcontact.activity.adapter.SearchListAdapter;
 import com.cmcc.internalcontact.model.PersonBean;
 import com.cmcc.internalcontact.model.UpdateAppBean;
 import com.cmcc.internalcontact.model.db.DepartModel;
 import com.cmcc.internalcontact.model.http.LoginResponseBean;
-import com.cmcc.internalcontact.store.DepartDiskStore;
+import com.cmcc.internalcontact.store.PersonDiskStore;
 import com.cmcc.internalcontact.utils.AesUtils;
+import com.cmcc.internalcontact.utils.ArraysUtils;
 import com.cmcc.internalcontact.utils.Base64;
 import com.cmcc.internalcontact.utils.SharePreferencesUtils;
 import com.cmcc.internalcontact.utils.http.HttpManager;
@@ -19,7 +21,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.Callable;
 
 import io.reactivex.Observable;
@@ -54,7 +58,38 @@ public class MineInfo {
                 personBean.setTel(userInfo.getTel());
                 personBean.setEmail(userInfo.getEmail());
                 personBean.setJob(userInfo.getJob());
-                DepartDiskStore departDiskStore = new DepartDiskStore();
+
+                List<DepartModel> departs = new PersonDiskStore().getDepartByPersonId(userInfo.getAccount(), SearchListAdapter.TYPE_COMPANY);
+                String departStr = "";
+                List<String> departIds = new ArrayList<>();
+                if (!ArraysUtils.isListEmpty(departs)) {
+                    for (int i = 0; i < departs.size(); i++) {
+                        DepartModel departModel = departs.get(i);
+                        departStr += departModel.getDeptName();
+                        if (!TextUtils.isEmpty(departModel.getParentCode())) {
+                            departIds.add(departModel.getParentCode());
+                        }
+                        if (i != departs.size() - 1) {
+                            departStr += ",";
+                        }
+                    }
+                }
+
+
+                List<DepartModel> mechanisms = new PersonDiskStore().getDepartByCodes(departIds);
+                String company = "";
+                if (!ArraysUtils.isListEmpty(mechanisms)) {
+                    for (int i = 0; i < mechanisms.size(); i++) {
+                        DepartModel mechanism = mechanisms.get(i);
+                        company += mechanism.getDeptName();
+                        if (i != mechanisms.size() - 1) {
+                            company += ",";
+                        }
+                    }
+                }
+                personBean.setMechanism(company);
+                personBean.setDepart(departStr);
+               /* DepartDiskStore departDiskStore = new DepartDiskStore();
                 DepartModel departModel = departDiskStore.getDepartModeByDepartId(userInfo.getOrgId());
                 if (departModel != null) {
                     personBean.setDepart(departModel);
@@ -62,7 +97,7 @@ public class MineInfo {
                     if (parentDepart != null) {
                         personBean.setMechanism(parentDepart);
                     }
-                }
+                }*/
                 return personBean;
             }
         });

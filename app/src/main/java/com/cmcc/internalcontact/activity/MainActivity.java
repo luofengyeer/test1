@@ -252,7 +252,9 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < strings.size(); i++) {
             sb.append(strings.get(i));
-            sb.append("\n");
+            if (i != strings.size() - 1) {
+                sb.append("\n");
+            }
         }
         return sb.toString();
     }
@@ -280,6 +282,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
 
         });
     }
+
     private DepartModel currentDepart;
 
     /**
@@ -296,7 +299,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
             loadDepartment(null);
             return;
         }
-        List<DepartModel> departPath = new LoadContactList().getDepartPath(userInfo.getAccount(),null);
+        List<DepartModel> departPath = new LoadContactList().getDepartPath(userInfo.getAccount(), null);
         if (ArraysUtils.isListEmpty(departPath)) {
             loadDepartment(null);
             return;
@@ -314,13 +317,13 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
     }
 
     private void initTab() {
-        buildTab(R.id.tab_contact,"通讯录", R.drawable.common_widget_home_menu_contact_selecter);
-        buildTab(R.id.tab_search,getString(R.string.search), R.drawable.common_widget_home_menu_search_selecter);
-        buildTab(R.id.tab_mine,"我的", R.drawable.common_widget_home_menu_mine_selecter);
+        buildTab(R.id.tab_contact, "通讯录", R.drawable.common_widget_home_menu_contact_selecter);
+        buildTab(R.id.tab_search, getString(R.string.search), R.drawable.common_widget_home_menu_search_selecter);
+        buildTab(R.id.tab_mine, "我的", R.drawable.common_widget_home_menu_mine_selecter);
     }
 
     @NonNull
-    private void buildTab(int tabId,String name, int iconId) {
+    private void buildTab(int tabId, String name, int iconId) {
         View contactTabView = findViewById(tabId);
         TextView tabName = contactTabView.findViewById(R.id.tv_main_tab_name);
         ImageView tabIcon = contactTabView.findViewById(R.id.tv_main_tab_icon);

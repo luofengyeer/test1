@@ -178,7 +178,6 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onComplete() {
-                progressDialog.dismiss();
             }
 
             @Override

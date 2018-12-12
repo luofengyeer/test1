@@ -44,7 +44,7 @@ public class FastJsonResponseBodyConverter<T> implements Converter<ResponseBody,
         }
         String decrypt = AesUtils.decrypt(httpBaseBean.getData());
         if (BuildConfig.DEBUG) {
-            Log.d("ServerResponseData:", decrypt);
+            Log.d("ServerResponseData:", "data=" + decrypt);
         }
         return JsonManager.jsonToBean(decrypt, type);
 

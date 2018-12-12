@@ -170,7 +170,7 @@ public class LoginActivity extends BaseActivity {
                                        @Override
                                        public void onError(Throwable e) {
                                            progressDialog.dismiss();
-                                           super.onError(e);
+                                           Toast.makeText(getApplicationContext(), "同步联系人失败", Toast.LENGTH_SHORT).show();
                                        }
                                    }
                         );

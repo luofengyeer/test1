@@ -3,6 +3,7 @@ package com.cmcc.internalcontact.usecase;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.cmcc.internalcontact.model.db.DepartPersonModel;
 import com.cmcc.internalcontact.model.http.UpdateContactResponse;
@@ -102,6 +103,7 @@ public class UpdateContactUseCase {
             if (TextUtils.isEmpty(resultData)) {
                 return;
             }
+            Log.d("YellowPage", resultData);
             SharePreferencesUtils.getInstance().setString(Constant.YELLOW_PAGE, resultData);
         } catch (Exception e) {
             e.printStackTrace();

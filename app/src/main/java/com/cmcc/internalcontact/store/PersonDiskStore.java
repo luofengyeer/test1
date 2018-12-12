@@ -51,10 +51,10 @@ public class PersonDiskStore {
                 .shouldAddIdentifierToName(true).build();
         String query = SQLite.select().from(DepartModel.class).as("D").leftOuterJoin(DepartPersonModel.class)
                 .as("DP").on(DepartPersonModel_Table.udDeptCode.withTable(deptPersonModelNameAlias).eq(DepartModel_Table.deptCode.withTable(departModelNameAlias)))
-                .where(DepartPersonModel_Table.udAccount.withTable(deptPersonModelNameAlias).eq(account)).getQuery();
+                .where(DepartPersonModel_Table.udAccount.withTable(deptPersonModelNameAlias).eq(account)).orderBy(DepartModel_Table.treeSort, true).getQuery();
         return SQLite.select().from(DepartModel.class).as("D").leftOuterJoin(DepartPersonModel.class)
                 .as("DP").on(DepartPersonModel_Table.udDeptCode.withTable(deptPersonModelNameAlias).eq(DepartModel_Table.deptCode.withTable(departModelNameAlias)))
-                .where(DepartPersonModel_Table.udAccount.withTable(deptPersonModelNameAlias).eq(account)).and(DepartModel_Table.deptType.withTable(departModelNameAlias).eq(departType)).queryList();
+                .where(DepartPersonModel_Table.udAccount.withTable(deptPersonModelNameAlias).eq(account)).and(DepartModel_Table.deptType.withTable(departModelNameAlias).eq(departType)).orderBy(DepartModel_Table.treeSort, true).queryList();
     }
 
     /**
@@ -89,7 +89,7 @@ public class PersonDiskStore {
      * @return
      */
     public List<DepartModel> getDepartListByParentId(String parentId) {
-        return SQLite.select().from(DepartModel.class).where(DepartModel_Table.parentCode.eq(parentId)).queryList();
+        return SQLite.select().from(DepartModel.class).where(DepartModel_Table.parentCode.eq(parentId)).orderBy(DepartModel_Table.treeSort, true).queryList();
     }
 
     /**
@@ -120,7 +120,7 @@ public class PersonDiskStore {
         if (phone == null) {
             return null;
         }
-        return SQLite.select().from(PersonModel.class).where(PersonModel_Table.mobile.eq(phone)).or(PersonModel_Table.mobile2.eq(phone)).querySingle();
+        return SQLite.select().from(PersonModel.class).where(PersonModel_Table.mobile.eq(phone)).or(PersonModel_Table.mobile2.eq(phone)).or(PersonModel_Table.account.eq(phone)).querySingle();
     }
 
     /**
@@ -137,6 +137,6 @@ public class PersonDiskStore {
     }
 
     public List<DepartModel> getDepartByCodes(List<String> departIds) {
-        return SQLite.select().from(DepartModel.class).where(DepartModel_Table.deptCode.in(departIds)).queryList();
+        return SQLite.select().from(DepartModel.class).where(DepartModel_Table.deptCode.in(departIds)).orderBy(DepartModel_Table.treeSort, true).queryList();
     }
 }

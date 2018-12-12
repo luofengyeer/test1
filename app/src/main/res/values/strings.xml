@@ -10,7 +10,7 @@
     <string name="cancel">取消</string>
     <string name="search_hint">请输入搜索内容</string>
     <string name="income_statue">来电显示</string>
-    <string name="income_permission_msg">来电显示功能需要使用\"悬浮窗\"权限 \n请到\"应用设置-权限\"中授权后才能正常使用</string>
+    <string name="income_permission_msg">来电显示功能需要使用\"悬浮窗\"和\"锁屏显示\"权限 \n请到\"应用设置-权限\"中授权后才能正常使用</string>
     <string name="income_permission_pos">暂不开启</string>
     <string name="income_permission_nag">现在开启</string>
     <string name="common_permission_msg">通讯录的正常使用的权限已被禁止\r\n\n

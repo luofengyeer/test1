@@ -41,7 +41,7 @@ public class DepartDiskStore {
                 .clause(OperatorGroup.clause().and(DepartModel_Table.deptName.like(search)).and(DepartModel_Table.deptType.is(type)))
                 .or(OperatorGroup.clause().and(DepartModel_Table.shortName.like(search)).and(DepartModel_Table.deptType.is(type)))
                 .or(OperatorGroup.clause().and(DepartModel_Table.deptPinyin.like(search)).and(DepartModel_Table.deptType.is(type)));
-        return SQLite.select().from(DepartModel.class).where(operators).queryList();
+        return SQLite.select().from(DepartModel.class).where(operators).orderBy(DepartModel_Table.treeSort,true).queryList();
     }
 
     /**

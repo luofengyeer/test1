@@ -56,6 +56,16 @@ public class DepartModel extends BaseModel implements Parcelable {
     private String email3;//
     @Column
     private int deptType;//部门类型
+    @Column
+    private int treeSort;//部门排序
+
+    public int getTreeSort() {
+        return treeSort;
+    }
+
+    public void setTreeSort(int treeSort) {
+        this.treeSort = treeSort;
+    }
 
     public long getId() {
         return id;

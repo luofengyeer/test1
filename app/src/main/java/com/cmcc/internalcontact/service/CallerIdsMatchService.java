@@ -55,6 +55,7 @@ public class CallerIdsMatchService extends Service {
             if (intent.hasExtra(CALLER_MATCH_STATE)) {
                 switch (intent.getStringExtra(CALLER_MATCH_STATE)) {
                     case CALLER_MATCH_STATE_RINGING:
+//                        String callerCode = "13033906127";
                         String callerCode = intent.getStringExtra("callerCodeValue");
                         if (!TextUtils.isEmpty(callerCode)) {
                             showCallerMatchWindow(callerCode);
@@ -76,7 +77,6 @@ public class CallerIdsMatchService extends Service {
      */
     private void showCallerMatchWindow(final String callerIdsCode) {
         try {
-
             PersonDiskStore personDiskStore = new PersonDiskStore();
             PersonModel personModel = personDiskStore.getPersonsByPhone(callerIdsCode);
             if (personModel == null) {

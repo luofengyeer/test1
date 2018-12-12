@@ -66,7 +66,7 @@ public class ModifyPassword extends BaseActivity {
             Toast.makeText(this, "两次输入密码不相同", Toast.LENGTH_SHORT).show();
             return;
         }
-        new MineInfo().updatePassword(ModifyPassword.this, edNewPwd.getText().toString(), edNewPwd.getText().toString())
+        new MineInfo().updatePassword(ModifyPassword.this, edOldPwd.getText().toString(), edNewPwd.getText().toString())
                 .subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MyObserver<Object>(this) {
             @Override
             public void onNext(Object aVoid) {

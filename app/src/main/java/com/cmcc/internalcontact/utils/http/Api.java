@@ -37,10 +37,10 @@ public interface Api {
     Call<HashMap<String, Integer>> isTokenPass();
 
     @POST("app/updateAppUser")
-    Call<Void> updateAppUser(@Body HashMap<String, String> v);
+    Call<Object> updateAppUser(@Body HashMap<String, String> v);
 
     @POST("app/updatePassword")
-    Call<Void> updatePassword(@Body HashMap<String, String> v);
+    Call<Object> updatePassword(@Body HashMap<String, String> v);
 
     @POST("app/uploadPic")
     Call<HashMap<String, String>> updateAvatar(@Body HashMap<String, String> v);

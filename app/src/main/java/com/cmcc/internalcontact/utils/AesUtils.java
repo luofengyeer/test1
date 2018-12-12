@@ -1,6 +1,8 @@
 package com.cmcc.internalcontact.utils;
 
 
+import android.text.TextUtils;
+
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -31,6 +33,9 @@ public class AesUtils {
      * @return 返回Base64转码后的加密数据
      */
     public static String encrypt(String content) {
+        if(TextUtils.isEmpty(content)){
+            return null;
+        }
         Key deskey = null;
         DESedeKeySpec spec = null;
         try {
@@ -71,6 +76,9 @@ public class AesUtils {
      * @return
      */
     public static String decrypt(String content) {
+        if(TextUtils.isEmpty(content)){
+            return null;
+        }
         Key deskey = null;
         DESedeKeySpec spec = null;
         try {

@@ -31,6 +31,7 @@ public class FastJsonResponseBodyConverter<T> implements Converter<ResponseBody,
 
     @Override
     public T convert(@NonNull ResponseBody value) throws IOException {
+
         BufferedSource bufferedSource = Okio.buffer(value.source());
         String source = bufferedSource.readUtf8();
         bufferedSource.close();

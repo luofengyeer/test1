@@ -154,7 +154,7 @@ public class MineInfo {
                 userInfo.setHeadPic(AesUtils.encrypt(item));*/
                 HashMap<String, String> data = new HashMap<>();
                 data.put("headPic", AesUtils.encrypt(item));
-                Call<Void> responseUpdate = HttpManager.getInstance(context).getApi().updateAppUser(data);
+                Call<Object> responseUpdate = HttpManager.getInstance(context).getApi().updateAppUser(data);
                 responseUpdate.execute();
                 return Observable.just(item);
             }
@@ -162,14 +162,14 @@ public class MineInfo {
     }
 
     public Observable<Object> updatePassword(Context context, String oldPassword, String newPassword) {
-        return Observable.just("").map(new Function<String, Object>() {
+        return Observable.just("").flatMap(new Function<String, ObservableSource<?>>() {
             @Override
-            public Object apply(String s) throws Exception {
+            public ObservableSource<?> apply(String s) throws Exception {
                 HashMap<String, String> data = new HashMap<>();
                 data.put("oldPassword", AesUtils.encrypt(oldPassword));
                 data.put("newPassword", AesUtils.encrypt(newPassword));
-                HttpManager.getInstance(context).getApi().updatePassword(data).execute().body();
-                return new Object();
+                HttpManager.getInstance(context).getApi().updatePassword(data).execute();
+                return Observable.just("");
             }
         });
     }

@@ -1,7 +1,5 @@
 package com.cmcc.internalcontact.utils;
 
-import android.os.Environment;
-
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.request.RequestOptions;
 import com.cmcc.internalcontact.R;
@@ -16,7 +14,7 @@ public class Constant {
 //    public static final String BASE_URL = "http://39.106.139.151:9798/contactus/";
     public static final String BASE_AVATRE_URL = "http://39.106.139.151:9798/";
     public static final String EXCEPTION_TOKEN_INVALID = "token invalid";
-    public static final String YELLOW_PAGE_URL = Environment.getExternalStorageDirectory().getAbsolutePath() + "/internalcontact/yellowpage/index.html";
+    public static final String YELLOW_PAGE = "YELLOW_PAGE";
 
     public static final String HTTP_KEY = "f4e2e52034348f86b67cde581c0f9eb4";
     public static final RequestOptions AVATAR_OPTIONS = new RequestOptions()

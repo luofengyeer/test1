@@ -161,13 +161,14 @@ public class MineInfo {
         });
     }
 
-    public Observable<Object> updateUserInfo(Context context, String key, String values) {
+    public Observable<Object> updatePassword(Context context, String oldPassword, String newPassword) {
         return Observable.just("").map(new Function<String, Object>() {
             @Override
             public Object apply(String s) throws Exception {
                 HashMap<String, String> data = new HashMap<>();
-                data.put(key, AesUtils.encrypt(values));
-                HttpManager.getInstance(context).getApi().updateAppUser(data).execute().body();
+                data.put("oldPassword", AesUtils.encrypt(oldPassword));
+                data.put("newPassword", AesUtils.encrypt(newPassword));
+                HttpManager.getInstance(context).getApi().updatePassword(data).execute().body();
                 return new Object();
             }
         });

@@ -38,7 +38,9 @@ public interface Api {
 
     @POST("app/updateAppUser")
     Call<Void> updateAppUser(@Body HashMap<String, String> v);
-//    Call<Void> updateAppUser(@Body LoginResponseBean.UserInfo personBean);
+
+    @POST("app/updatePassword")
+    Call<Void> updatePassword(@Body HashMap<String, String> v);
 
     @POST("app/uploadPic")
     Call<HashMap<String, String>> updateAvatar(@Body HashMap<String, String> v);

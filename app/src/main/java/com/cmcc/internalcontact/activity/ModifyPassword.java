@@ -12,7 +12,6 @@ import com.cmcc.internalcontact.base.BaseActivity;
 import com.cmcc.internalcontact.base.MyObserver;
 import com.cmcc.internalcontact.model.http.LoginResponseBean;
 import com.cmcc.internalcontact.usecase.MineInfo;
-import com.cmcc.internalcontact.utils.DigestUtils;
 import com.cmcc.internalcontact.utils.SharePreferencesUtils;
 import com.cmcc.internalcontact.utils.view.CommonToolBar;
 
@@ -51,10 +50,10 @@ public class ModifyPassword extends BaseActivity {
             Toast.makeText(this, "请输入旧密码", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (!userInfo.getPassword().equals(DigestUtils.encrypt(edOldPwd.getText().toString(), null))) {
+     /*   if (!userInfo.getPassword().equals(DigestUtils.encrypt(edOldPwd.getText().toString(), null))) {
             Toast.makeText(this, "旧密码输入错误", Toast.LENGTH_SHORT).show();
             return;
-        }
+        }*/
         if (TextUtils.isEmpty(edNewPwd.getText().toString())) {
             Toast.makeText(this, "请输入新密码", Toast.LENGTH_SHORT).show();
             return;
@@ -67,7 +66,7 @@ public class ModifyPassword extends BaseActivity {
             Toast.makeText(this, "两次输入密码不相同", Toast.LENGTH_SHORT).show();
             return;
         }
-        new MineInfo().updateUserInfo(ModifyPassword.this, "password", edNewPwd.getText().toString())
+        new MineInfo().updatePassword(ModifyPassword.this, edNewPwd.getText().toString(), edNewPwd.getText().toString())
                 .subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MyObserver<Object>(this) {
             @Override
             public void onNext(Object aVoid) {
@@ -77,8 +76,7 @@ public class ModifyPassword extends BaseActivity {
 
             @Override
             public void onError(Throwable e) {
-                super.onError(e);
-                Toast.makeText(ModifyPassword.this, "密码修改失败", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ModifyPassword.this, "密码修改失败,"+e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -15,6 +15,16 @@ public class DepartPersonModel extends BaseModel {
     private String udAccount;//帐号
     @Column
     private String udDeptCode;//机构代码
+    @Column
+    private long udSort;//人员排序
+
+    public long getUdSort() {
+        return udSort;
+    }
+
+    public void setUdSort(long udSort) {
+        this.udSort = udSort;
+    }
 
     public String getUdId() {
         return udId;

@@ -33,7 +33,9 @@ public class PersonDiskStore {
                 .eq(DepartPersonModel_Table.udAccount.withTable(deptPersonModelNameAlias))).where(DepartPersonModel_Table.udAccount.withTable(deptPersonModelNameAlias).eq(departId)).getQuery();
         Log.d("SQLHKB", "getPersonsByDepartId,query=" + query);
         return SQLite.select().from(PersonModel.class).as("P").leftOuterJoin(DepartPersonModel.class).as("DP").on(PersonModel_Table.account.withTable(personModelNameAlias)
-                .eq(DepartPersonModel_Table.udAccount.withTable(deptPersonModelNameAlias))).where(DepartPersonModel_Table.udDeptCode.withTable(deptPersonModelNameAlias).eq(departId)).orderBy(PersonModel_Table.userSort, true).queryList();
+                .eq(DepartPersonModel_Table.udAccount.withTable(deptPersonModelNameAlias)))
+                .where(DepartPersonModel_Table.udDeptCode.withTable(deptPersonModelNameAlias).eq(departId))
+                .orderBy(DepartPersonModel_Table.udSort, true).queryList();
     }
 
     /**

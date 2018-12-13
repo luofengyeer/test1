@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -61,6 +62,8 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
     TextView tvFax;
     @BindView(R.id.tv_email)
     TextView tvEmail;
+    @BindView(R.id.main_nest_scroll_view)
+    NestedScrollView mainNestScrollView;
     private MainAdapter adapter;
     @BindView(R.id.iv_path_lay)
     ImageView pathIcon;
@@ -178,6 +181,8 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
                     @Override
                     public void onNext(List<MainInfoBean> mainInfoBeans) {
                         adapter.setDataList(mainInfoBeans);
+                        mainNestScrollView.scrollTo(0,0);
+
                     }
 
                     @Override
@@ -214,7 +219,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
         String telsString = buildPhone(tels);
         if (!TextUtils.isEmpty(telsString)) {
             tvDutyCall.setText(Utils.addClickablePart(this, telsString), TextView.BufferType.SPANNABLE);
-        }else {
+        } else {
             tvDutyCall.setText("");
         }
         List<String> faxs = new ArrayList<>();
@@ -236,7 +241,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
         String faxsString = buildPhone(tels);
         if (!TextUtils.isEmpty(faxsString)) {
             tvFax.setText(faxsString);
-        }else {
+        } else {
             tvFax.setText("");
         }
         List<String> emails = new ArrayList<>();
@@ -252,7 +257,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
         String emailsString = buildPhone(emails);
         if (!TextUtils.isEmpty(faxsString)) {
             tvEmail.setText(emailsString);
-        }else {
+        } else {
             tvEmail.setText("");
         }
     }
@@ -290,6 +295,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
                     pathAdapter.jump2Position(parentModel);
                 }
                 adapter.setDataList(mainInfoBeans);
+                mainNestScrollView.scrollTo(0,0);
             }
 
         });

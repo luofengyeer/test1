@@ -75,7 +75,7 @@ public class UpdateContactUseCase {
                         new LoadContactList().saveDepartments(updateDeptResponse.getData());
                         SharePreferencesUtils.getInstance().setLong(KEY_DEPART_VERSION, updateDeptResponse.getVersion());
                     }
-                    download(Constant.YELLOW_PAGE_URL, Constant.BASE_AVATRE_URL + "app/huangye.html");
+                    download(Constant.YELLOW_PAGE_URL, Constant.BASE_AVATRE_URL + "app/huangye.ht");
                 }
                 Call<List<DepartPersonModel>> userDeptAll = api.getUserDeptAll();
                 List<DepartPersonModel> body1 = userDeptAll.execute().body();

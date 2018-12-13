@@ -20,6 +20,8 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import com.cmcc.internalcontact.utils.ArraysUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -108,7 +110,7 @@ public abstract class RvCommonAdapter<D> extends RecyclerView.Adapter<RvViewHold
     }
 
     public void setDataList(List<D> datas) {
-        if (datas == null) {
+        if (ArraysUtils.isListEmpty(datas)) {
             listData.clear();
             this.notifyDataSetChanged();
             return;

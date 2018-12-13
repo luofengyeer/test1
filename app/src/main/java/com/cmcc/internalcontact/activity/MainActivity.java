@@ -179,6 +179,12 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
                     public void onNext(List<MainInfoBean> mainInfoBeans) {
                         adapter.setDataList(mainInfoBeans);
                     }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        adapter.setDataList(null);
+                    }
                 });
     }
 
@@ -208,6 +214,8 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
         String telsString = buildPhone(tels);
         if (!TextUtils.isEmpty(telsString)) {
             tvDutyCall.setText(Utils.addClickablePart(this, telsString), TextView.BufferType.SPANNABLE);
+        }else {
+            tvDutyCall.setText("");
         }
         List<String> faxs = new ArrayList<>();
         if (!TextUtils.isEmpty(departTels.getFax1())) {
@@ -228,6 +236,8 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
         String faxsString = buildPhone(tels);
         if (!TextUtils.isEmpty(faxsString)) {
             tvFax.setText(faxsString);
+        }else {
+            tvFax.setText("");
         }
         List<String> emails = new ArrayList<>();
         if (!TextUtils.isEmpty(departTels.getEmail1())) {
@@ -242,6 +252,8 @@ public class MainActivity extends BaseActivity implements OnItemClickListener<Ma
         String emailsString = buildPhone(emails);
         if (!TextUtils.isEmpty(faxsString)) {
             tvEmail.setText(emailsString);
+        }else {
+            tvEmail.setText("");
         }
     }
 

@@ -70,6 +70,8 @@ public class MineActivity extends BaseActivity {
     ImageView ivHeadPic;
     @BindView(R.id.tv_version_update)
     TextView tvVersionUpdate;
+    @BindView(R.id.tv_version_name)
+    TextView tvVersionName;
     @BindView(R.id.iv_exit)
     ImageView ivExit;
     private Handler handler;
@@ -142,6 +144,7 @@ public class MineActivity extends BaseActivity {
                         show(personBean);
                     }
                 });
+        tvVersionName.setText("当前版本：" + BuildConfig.VERSION_NAME);
     }
 
     private void updateMineData() {
